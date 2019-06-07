@@ -1,5 +1,5 @@
 from setuptools import setup
-  
+
 setup(
     name='morgana',
     version='0.0.1',
@@ -8,5 +8,15 @@ setup(
     author='Zack Hodari',
     author_email='zack.hodari@ed.ac.uk',
     license='MIT',
+    install_requires=[
+        'bandmat',
+        'matplotlib',
+        'numpy',
+        'pyworld',
+        'scipy',
+        'tensorboardX',
+        'torch',
+        'tqdm',
+    ],
     packages=['morgana'])
 
