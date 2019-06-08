@@ -12,7 +12,6 @@ setup(
         'bandmat',
         'matplotlib',
         'numpy',
-        'pyworld',
         'scipy',
         'tensorboardX',
         'torch',

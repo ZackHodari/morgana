@@ -1,6 +1,8 @@
 import os
 
 import numpy as np
+import pyworld
+from scipy.signal import savgol_filter
 import torch
 import torch.nn as nn
 
@@ -10,6 +12,8 @@ from morgana import viz
 from morgana import data
 from morgana import metrics
 from morgana import utils
+
+import tts_data_tools as tdt
 
 
 class F0Model(BaseSPSS):
@@ -85,8 +89,8 @@ class F0Model(BaseSPSS):
         return outputs
 
     def loss(self, features, output_features):
-        inputs = features['normalised_lf0_deltas']
-        outputs = output_features['normalised_lf0_deltas']
+        inputs = features['lf0_deltas']
+        outputs = output_features['lf0_deltas']
         seq_len = features['n_frames']
 
         self.metrics.accumulate(
@@ -95,13 +99,33 @@ class F0Model(BaseSPSS):
 
         return self._loss(inputs, outputs, seq_len)
 
-    def analysis_for_valid_batch(self, output_features, features, names, out_dir, sample_rate=16000, **kwargs):
-        super(F0Model, self).analysis_for_valid_batch(output_features, features, names, out_dir, **kwargs)
+    def analysis_for_valid_batch(self, features, output_features, names, out_dir, sample_rate=16000, **kwargs):
+        super(F0Model, self).analysis_for_valid_batch(features, output_features, names, out_dir, **kwargs)
 
         # Synthesise outputs using WORLD.
         synth_dir = os.path.join(out_dir, 'synth')
-        viz.synthesis.synth_batch_predictions(
-            output_features, features, names, out_dir=synth_dir, sample_rate=sample_rate, **kwargs)
+        os.makedirs(synth_dir, exist_ok=True)
+
+        lf0 = output_features['lf0'].cpu().detach().numpy()
+
+        vuv = features['vuv'].cpu().detach().numpy()
+        sp = features['sp'].cpu().detach().numpy()
+        ap = features['ap'].cpu().detach().numpy()
+
+        n_frames = features['n_frames'].cpu().detach().numpy()
+        for i, (n_frame, name) in enumerate(zip(n_frames, names)):
+
+            f0_i = np.exp(lf0[i, :n_frame, 0])
+            f0_i = savgol_filter(f0_i, 7, 1)
+            f0_i = f0_i * vuv[i, :n_frame, 0]
+
+            f0_i = f0_i.astype(np.float64)
+            sp_i = sp[i, :n_frame].astype(np.float64)
+            ap_i = ap[i, :n_frame].astype(np.float64)
+
+            wav_path = os.path.join(synth_dir, '{}.wav'.format(name))
+            wav = pyworld.synthesize(f0_i, sp_i, ap_i, sample_rate)
+            tdt.file_io.save_wav(wav_path, wav, sample_rate=sample_rate)
 
 
 def main():

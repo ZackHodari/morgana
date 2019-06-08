@@ -1,75 +1,8 @@
-import os
-
 import numpy as np
-from scipy.signal import savgol_filter
 import torch
 
 import bandmat as bm
 import bandmat.linalg as bla
-import pyworld
-import tts_data_tools as tdt
-
-
-def synthesise(f0, sp, ap, sample_rate=16000):
-    f0 = f0.astype(np.float64)
-    sp = sp.astype(np.float64)
-    ap = ap.astype(np.float64)
-
-    wav = pyworld.synthesize(f0, sp, ap, sample_rate)
-    return wav
-
-
-@torch.no_grad()
-def synth_batch_predictions(features, predicted, names, out_dir='output/synth', sample_rate=16000):
-    r"""Synthesises using predicted parameters, using natural ones where necessary. Saves output to file.
-
-    Parameters
-    ----------
-    features : dict[str, torch.Tensor]
-        Ground truth features.
-    predicted : dict[str, torch.Tensor]
-        Predictions to be synthesised.
-    names : list[str]
-        File base names of each item in the batch.
-    out_dir : str
-        The directory used to save output.
-    sample_rate : int
-        Sample rate to use for synthesis.
-    """
-    os.makedirs(out_dir, exist_ok=True)
-
-    for i in range(len(names)):
-        dur = predicted.get('dur', features['dur'])[i, :, 0]
-        dur = dur.cpu().detach().numpy()
-
-        if 'dur' in predicted.keys():
-            n_frames = np.sum(dur, axis=1)
-        else:
-            n_frames = features['n_frames'][i].item()
-
-        # Use any features that have been predicted. Otherwise, use the inputs for that feature.
-        lf0 = predicted.get('lf0', features['lf0']).cpu().detach().numpy()[i, :n_frames, 0]
-        vuv = predicted.get('vuv', features['vuv']).cpu().detach().numpy()[i, :n_frames, 0]
-        c0 =  predicted.get('c0',  features['sp'] ).cpu().detach().numpy()[i, :n_frames, 0]
-        sp =  predicted.get('sp',  features['sp'] ).cpu().detach().numpy()[i, :n_frames]
-        ap =  predicted.get('ap',  features['ap'] ).cpu().detach().numpy()[i, :n_frames]
-
-        f0 = np.exp(lf0)
-
-        # Smooth the signal with a Savitzky-Golay filter.
-        if 'lf0' in predicted.keys():
-            f0 = savgol_filter(f0, 7, 1)
-
-        # Mask away the unvoiced regions.
-        f0 = f0 * vuv
-
-        # If c0 was not predicted by the model, this will have no effect.
-        sp[..., 0] = c0
-
-        name = names[i]
-        wav_path = os.path.join(out_dir, '{}.wav'.format(name))
-        wav_predicted = synthesise(f0, sp, ap, sample_rate=sample_rate)
-        tdt.file_io.save_wav(wav_path, wav_predicted, sample_rate=sample_rate)
 
 
 def _build_win_mats(windows, num_frames):
