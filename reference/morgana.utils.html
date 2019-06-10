@@ -1,0 +1,355 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>utils &#8212; morgana 0.0.1 documentation</title>
+    <link rel="stylesheet" href="../_static/readable.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="logging" href="morgana.logging.html" />
+    <link rel="prev" title="Command line arguments" href="command_line_arguments.html" />
+   
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head><body>
+  
+  
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="morgana.logging.html" title="logging"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="command_line_arguments.html" title="Command line arguments"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">morgana 0.0.1 documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="utils">
+<h1>utils<a class="headerlink" href="#utils" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><p><a class="reference internal" href="#listify">listify</a></p></li>
+<li><p><a class="reference internal" href="#format-float-tensor">format_float_tensor</a></p></li>
+<li><p><a class="reference internal" href="#map-nested">map_nested</a></p></li>
+<li><p><a class="reference internal" href="#infer-device">infer_device</a></p></li>
+<li><p><a class="reference internal" href="#get-epoch-from-checkpoint-path">get_epoch_from_checkpoint_path</a></p></li>
+<li><p><a class="reference internal" href="#sequence-mask">sequence_mask</a></p></li>
+<li><p><a class="reference internal" href="#both-voiced-mask">both_voiced_mask</a></p></li>
+<li><p><a class="reference internal" href="#upsample-to-repetitions">upsample_to_repetitions</a></p></li>
+<li><p><a class="reference internal" href="#string-to-ascii">string_to_ascii</a></p></li>
+<li><p><a class="reference internal" href="#ascii-to-string">ascii_to_string</a></p></li>
+<li><p><a class="reference internal" href="#recurrentcudnnwrapper">RecurrentCuDNNWrapper</a></p></li>
+<li><p><a class="reference internal" href="#sequentialwithrecurrent">SequentialWithRecurrent</a></p></li>
+<li><p><a class="reference internal" href="#exponentialmovingaverage">ExponentialMovingAverage</a></p></li>
+</ul>
+<div class="section" id="listify">
+<h2>listify<a class="headerlink" href="#listify" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="morgana.utils.listify">
+<code class="descclassname">morgana.utils.</code><code class="descname">listify</code><span class="sig-paren">(</span><em>object_or_list</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/utils.py#L10-L14"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.utils.listify" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts input to an iterable if it is not already one.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="format-float-tensor">
+<h2>format_float_tensor<a class="headerlink" href="#format-float-tensor" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="morgana.utils.format_float_tensor">
+<code class="descclassname">morgana.utils.</code><code class="descname">format_float_tensor</code><span class="sig-paren">(</span><em>tensor</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/utils.py#L17-L34"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.utils.format_float_tensor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Formats the a single value or a 1-dimensional vector as a string.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="map-nested">
+<h2>map_nested<a class="headerlink" href="#map-nested" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="morgana.utils.map_nested">
+<code class="descclassname">morgana.utils.</code><code class="descname">map_nested</code><span class="sig-paren">(</span><em>func</em>, <em>data</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/utils.py#L37-L53"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.utils.map_nested" title="Permalink to this definition">¶</a></dt>
+<dd><p>Recursively applies a function on a nested data structure. Base cases: <code class="code docutils literal notranslate"><span class="pre">np.ndarray</span></code> <a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch vmaster (1.1.0 ))"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a>.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="infer-device">
+<h2>infer_device<a class="headerlink" href="#infer-device" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="morgana.utils.infer_device">
+<code class="descclassname">morgana.utils.</code><code class="descname">infer_device</code><span class="sig-paren">(</span><em>tensor</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/utils.py#L56-L63"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.utils.infer_device" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the device from a <a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch vmaster (1.1.0 ))"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a> instance.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="get-epoch-from-checkpoint-path">
+<h2>get_epoch_from_checkpoint_path<a class="headerlink" href="#get-epoch-from-checkpoint-path" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="morgana.utils.get_epoch_from_checkpoint_path">
+<code class="descclassname">morgana.utils.</code><code class="descname">get_epoch_from_checkpoint_path</code><span class="sig-paren">(</span><em>checkpoint_path</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/utils.py#L66-L71"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.utils.get_epoch_from_checkpoint_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extracts the epoch number from a checkpoint path of the form <code class="code docutils literal notranslate"><span class="pre">.*checkpoints/epoch_(NUM)_.*.pt</span></code></p>
+</dd></dl>
+
+</div>
+<div class="section" id="sequence-mask">
+<h2>sequence_mask<a class="headerlink" href="#sequence-mask" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="morgana.utils.sequence_mask">
+<code class="descclassname">morgana.utils.</code><code class="descname">sequence_mask</code><span class="sig-paren">(</span><em>seq_len</em>, <em>max_len=None</em>, <em>dtype=&lt;class 'torch.ByteTensor'&gt;</em>, <em>device=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/utils.py#L74-L103"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.utils.sequence_mask" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a sequence mask with a given type.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>seq_len</strong> (<a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch vmaster (1.1.0 ))"><em>torch.Tensor</em></a><em>, </em><em>shape</em><em> (</em><em>batch_size</em><em>,</em><em>)</em>) – Sequence lengths.</p></li>
+<li><p><strong>max_len</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, </em><em>optional</em>) – Maximum sequence length. If None, <code class="code docutils literal notranslate"><span class="pre">max(seq_len)</span></code> will be used to infer the <code class="code docutils literal notranslate"><span class="pre">max_len</span></code>.</p></li>
+<li><p><strong>dtype</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#type" title="(in Python v3.7)"><em>type</em></a>) – Type for the mask that will be returned.</p></li>
+<li><p><strong>device</strong> (str or <code class="code docutils literal notranslate"><span class="pre">torch.device</span></code>) – Name of the device to place the mask on.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>mask</strong> – Sequence mask.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch vmaster (1.1.0 ))">torch.Tensor</a>, shape (batch_size, max_len, 1)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="both-voiced-mask">
+<h2>both_voiced_mask<a class="headerlink" href="#both-voiced-mask" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="morgana.utils.both_voiced_mask">
+<code class="descclassname">morgana.utils.</code><code class="descname">both_voiced_mask</code><span class="sig-paren">(</span><em>*sequence_features</em>, <em>dtype=&lt;class 'torch.ByteTensor'&gt;</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/utils.py#L106-L109"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.utils.both_voiced_mask" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates whether the sequence features are non-zero at the same time.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="upsample-to-repetitions">
+<h2>upsample_to_repetitions<a class="headerlink" href="#upsample-to-repetitions" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="morgana.utils.upsample_to_repetitions">
+<code class="descclassname">morgana.utils.</code><code class="descname">upsample_to_repetitions</code><span class="sig-paren">(</span><em>sequence_feature</em>, <em>repeats</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/utils.py#L112-L165"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.utils.upsample_to_repetitions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copies sequence items according to some number of repetitions. Functionality is the same as <code class="code docutils literal notranslate"><span class="pre">np.repeat</span></code>.</p>
+<p>This is useful for upsampling phone-level linguistic features to frame-level, where <code class="code docutils literal notranslate"><span class="pre">repeats</span></code> would be durations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sequence_feature</strong> (<a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch vmaster (1.1.0 ))"><em>torch.Tensor</em></a><em>, </em><em>shape</em><em> (</em><em>batch_size</em><em>, </em><em>max_seq_len</em><em>, </em><em>feat_dim</em><em>)</em>) – Sequence feature at some lower frame-rate, this will be upsampled.</p></li>
+<li><p><strong>repeats</strong> (<a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch vmaster (1.1.0 ))"><em>torch.Tensor</em></a><em>, </em><em>shape</em><em> (</em><em>batch_size</em><em>, </em><em>max_seq_len</em><em>, </em><em>1</em><em>)</em>) – Number of repetitions of each sequence item.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>upsampled_sequence_feature</strong> – Sequence feature upsampled using repetitions of individual sequence items.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch vmaster (1.1.0 ))">torch.Tensor</a>, shape (batch_size, max_repeated_len, feat_dim)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="string-to-ascii">
+<h2>string_to_ascii<a class="headerlink" href="#string-to-ascii" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="morgana.utils.string_to_ascii">
+<code class="descclassname">morgana.utils.</code><code class="descname">string_to_ascii</code><span class="sig-paren">(</span><em>strings</em>, <em>max_len=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/utils.py#L168-L203"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.utils.string_to_ascii" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts a list of strings to a NumPy array of integers (ASCII codes).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>strings</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em> or </em><em>list&lt;str&gt;</em>) – Strings of ASCII characters.</p></li>
+<li><p><strong>max_len</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, </em><em>optional</em>) – The maximum number of characters in any of the strings. If None, this will be calculated using <code class="code docutils literal notranslate"><span class="pre">strings</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>encoded</strong> – ASCII codes of each character. Each row represents one item in the list <code class="code docutils literal notranslate"><span class="pre">strings</span></code>.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>np.ndarray, shape (num_lines, max_len), dtype (np.int8)</p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#morgana.utils.ascii_to_string" title="morgana.utils.ascii_to_string"><code class="xref py py-func docutils literal notranslate"><span class="pre">ascii_to_string()</span></code></a></dt><dd><p>Performs the opposite opteration to <code class="code docutils literal notranslate"><span class="pre">string_to_ascii</span></code>.</p>
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="ascii-to-string">
+<h2>ascii_to_string<a class="headerlink" href="#ascii-to-string" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="morgana.utils.ascii_to_string">
+<code class="descclassname">morgana.utils.</code><code class="descname">ascii_to_string</code><span class="sig-paren">(</span><em>ascii</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/utils.py#L206-L233"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.utils.ascii_to_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts an array of ASCII codes to a list of strings (each string is a row from the array).</p>
+<p>If the input <code class="code docutils literal notranslate"><span class="pre">ascii</span></code> is a NumPy array it will likely contain padding. Padding is encoded using 0, which is the ASCII
+code for the null character x00. This character is stripped from the output strings.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>ascii</strong> (<em>array_like</em><em>, </em><em>shape</em><em> (</em><em>num_lines</em><em>, </em><em>max_len</em><em>)</em>) – ASCII codes of each character. Each row represents one item in the list <code class="code docutils literal notranslate"><span class="pre">strings</span></code>.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>strings</strong> – Strings of ASCII characters.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a> or list&lt;str&gt;</p>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="#morgana.utils.string_to_ascii" title="morgana.utils.string_to_ascii"><code class="xref py py-func docutils literal notranslate"><span class="pre">string_to_ascii()</span></code></a></dt><dd><p>Performs the opposite opteration to <code class="code docutils literal notranslate"><span class="pre">ascii_to_string</span></code>.</p>
+</dd>
+</dl>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="recurrentcudnnwrapper">
+<h2>RecurrentCuDNNWrapper<a class="headerlink" href="#recurrentcudnnwrapper" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="morgana.utils.RecurrentCuDNNWrapper">
+<em class="property">class </em><code class="descclassname">morgana.utils.</code><code class="descname">RecurrentCuDNNWrapper</code><span class="sig-paren">(</span><em>layer</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/utils.py#L236-L277"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.utils.RecurrentCuDNNWrapper" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.modules.module.Module</span></code></p>
+<p>Wraps a torch layer with sequence packing. This requires the sequence lengths to sort, pack and unpack.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>layer</strong> (<em>torch.nn.RNNBase</em>) – PyTorch recurrent layer to be wrapped.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="sequentialwithrecurrent">
+<h2>SequentialWithRecurrent<a class="headerlink" href="#sequentialwithrecurrent" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="morgana.utils.SequentialWithRecurrent">
+<em class="property">class </em><code class="descclassname">morgana.utils.</code><code class="descname">SequentialWithRecurrent</code><span class="sig-paren">(</span><em>*args</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/utils.py#L280-L301"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.utils.SequentialWithRecurrent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.modules.container.Sequential</span></code></p>
+<p>Wraps <a class="reference external" href="https://pytorch.org/docs/stable/nn.html#torch.nn.Sequential" title="(in PyTorch vmaster (1.1.0 ))"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.Sequential</span></code></a> to take custom forward arguments used by <a class="reference internal" href="#morgana.utils.RecurrentCuDNNWrapper" title="morgana.utils.RecurrentCuDNNWrapper"><code class="xref py py-class docutils literal notranslate"><span class="pre">RecurrentCuDNNWrapper</span></code></a>.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="exponentialmovingaverage">
+<h2>ExponentialMovingAverage<a class="headerlink" href="#exponentialmovingaverage" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="morgana.utils.ExponentialMovingAverage">
+<em class="property">class </em><code class="descclassname">morgana.utils.</code><code class="descname">ExponentialMovingAverage</code><span class="sig-paren">(</span><em>model</em>, <em>decay</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/utils.py#L304-L339"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.utils.ExponentialMovingAverage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Exponential moving average helper to apply gradient updates to an EMA model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model</strong> (<a class="reference external" href="https://pytorch.org/docs/stable/nn.html#torch.nn.Module" title="(in PyTorch vmaster (1.1.0 ))"><em>torch.nn.Module</em></a>) – </p></li>
+<li><p><strong>decay</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – Decay rate of previous parameter values. Parameter updates are also scaled by <code class="code docutils literal notranslate"><span class="pre">1</span> <span class="pre">-</span> <span class="pre">decay</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="method">
+<dt id="morgana.utils.ExponentialMovingAverage._update_param">
+<code class="descname">_update_param</code><span class="sig-paren">(</span><em>self</em>, <em>name</em>, <em>x</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/utils.py#L326-L331"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.utils.ExponentialMovingAverage._update_param" title="Permalink to this definition">¶</a></dt>
+<dd><p>Performs update on one parameter. <code class="code docutils literal notranslate"><span class="pre">shadow</span> <span class="pre">=</span> <span class="pre">decay</span> <span class="pre">*</span> <span class="pre">shadow</span> <span class="pre">+</span> <span class="pre">(1</span> <span class="pre">-</span> <span class="pre">decay)</span> <span class="pre">*</span> <span class="pre">x</span></code>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="morgana.utils.ExponentialMovingAverage.update_params">
+<code class="descname">update_params</code><span class="sig-paren">(</span><em>self</em>, <em>other_model</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/utils.py#L333-L339"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.utils.ExponentialMovingAverage.update_params" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates all parameters of <code class="code docutils literal notranslate"><span class="pre">self.model</span></code> using a separate model’s updated parameters.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="morgana.base_models.html">base_models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="morgana.data.html">data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="morgana.experiment_builder.html">experiment_builder</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">utils</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#listify">listify</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#format-float-tensor">format_float_tensor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#map-nested">map_nested</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#infer-device">infer_device</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#get-epoch-from-checkpoint-path">get_epoch_from_checkpoint_path</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#sequence-mask">sequence_mask</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#both-voiced-mask">both_voiced_mask</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#upsample-to-repetitions">upsample_to_repetitions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#string-to-ascii">string_to_ascii</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ascii-to-string">ascii_to_string</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#recurrentcudnnwrapper">RecurrentCuDNNWrapper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#sequentialwithrecurrent">SequentialWithRecurrent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#exponentialmovingaverage">ExponentialMovingAverage</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="morgana.logging.html">logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="morgana.metrics.html">metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="morgana.losses.html">losses</a></li>
+<li class="toctree-l1"><a class="reference internal" href="morgana.sampling.html">sampling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="morgana.viz.html">viz</a></li>
+</ul>
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation index</a><ul>
+      <li>Previous: <a href="command_line_arguments.html" title="previous chapter">Command line arguments</a></li>
+      <li>Next: <a href="morgana.logging.html" title="next chapter">logging</a></li>
+  </ul></li>
+</ul>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/reference/morgana.utils.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer">
+    &copy; Copyright 2019, Zack Hodari.
+    Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.0.1.
+  </div>
+  
+  </body>
+</html>

@@ -1,0 +1,266 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Command line arguments &#8212; morgana 0.0.1 documentation</title>
+    <link rel="stylesheet" href="../_static/readable.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="utils" href="morgana.utils.html" />
+    <link rel="prev" title="experiment_builder" href="morgana.experiment_builder.html" />
+   
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head><body>
+  
+  
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="morgana.utils.html" title="utils"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="morgana.experiment_builder.html" title="experiment_builder"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">morgana 0.0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="morgana.experiment_builder.html" accesskey="U">experiment_builder</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="command-line-arguments">
+<h1>Command line arguments<a class="headerlink" href="#command-line-arguments" title="Permalink to this headline">¶</a></h1>
+<p>Usage for model files being run with <a class="reference internal" href="morgana.experiment_builder.html#morgana.experiment_builder.ExperimentBuilder" title="morgana.experiment_builder.ExperimentBuilder"><code class="xref py py-class docutils literal notranslate"><span class="pre">ExperimentBuilder</span></code></a>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">usage</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">model_file</span><span class="o">&gt;.</span><span class="n">py</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">model_kwargs</span> <span class="n">MODEL_KWARGS</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">train</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">valid</span><span class="p">]</span>
+                       <span class="p">[</span><span class="o">--</span><span class="n">test</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">start_epoch</span> <span class="n">START_EPOCH</span><span class="p">]</span>
+                       <span class="p">[</span><span class="o">--</span><span class="n">end_epoch</span> <span class="n">END_EPOCH</span><span class="p">]</span>
+                       <span class="p">[</span><span class="o">--</span><span class="n">checkpoint_path</span> <span class="n">CHECKPOINT_PATH</span><span class="p">]</span>
+                       <span class="p">[</span><span class="o">--</span><span class="n">ema_checkpoint_path</span> <span class="n">EMA_CHECKPOINT_PATH</span><span class="p">]</span>
+                       <span class="p">[</span><span class="o">--</span><span class="n">batch_size</span> <span class="n">BATCH_SIZE</span><span class="p">]</span>
+                       <span class="p">[</span><span class="o">--</span><span class="n">learning_rate</span> <span class="n">LEARNING_RATE</span><span class="p">]</span>
+                       <span class="p">[</span><span class="o">--</span><span class="n">lr_schedule_name</span> <span class="n">LR_SCHEDULE_NAME</span><span class="p">]</span>
+                       <span class="p">[</span><span class="o">--</span><span class="n">lr_schedule_kwargs</span> <span class="n">LR_SCHEDULE_KWARGS</span><span class="p">]</span>
+                       <span class="p">[</span><span class="o">--</span><span class="n">weight_decay</span> <span class="n">WEIGHT_DECAY</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">ema_decay</span> <span class="n">EMA_DECAY</span><span class="p">]</span>
+                       <span class="p">[</span><span class="o">--</span><span class="n">num_data_threads</span> <span class="n">NUM_DATA_THREADS</span><span class="p">]</span>
+                       <span class="p">[</span><span class="o">--</span><span class="n">model_checkpoint_interval</span> <span class="n">MODEL_CHECKPOINT_INTERVAL</span><span class="p">]</span>
+                       <span class="p">[</span><span class="o">--</span><span class="n">train_output_interval</span> <span class="n">TRAIN_OUTPUT_INTERVAL</span><span class="p">]</span>
+                       <span class="p">[</span><span class="o">--</span><span class="n">valid_output_interval</span> <span class="n">VALID_OUTPUT_INTERVAL</span><span class="p">]</span>
+                       <span class="p">[</span><span class="o">--</span><span class="n">test_output_interval</span> <span class="n">TEST_OUTPUT_INTERVAL</span><span class="p">]</span>
+                       <span class="p">[</span><span class="o">--</span><span class="n">data_root</span> <span class="n">DATA_ROOT</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">train_dir</span> <span class="n">TRAIN_DIR</span><span class="p">]</span>
+                       <span class="p">[</span><span class="o">--</span><span class="n">valid_dir</span> <span class="n">VALID_DIR</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">test_dir</span> <span class="n">TEST_DIR</span><span class="p">]</span>
+                       <span class="p">[</span><span class="o">--</span><span class="n">train_id_list</span> <span class="n">TRAIN_ID_LIST</span><span class="p">]</span>
+                       <span class="p">[</span><span class="o">--</span><span class="n">valid_id_list</span> <span class="n">VALID_ID_LIST</span><span class="p">]</span>
+                       <span class="p">[</span><span class="o">--</span><span class="n">test_id_list</span> <span class="n">TEST_ID_LIST</span><span class="p">]</span>
+                       <span class="p">[</span><span class="o">--</span><span class="n">normalisation_dir</span> <span class="n">NORMALISATION_DIR</span><span class="p">]</span>
+                       <span class="p">[</span><span class="o">--</span><span class="n">experiments_base</span> <span class="n">EXPERIMENTS_BASE</span><span class="p">]</span> <span class="o">--</span><span class="n">experiment_name</span>
+                       <span class="n">EXPERIMENT_NAME</span> <span class="p">[</span><span class="o">--</span><span class="n">sample_rate</span> <span class="n">SAMPLE_RATE</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="section" id="Named Arguments">
+<h2>Named Arguments<a class="headerlink" href="#Named Arguments" title="Permalink to this headline">¶</a></h2>
+<dl class="option-list">
+<dt><kbd>--model_kwargs</kbd></dt>
+<dd><p>Settings for the model, a Python dictionary written in quotes.</p>
+<p>Default: {}</p>
+</dd>
+<dt><kbd>--train</kbd></dt>
+<dd><p>If True, model will be trained for –num_epochs on –train_id_list.</p>
+<p>Default: True</p>
+</dd>
+<dt><kbd>--valid</kbd></dt>
+<dd><p>If True, model will be evaluated on –valid_id_list every epoch.</p>
+<p>Default: True</p>
+</dd>
+<dt><kbd>--test</kbd></dt>
+<dd><p>If True, generation for –test_id_list will be performed after training.</p>
+<p>Default: False</p>
+</dd>
+<dt><kbd>--start_epoch</kbd></dt>
+<dd><p>The epoch number to start training at (will effect checkpoint saves).</p>
+<p>Default: 1</p>
+</dd>
+<dt><kbd>--end_epoch</kbd></dt>
+<dd><p>Epoch to end training at.</p>
+<p>Default: 50</p>
+</dd>
+<dt><kbd>--checkpoint_path</kbd></dt>
+<dd><p>If specified, the model will first load parameters from an existing checkpoint.</p>
+</dd>
+<dt><kbd>--ema_checkpoint_path</kbd></dt>
+<dd><p>If specified, the EMA model will first load parameters from an existing checkpoint.</p>
+</dd>
+<dt><kbd>--batch_size</kbd></dt>
+<dd><p>Batch size used for iteration over train/valid data.</p>
+<p>Default: 32</p>
+</dd>
+<dt><kbd>--learning_rate</kbd></dt>
+<dd><p>Learning rate for Adam optimiser to use during training.</p>
+<p>Default: 0.01</p>
+</dd>
+<dt><kbd>--lr_schedule_name</kbd></dt>
+<dd><p>Learning rate schedule to use during training.</p>
+<p>Default: “constant”</p>
+</dd>
+<dt><kbd>--lr_schedule_kwargs</kbd></dt>
+<dd><p>Settings for learning rate schedule, a Python dictionary written in quotes.</p>
+<p>Default: {}</p>
+</dd>
+<dt><kbd>--weight_decay</kbd></dt>
+<dd><p>L2 regularisation weight, default of 0 indication no L2 loss term.</p>
+<p>Default: 0.0</p>
+</dd>
+<dt><kbd>--ema_decay</kbd></dt>
+<dd><p>If not 0, track exponential moving average of model parameters, used for generation.</p>
+<p>Default: 0.0</p>
+</dd>
+<dt><kbd>--num_data_threads</kbd></dt>
+<dd><p>Number of threads used to load the data with.</p>
+<p>Default: 1</p>
+</dd>
+<dt><kbd>--model_checkpoint_interval</kbd></dt>
+<dd><p>The number of epochs to wait between saving the model.</p>
+<p>Default: 1</p>
+</dd>
+<dt><kbd>--train_output_interval</kbd></dt>
+<dd><p>The number of epochs to wait between generating output for training data.</p>
+<p>Default: 10</p>
+</dd>
+<dt><kbd>--valid_output_interval</kbd></dt>
+<dd><p>The number of epochs to wait between generating output for validation data.</p>
+<p>Default: 10</p>
+</dd>
+<dt><kbd>--test_output_interval</kbd></dt>
+<dd><p>The number of epochs to wait between generating output for test data.</p>
+<p>Default: 10</p>
+</dd>
+<dt><kbd>--data_root</kbd></dt>
+<dd><p>Base directory containing all data.</p>
+<p>Default: “data”</p>
+</dd>
+<dt><kbd>--train_dir</kbd></dt>
+<dd><p>Name of the sub-directory in –data_root containing training data.</p>
+<p>Default: “train”</p>
+</dd>
+<dt><kbd>--valid_dir</kbd></dt>
+<dd><p>Name of the sub-directory in –data_root containing validation data.</p>
+<p>Default: “valid”</p>
+</dd>
+<dt><kbd>--test_dir</kbd></dt>
+<dd><p>Name of the sub-directory in –data_root containing test data.</p>
+<p>Default: “test”</p>
+</dd>
+<dt><kbd>--train_id_list</kbd></dt>
+<dd><p>File name in –train_dir containing basenames of training samples.</p>
+<p>Default: “train_file_id_list.scp”</p>
+</dd>
+<dt><kbd>--valid_id_list</kbd></dt>
+<dd><p>File name in –valid_dir containing basenames of validation samples.</p>
+<p>Default: “valid_file_id_list.scp”</p>
+</dd>
+<dt><kbd>--test_id_list</kbd></dt>
+<dd><p>File name in –test_dir containing basenames of test files.</p>
+<p>Default: “test_file_id_list.scp”</p>
+</dd>
+<dt><kbd>--normalisation_dir</kbd></dt>
+<dd><p>Name of the sub-directory in –data_root containing normalisation data.</p>
+<p>Default: “train”</p>
+</dd>
+<dt><kbd>--experiments_base</kbd></dt>
+<dd><p>Base directory where all experiments direct their output.</p>
+<p>Default: “experiments”</p>
+</dd>
+<dt><kbd>--experiment_name</kbd></dt>
+<dd><p>Name of the sub-directory in –output_dir used for any output.</p>
+</dd>
+<dt><kbd>--sample_rate</kbd></dt>
+<dd><p>Sample rate of the waveforms generated.</p>
+<p>Default: 16000</p>
+</dd>
+</dl>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="morgana.base_models.html">base_models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="morgana.data.html">data</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="morgana.experiment_builder.html">experiment_builder</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Command line usage</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Named Arguments">Named Arguments</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="morgana.experiment_builder.html#experimentbuilder">ExperimentBuilder</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="morgana.utils.html">utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="morgana.logging.html">logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="morgana.metrics.html">metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="morgana.losses.html">losses</a></li>
+<li class="toctree-l1"><a class="reference internal" href="morgana.sampling.html">sampling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="morgana.viz.html">viz</a></li>
+</ul>
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation index</a><ul>
+  <li><a href="morgana.experiment_builder.html">experiment_builder</a><ul>
+      <li>Previous: <a href="morgana.experiment_builder.html" title="previous chapter">experiment_builder</a></li>
+      <li>Next: <a href="morgana.utils.html" title="next chapter">utils</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/reference/command_line_arguments.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer">
+    &copy; Copyright 2019, Zack Hodari.
+    Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.0.1.
+  </div>
+  
+  </body>
+</html>

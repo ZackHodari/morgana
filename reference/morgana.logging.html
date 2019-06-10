@@ -1,0 +1,137 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>logging &#8212; morgana 0.0.1 documentation</title>
+    <link rel="stylesheet" href="../_static/readable.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="metrics" href="morgana.metrics.html" />
+    <link rel="prev" title="utils" href="morgana.utils.html" />
+   
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head><body>
+  
+  
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="morgana.metrics.html" title="metrics"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="morgana.utils.html" title="utils"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">morgana 0.0.1 documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="logging">
+<h1>logging<a class="headerlink" href="#logging" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="create-logger">
+<h2>create_logger<a class="headerlink" href="#create-logger" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="morgana.logging.create_logger">
+<code class="descclassname">morgana.logging.</code><code class="descname">create_logger</code><span class="sig-paren">(</span><em>experiment_dir</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/logging.py#L9-L56"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.logging.create_logger" title="Permalink to this definition">¶</a></dt>
+<dd><p>Writes <code class="code docutils literal notranslate"><span class="pre">stdout</span></code> and <code class="code docutils literal notranslate"><span class="pre">stderr</span></code> to their stream and to files. tqdm progress bars are written to a separate file.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="progressbar">
+<h2>ProgressBar<a class="headerlink" href="#progressbar" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="morgana.logging.ProgressBar">
+<em class="property">class </em><code class="descclassname">morgana.logging.</code><code class="descname">ProgressBar</code><span class="sig-paren">(</span><em>num_batches</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/logging.py#L59-L74"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.logging.ProgressBar" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">tqdm._tqdm.tqdm</span></code></p>
+<p>Custom tqdm progress bar with additional <a class="reference internal" href="#morgana.logging.ProgressBar.print" title="morgana.logging.ProgressBar.print"><code class="xref py py-func docutils literal notranslate"><span class="pre">print()</span></code></a> method for logging metrics to the progress bar.</p>
+<dl class="method">
+<dt id="morgana.logging.ProgressBar.print">
+<code class="descname">print</code><span class="sig-paren">(</span><em>self</em>, <em>mode</em>, <em>epoch</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/logging.py#L67-L74"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.logging.ProgressBar.print" title="Permalink to this definition">¶</a></dt>
+<dd><p>Format metric outputs as part of tqdm description, and log to a file.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="morgana.base_models.html">base_models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="morgana.data.html">data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="morgana.experiment_builder.html">experiment_builder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="morgana.utils.html">utils</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">logging</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#create-logger">create_logger</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#progressbar">ProgressBar</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="morgana.metrics.html">metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="morgana.losses.html">losses</a></li>
+<li class="toctree-l1"><a class="reference internal" href="morgana.sampling.html">sampling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="morgana.viz.html">viz</a></li>
+</ul>
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation index</a><ul>
+      <li>Previous: <a href="morgana.utils.html" title="previous chapter">utils</a></li>
+      <li>Next: <a href="morgana.metrics.html" title="next chapter">metrics</a></li>
+  </ul></li>
+</ul>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/reference/morgana.logging.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer">
+    &copy; Copyright 2019, Zack Hodari.
+    Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.0.1.
+  </div>
+  
+  </body>
+</html>

@@ -1,0 +1,139 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>synthesis &#8212; morgana 0.0.1 documentation</title>
+    <link rel="stylesheet" href="../../_static/readable.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/custom.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="prev" title="plotting" href="morgana.viz.plotting.html" />
+   
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head><body>
+  
+  
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="morgana.viz.plotting.html" title="plotting"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">morgana 0.0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../morgana.viz.html" accesskey="U">viz</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="synthesis">
+<h1>synthesis<a class="headerlink" href="#synthesis" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="mlpg">
+<h2>MLPG<a class="headerlink" href="#mlpg" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="morgana.viz.synthesis.MLPG">
+<code class="descclassname">morgana.viz.synthesis.</code><code class="descname">MLPG</code><span class="sig-paren">(</span><em>means</em>, <em>variances</em>, <em>windows=None</em>, <em>padding_size=0</em>, <em>seq_len=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/viz/synthesis.py#L79-L175"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.viz.synthesis.MLPG" title="Permalink to this definition">¶</a></dt>
+<dd><p>Performs maximum-likelihood parameter generation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>means</strong> (<em>np.ndarray</em><em>, </em><em>shape</em><em> (</em><em>batch_size</em><em>, </em><em>seq_len</em><em>, </em><em>feat_dim</em><em>) or </em><em>(</em><em>seq_len</em><em>, </em><em>feat_dim</em><em>)</em>) – Array of means for a single, or a batch of sequences.</p></li>
+<li><p><strong>variances</strong> (<em>np.ndarray</em><em>, </em><em>shape</em><em> (</em><em>batch_size</em><em>, </em><em>seq_len</em><em>, </em><em>feat_dim</em><em>) or </em><em>(</em><em>seq_len</em><em>, </em><em>feat_dim</em><em>) or </em><em>(</em><em>feat_dim</em><em>)</em>) – Array of variances for a single, or a batch of sequences.</p></li>
+<li><p><strong>windows</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.7)"><em>tuple</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, </em><em>np.ndarray</em><em>]</em><em>]</em>) – Windows describing the static/delta features included in the feature dimension of <code class="code docutils literal notranslate"><span class="pre">means</span></code> and <code class="code docutils literal notranslate"><span class="pre">variances</span></code>.</p></li>
+<li><p><strong>padding_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Padding on either side of signal, used to handle the boundaries.</p></li>
+<li><p><strong>seq_len</strong> (<em>array_like</em><em>, </em><em>shape</em><em> (</em><em>batch_size</em><em>)</em>) – Sequence lengths, necessary when a batch of sequences is given, as out-of-sequence frames will be all zeros.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>most_probable_trajectory</strong> – The most probable trajectory, calculated by maximum-likelihood parameter generation.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>np.ndarray, shape (batch_size, seq_len, feat_dim) or (seq_len, feat_dim)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="../../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../morgana.base_models.html">base_models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../morgana.data.html">data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../morgana.experiment_builder.html">experiment_builder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../morgana.utils.html">utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../morgana.logging.html">logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../morgana.metrics.html">metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../morgana.losses.html">losses</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../morgana.sampling.html">sampling</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../morgana.viz.html">viz</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="morgana.viz.plotting.html">plotting</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">synthesis</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#mlpg">MLPG</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation index</a><ul>
+  <li><a href="../morgana.viz.html">viz</a><ul>
+      <li>Previous: <a href="morgana.viz.plotting.html" title="previous chapter">plotting</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/reference/viz/morgana.viz.synthesis.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer">
+    &copy; Copyright 2019, Zack Hodari.
+    Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.0.1.
+  </div>
+  
+  </body>
+</html>

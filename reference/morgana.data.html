@@ -1,0 +1,691 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>data &#8212; morgana 0.0.1 documentation</title>
+    <link rel="stylesheet" href="../_static/readable.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="experiment_builder" href="morgana.experiment_builder.html" />
+    <link rel="prev" title="base_models" href="morgana.base_models.html" />
+   
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head><body>
+  
+  
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="morgana.experiment_builder.html" title="experiment_builder"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="morgana.base_models.html" title="base_models"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">morgana 0.0.1 documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="data">
+<h1>data<a class="headerlink" href="#data" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><p><a class="reference internal" href="#batching-utility">Batching utility</a></p></li>
+<li><p><a class="reference internal" href="#datasource-specification">DataSource specification</a></p></li>
+<li><p><a class="reference internal" href="#dataset-to-combine-datasource-instances">Dataset to combine DataSource instances</a></p></li>
+<li><p><a class="reference internal" href="#feature-normalisers">Feature normalisers</a></p></li>
+<li><p><a class="reference internal" href="#wrappers-to-change-existing-dataloader-instance">Wrappers to change existing DataLoader instance</a></p></li>
+</ul>
+<div class="section" id="batching-utility">
+<h2>Batching utility<a class="headerlink" href="#batching-utility" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="morgana.data.batch">
+<code class="descclassname">morgana.data.</code><code class="descname">batch</code><span class="sig-paren">(</span><em>data_generator</em>, <em>batch_size=32</em>, <em>shuffle=True</em>, <em>num_data_threads=0</em>, <em>device='cpu'</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/data.py#L28-L56"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.data.batch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates the batched data loader for the dataset given, maps the batches to a given device.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data_generator</strong> (<a class="reference external" href="https://pytorch.org/docs/stable/data.html#torch.utils.data.Dataset" title="(in PyTorch vmaster (1.1.0 ))"><em>torch.utils.data.Dataset</em></a><em> or </em><a class="reference internal" href="#morgana.data.FilesDataset" title="morgana.data.FilesDataset"><em>FilesDataset</em></a>) – Dataset from which to load the batches of data.</p></li>
+<li><p><strong>batch_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Number of samples to load per batch.</p></li>
+<li><p><strong>shuffle</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – Whether to shuffle the data every epoch.</p></li>
+<li><p><strong>num_data_threads</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Number of parallel subprocesses to use for data loading.</p></li>
+<li><p><strong>device</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Name of the device to place the parameters on.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>An instance with the <code class="code docutils literal notranslate"><span class="pre">__iter__</span></code> method, allowing for iteration over batches of the dataset.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://pytorch.org/docs/stable/data.html#torch.utils.data.DataLoader" title="(in PyTorch vmaster (1.1.0 ))"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.utils.data.DataLoader</span></code></a> (in a <a class="reference internal" href="#morgana.data.ToDeviceWrapper" title="morgana.data.ToDeviceWrapper"><code class="xref py py-class docutils literal notranslate"><span class="pre">ToDeviceWrapper</span></code></a> container)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="datasource-specification">
+<h2>DataSource specification<a class="headerlink" href="#datasource-specification" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="datasource">
+<h3>_DataSource<a class="headerlink" href="#datasource" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="morgana.data._DataSource">
+<em class="property">class </em><code class="descclassname">morgana.data.</code><code class="descname">_DataSource</code><span class="sig-paren">(</span><em>name</em>, <em>normalisation=None</em>, <em>use_deltas=False</em>, <em>ext=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/data.py#L59-L205"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.data._DataSource" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Abstract data loading class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Name of directory that will contain this feature.</p></li>
+<li><p><strong>normalisation</strong> (<em>{None</em><em>, </em><em>'mvn'</em><em>, </em><em>'minmax'}</em>) – Type of normalisation to perform. If not None, a JSON file containing the normalisation parameters must be
+present adjacent to the directory that contains the features.</p></li>
+<li><p><strong>use_deltas</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – Whether to compute delta features. If normalisation is being used it will also perform normalisation of deltas.</p></li>
+<li><p><strong>ext</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – The file extension of the saved features, if not set <code class="code docutils literal notranslate"><span class="pre">self.name</span></code> is used.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="attribute">
+<dt id="morgana.data._DataSource.normaliser">
+<code class="descname">normaliser</code><a class="headerlink" href="#morgana.data._DataSource.normaliser" title="Permalink to this definition">¶</a></dt>
+<dd><p>The normaliser instance, set automatically by <a class="reference internal" href="morgana.experiment_builder.html#morgana.experiment_builder.ExperimentBuilder" title="morgana.experiment_builder.ExperimentBuilder"><code class="xref py py-class docutils literal notranslate"><span class="pre">morgana.experiment_builder.ExperimentBuilder</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#morgana.data._FeatureNormaliser" title="morgana.data._FeatureNormaliser">_FeatureNormaliser</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<p class="rubric">Notes</p>
+<p>The data setup assumes a folder structure such as the following example,</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dataset_name</span> <span class="p">(</span><span class="n">data_root</span><span class="p">)</span>
+
+    <span class="n">train</span> <span class="p">(</span><span class="n">data_dir</span><span class="p">)</span>
+
+        <span class="n">lab</span> <span class="p">(</span><span class="n">name</span><span class="p">)</span>
+            <span class="o">*.</span><span class="n">lab</span>
+        <span class="n">lab</span><span class="o">.</span><span class="n">dim</span>
+        <span class="n">lab_minmax</span><span class="o">.</span><span class="n">json</span>
+
+        <span class="n">lf0</span> <span class="p">(</span><span class="n">name</span><span class="p">)</span>
+            <span class="o">*.</span><span class="n">npy</span>
+        <span class="n">lf0</span><span class="o">.</span><span class="n">dim</span>
+        <span class="n">lf0_mvn</span><span class="o">.</span><span class="n">json</span>
+        <span class="n">lf0_deltas_mvn</span><span class="o">.</span><span class="n">json</span>
+        <span class="o">...</span>
+
+    <span class="n">valid</span> <span class="p">(</span><span class="n">data_dir</span><span class="p">)</span>
+        <span class="o">...</span>
+
+    <span class="o">...</span>
+</pre></div>
+</div>
+<p>All data is contained below <code class="code docutils literal notranslate"><span class="pre">data_root</span></code>.</p>
+<p>There can be multiple <code class="code docutils literal notranslate"><span class="pre">data_dir</span></code> directories, e.g. one for each data split (train, valid, test).</p>
+<p>Each feature should have a directory within <code class="code docutils literal notranslate"><span class="pre">data_dir</span></code>, this will contain all files for this feature.</p>
+<p>If the feature is to be loaded with <code class="xref py py-func docutils literal notranslate"><span class="pre">np.fromfile()</span></code> a <code class="code docutils literal notranslate"><span class="pre">.dim</span></code> text file can be included, this can be used to
+determine the number of feature dimension in the files being loaded.</p>
+<p>There should be JSON files within the <code class="code docutils literal notranslate"><span class="pre">data_dir</span></code> used for the training split, these JSON files should contain the
+normalisation parameters. There should be an additional JSON file for delta features if deltas need to be used.</p>
+<dl class="method">
+<dt id="morgana.data._DataSource.create_normaliser">
+<code class="descname">create_normaliser</code><span class="sig-paren">(</span><em>self</em>, <em>normalisation_dir</em>, <em>data_root</em>, <em>device</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/data.py#L130-L153"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.data._DataSource.create_normaliser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates the normaliser if one was specified for this data source.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>normalisation_dir</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The directory containing the normalisation parameters (in a JSON file).</p></li>
+<li><p><strong>data_root</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The directory root for this dataset.</p></li>
+<li><p><strong>device</strong> (str or <code class="code docutils literal notranslate"><span class="pre">torch.device</span></code>) – The name of the device to place the parameters on.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)">None</a> or <a class="reference internal" href="#morgana.data._FeatureNormaliser" title="morgana.data._FeatureNormaliser">_FeatureNormaliser</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="morgana.data._DataSource.file_path">
+<code class="descname">file_path</code><span class="sig-paren">(</span><em>self</em>, <em>base_name</em>, <em>data_dir</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/data.py#L155-L157"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.data._DataSource.file_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates file path for a given base name and data directory.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="morgana.data._DataSource.load_file">
+<code class="descname">load_file</code><span class="sig-paren">(</span><em>self</em>, <em>base_name</em>, <em>data_dir</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/data.py#L159-L173"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.data._DataSource.load_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads the contents of a given file. Must either be a sequence feature with 2 dimensions or a scalar value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>base_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name (without extensions) of the file to be loaded.</p></li>
+<li><p><strong>data_dir</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The directory containing all feature types for this dataset.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>int or float or bool or <code class="code docutils literal notranslate"><span class="pre">np.ndarray</span></code>, shape (seq_len, feat_dim)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="morgana.data._DataSource.__call__">
+<code class="descname">__call__</code><span class="sig-paren">(</span><em>self</em>, <em>base_name</em>, <em>data_dir</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/data.py#L175-L205"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.data._DataSource.__call__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads the feature and creates deltas and/or normalised versions if specified by this data source.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>base_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name (without extensions) of the file to be loaded.</p></li>
+<li><p><strong>data_dir</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The directory containing all feature types for this dataset.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Loaded feature, and if specified delta and/or normalised versions of the feature.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)">dict</a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a>, (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)">int</a> or <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)">float</a> or <a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)">bool</a> or np.ndarray)]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="morgana.data._DataSource.__weakref__">
+<code class="descname">__weakref__</code><a class="headerlink" href="#morgana.data._DataSource.__weakref__" title="Permalink to this definition">¶</a></dt>
+<dd><p>list of weak references to the object (if defined)</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="numpybinarysource">
+<h3>NumpyBinarySource<a class="headerlink" href="#numpybinarysource" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="morgana.data.NumpyBinarySource">
+<em class="property">class </em><code class="descclassname">morgana.data.</code><code class="descname">NumpyBinarySource</code><span class="sig-paren">(</span><em>name</em>, <em>normalisation=None</em>, <em>use_deltas=False</em>, <em>ext=None</em>, <em>dtype=&lt;class 'numpy.float32'&gt;</em>, <em>dim=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/data.py#L208-L259"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.data.NumpyBinarySource" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#morgana.data._DataSource" title="morgana.data._DataSource"><code class="xref py py-class docutils literal notranslate"><span class="pre">morgana.data._DataSource</span></code></a></p>
+<p>Data loading class for features saved with <code class="code docutils literal notranslate"><span class="pre">np.ndarray.tofile</span></code>, loading is thus performed using <code class="code docutils literal notranslate"><span class="pre">np.fromfile</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Name of directory that will contain this feature.</p></li>
+<li><p><strong>normalisation</strong> (<em>{None</em><em>, </em><em>'mvn'</em><em>, </em><em>'minmax'}</em>) – Type of normalisation to perform. If not None, a JSON file containing the normalisation parameters must be
+present adjacent to the directory that contains the features.</p></li>
+<li><p><strong>use_deltas</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – Whether to compute delta features. If normalisation is being used it will also perform normalisation of deltas.</p></li>
+<li><p><strong>ext</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – The file extension of the saved features, if not set <code class="code docutils literal notranslate"><span class="pre">name</span></code> is used.</p></li>
+<li><p><strong>dtype</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#type" title="(in Python v3.7)"><em>type</em></a>) – The numpy dtype to use when loading with <code class="code docutils literal notranslate"><span class="pre">np.fromfile</span></code>.</p></li>
+<li><p><strong>dim</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, </em><em>optional</em>) – The dimensionality of the feature being loaded. If None, this will be searched for in the file <code class="code docutils literal notranslate"><span class="pre">{name}.dim</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="method">
+<dt id="morgana.data.NumpyBinarySource.get_feat_dim">
+<code class="descname">get_feat_dim</code><span class="sig-paren">(</span><em>self</em>, <em>data_dir</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/data.py#L233-L237"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.data.NumpyBinarySource.get_feat_dim" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the dimensionality of the feature being loaded from the file <code class="code docutils literal notranslate"><span class="pre">{name}.dim</span></code>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="morgana.data.NumpyBinarySource.load_file">
+<code class="descname">load_file</code><span class="sig-paren">(</span><em>self</em>, <em>base_name</em>, <em>data_dir</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/data.py#L239-L259"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.data.NumpyBinarySource.load_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads the feature using <code class="code docutils literal notranslate"><span class="pre">np.fromfile</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>base_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name (without extensions) of the file to be loaded.</p></li>
+<li><p><strong>data_dir</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The directory containing all feature types for this dataset.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)">int</a> or <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)">float</a> or <a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)">bool</a> or np.ndarray, shape (seq_len, feat_dim)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="textsource">
+<h3>TextSource<a class="headerlink" href="#textsource" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="morgana.data.TextSource">
+<em class="property">class </em><code class="descclassname">morgana.data.</code><code class="descname">TextSource</code><span class="sig-paren">(</span><em>name</em>, <em>normalisation=None</em>, <em>use_deltas=False</em>, <em>ext=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/data.py#L262-L301"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.data.TextSource" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#morgana.data._DataSource" title="morgana.data._DataSource"><code class="xref py py-class docutils literal notranslate"><span class="pre">morgana.data._DataSource</span></code></a></p>
+<p>Loads data from a text file, this can contain integers or floats and will have up to 2 dimensions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Name of directory that will contain this feature.</p></li>
+<li><p><strong>normalisation</strong> (<em>{None</em><em>, </em><em>'mvn'</em><em>, </em><em>'minmax'}</em>) – Type of normalisation to perform. If not None, a JSON file containing the normalisation parameters must be
+present adjacent to the directory that contains the features.</p></li>
+<li><p><strong>use_deltas</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – Whether to compute delta features. If normalisation is being used it will also perform normalisation of deltas.</p></li>
+<li><p><strong>ext</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – The file extension of the saved features, if not set <code class="code docutils literal notranslate"><span class="pre">name</span></code> is used.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="method">
+<dt id="morgana.data.TextSource.load_file">
+<code class="descname">load_file</code><span class="sig-paren">(</span><em>self</em>, <em>base_name</em>, <em>data_dir</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/data.py#L280-L301"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.data.TextSource.load_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads the feature using <code class="code docutils literal notranslate"><span class="pre">tts_data_tools.file_io.load_txt</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>base_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name (without extensions) of the file to be loaded.</p></li>
+<li><p><strong>data_dir</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The directory containing all feature types for this dataset.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)">int</a> or <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)">float</a> or np.ndarray, shape (seq_len, feat_dim)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="stringsource">
+<h3>StringSource<a class="headerlink" href="#stringsource" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="morgana.data.StringSource">
+<em class="property">class </em><code class="descclassname">morgana.data.</code><code class="descname">StringSource</code><span class="sig-paren">(</span><em>name</em>, <em>ext=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/data.py#L304-L339"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.data.StringSource" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#morgana.data._DataSource" title="morgana.data._DataSource"><code class="xref py py-class docutils literal notranslate"><span class="pre">morgana.data._DataSource</span></code></a></p>
+<p>Loads data from a text file, this will be loaded as strings where each item should be on a new line.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Name of directory that will contain this feature.</p></li>
+<li><p><strong>ext</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – The file extension of the saved features, if not set <code class="code docutils literal notranslate"><span class="pre">name</span></code> is used.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="method">
+<dt id="morgana.data.StringSource.load_file">
+<code class="descname">load_file</code><span class="sig-paren">(</span><em>self</em>, <em>base_name</em>, <em>data_dir</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/data.py#L317-L339"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.data.StringSource.load_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads the lines and converts to ascii codes (np.int8), each line is considered as a sequence item.</p>
+<p>Each line can have a different number of characters, the maximum number of characters will be used to determine
+the shape of the 2nd dimension of the array.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>base_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name (without extensions) of the file to be loaded.</p></li>
+<li><p><strong>data_dir</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The directory containing all feature types for this dataset.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>np.ndarray, shape (seq_len, max_num_characters), dtype (np.int8)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="wavsource">
+<h3>WavSource<a class="headerlink" href="#wavsource" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="morgana.data.WavSource">
+<em class="property">class </em><code class="descclassname">morgana.data.</code><code class="descname">WavSource</code><span class="sig-paren">(</span><em>name</em>, <em>normalisation=None</em>, <em>use_deltas=False</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/data.py#L342-L375"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.data.WavSource" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#morgana.data._DataSource" title="morgana.data._DataSource"><code class="xref py py-class docutils literal notranslate"><span class="pre">morgana.data._DataSource</span></code></a></p>
+<p>Loads wavfiles using <code class="code docutils literal notranslate"><span class="pre">scipy.io.wavfile</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Name of directory that will contain this feature.</p></li>
+<li><p><strong>normalisation</strong> (<em>{None</em><em>, </em><em>'mvn'</em><em>, </em><em>'minmax'}</em>) – Type of normalisation to perform. If not None, a JSON file containing the normalisation parameters must be
+present adjacent to the directory that contains the features.</p></li>
+<li><p><strong>use_deltas</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – Whether to compute delta features. If normalisation is being used it will also perform normalisation of deltas.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="method">
+<dt id="morgana.data.WavSource.load_file">
+<code class="descname">load_file</code><span class="sig-paren">(</span><em>self</em>, <em>base_name</em>, <em>data_dir</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/data.py#L358-L375"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.data.WavSource.load_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads a wavfile using <code class="code docutils literal notranslate"><span class="pre">scipy.io.wavfile</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>base_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name (without extensions) of the file to be loaded.</p></li>
+<li><p><strong>data_dir</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The directory containing all feature types for this dataset.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>np.ndarray, shape (num_samples,), dtype (np.int16)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="dataset-to-combine-datasource-instances">
+<h2>Dataset to combine DataSource instances<a class="headerlink" href="#dataset-to-combine-datasource-instances" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="filesdataset">
+<h3>FilesDataset<a class="headerlink" href="#filesdataset" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="morgana.data.FilesDataset">
+<em class="property">class </em><code class="descclassname">morgana.data.</code><code class="descname">FilesDataset</code><span class="sig-paren">(</span><em>data_sources</em>, <em>data_dir</em>, <em>id_list</em>, <em>normalisers=None</em>, <em>data_root='.'</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/data.py#L378-L501"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.data.FilesDataset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.utils.data.dataset.Dataset</span></code></p>
+<p>Combines multiple <a class="reference internal" href="#morgana.data._DataSource" title="morgana.data._DataSource"><code class="xref py py-class docutils literal notranslate"><span class="pre">_DataSource</span></code></a> instances, and enables batching of a dictionary of sequence features.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data_sources</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference internal" href="#morgana.data._DataSource" title="morgana.data._DataSource"><em>_DataSource</em></a><em>]</em>) – Specification of the different data to be loaded.</p></li>
+<li><p><strong>data_dir</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The directory containing all data for this dataset split.</p></li>
+<li><p><strong>id_list</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the file id-list containing base names to load, contained withing <code class="code docutils literal notranslate"><span class="pre">data_root</span></code>.</p></li>
+<li><p><strong>normalisers</strong> (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><em>None</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference internal" href="#morgana.data._FeatureNormaliser" title="morgana.data._FeatureNormaliser"><em>_FeatureNormaliser</em></a><em>]</em>) – Normalisers to be passed to the <a class="reference internal" href="#morgana.data._DataSource" title="morgana.data._DataSource"><code class="xref py py-class docutils literal notranslate"><span class="pre">_DataSource</span></code></a> instances.</p></li>
+<li><p><strong>data_root</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The directory root for this dataset.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="attribute">
+<dt id="morgana.data.FilesDataset.file_ids">
+<code class="descname">file_ids</code><a class="headerlink" href="#morgana.data.FilesDataset.file_ids" title="Permalink to this definition">¶</a></dt>
+<dd><p>List of base names loaded from <code class="code docutils literal notranslate"><span class="pre">id_list</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)">list</a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="morgana.data.FilesDataset.collate_fn">
+<em class="property">static </em><code class="descname">collate_fn</code><span class="sig-paren">(</span><em>batch</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/data.py#L437-L501"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.data.FilesDataset.collate_fn" title="Permalink to this definition">¶</a></dt>
+<dd><p>Collates a list of outputs from <code class="code docutils literal notranslate"><span class="pre">self.__getitem__</span></code> into a batched structure.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>batch</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.7)"><em>tuple</em></a><em>[</em><em>features</em><em>, </em><em>base_name</em><em>]</em><em>]</em>) – <dl>
+<dt>features<span class="classifier">dict[str, <code class="code docutils literal notranslate"><span class="pre">np.array</span></code>]</span></dt><dd><p>Features loaded by each data source, contained in a non-nested dictionary.</p>
+</dd>
+<dt>base_name<span class="classifier">str</span></dt><dd><p>The name (without extensions) of the loaded file.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>batched_features</strong> (dict[str, <a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch vmaster (1.1.0 ))"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a>]) – Batched version of the list of <code class="code docutils literal notranslate"><span class="pre">features</span></code> items in <code class="code docutils literal notranslate"><span class="pre">batch</span></code>.</p></li>
+<li><p><em>base_names</em> – List of <code class="code docutils literal notranslate"><span class="pre">base_name</span></code> strings in <code class="code docutils literal notranslate"><span class="pre">batch</span></code>.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="feature-normalisers">
+<h2>Feature normalisers<a class="headerlink" href="#feature-normalisers" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="featurenormaliser">
+<h3>_FeatureNormaliser<a class="headerlink" href="#featurenormaliser" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="morgana.data._FeatureNormaliser">
+<em class="property">class </em><code class="descclassname">morgana.data.</code><code class="descname">_FeatureNormaliser</code><span class="sig-paren">(</span><em>feature_name</em>, <em>data_dir</em>, <em>use_deltas=False</em>, <em>device='cpu'</em>, <em>data_root='.'</em>, <em>file_pattern='{}.json'</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/data.py#L504-L608"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.data._FeatureNormaliser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Abstract feature normaliser class. Exposes the <a class="reference internal" href="#morgana.data._FeatureNormaliser.normalise" title="morgana.data._FeatureNormaliser.normalise"><code class="xref py py-func docutils literal notranslate"><span class="pre">normalise()</span></code></a> and <a class="reference internal" href="#morgana.data._FeatureNormaliser.denormalise" title="morgana.data._FeatureNormaliser.denormalise"><code class="xref py py-func docutils literal notranslate"><span class="pre">denormalise()</span></code></a> methods.</p>
+<p>Normalisers will work on both NumPy arrays and PyTorch tensors. This is necessary to process NumPy arrays in
+<a class="reference internal" href="#morgana.data._DataSource.__call__" title="morgana.data._DataSource.__call__"><code class="xref py py-func docutils literal notranslate"><span class="pre">_DataSource.__call__()</span></code></a> and to normalise/denormalise PyTorch tensors in batch within the model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>feature_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Name of the feature.</p></li>
+<li><p><strong>data_dir</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Directory containing all data for this dataset split.</p></li>
+<li><p><strong>use_deltas</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – Whether to load normalisation parameters for delta features.</p></li>
+<li><p><strong>device</strong> (str or <code class="code docutils literal notranslate"><span class="pre">torch.device</span></code>) – Name of the device to place the parameters on.</p></li>
+<li><p><strong>data_root</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Directory root for this dataset.</p></li>
+<li><p><strong>file_pattern</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Format of the JSON file containing the normalisation parameters.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="method">
+<dt id="morgana.data._FeatureNormaliser.normalise">
+<code class="descname">normalise</code><span class="sig-paren">(</span><em>self</em>, <em>feature</em>, <em>deltas=False</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/data.py#L545-L561"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.data._FeatureNormaliser.normalise" title="Permalink to this definition">¶</a></dt>
+<dd><p>Normalises the sequence feature.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>feature</strong> (<em>np.ndarray</em><em> or </em><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch vmaster (1.1.0 ))"><em>torch.Tensor</em></a><em>, </em><em>shape</em><em> (</em><em>batch_size</em><em>, </em><em>seq_len</em><em>, </em><em>feat_dim</em><em>) or </em><em>(</em><em>seq_len</em><em>, </em><em>feat_dim</em><em>)</em>) – Sequence feature to be normalised, can be a NumPy array or a PyTorch tensor, can be batched.</p></li>
+<li><p><strong>deltas</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – Whether <code class="code docutils literal notranslate"><span class="pre">feature</span></code> is a delta feature, and should be normalised using the delta parameters.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Normalised sequence feature.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>np.ndarray or <a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch vmaster (1.1.0 ))">torch.Tensor</a>, shape (batch_size, seq_len, feat_dim) or (seq_len, feat_dim)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="morgana.data._FeatureNormaliser.denormalise">
+<code class="descname">denormalise</code><span class="sig-paren">(</span><em>self</em>, <em>feature</em>, <em>deltas=False</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/data.py#L563-L579"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.data._FeatureNormaliser.denormalise" title="Permalink to this definition">¶</a></dt>
+<dd><p>De-normalises the sequence feature.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>feature</strong> (<em>np.ndarray</em><em> or </em><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch vmaster (1.1.0 ))"><em>torch.Tensor</em></a><em>, </em><em>shape</em><em> (</em><em>batch_size</em><em>, </em><em>seq_len</em><em>, </em><em>feat_dim</em><em>) or </em><em>(</em><em>seq_len</em><em>, </em><em>feat_dim</em><em>)</em>) – Sequence feature to be normalised, can be a NumPy array or a PyTorch tensor, can be batched.</p></li>
+<li><p><strong>deltas</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – Whether <code class="code docutils literal notranslate"><span class="pre">feature</span></code> is a delta feature, and should be normalised using the delta parameters.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Normalised sequence feature.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>np.ndarray or <a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch vmaster (1.1.0 ))">torch.Tensor</a>, shape (batch_size, seq_len, feat_dim) or (seq_len, feat_dim)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="morgana.data._FeatureNormaliser.fetch_params">
+<code class="descname">fetch_params</code><span class="sig-paren">(</span><em>self</em>, <em>data_type=&lt;class 'numpy.ndarray'&gt;</em>, <em>deltas=False</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/data.py#L581-L593"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.data._FeatureNormaliser.fetch_params" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the normalisation parameters, taking into account the delta flag and type of data.</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="morgana.data._FeatureNormaliser.load_params">
+<em class="property">static </em><code class="descname">load_params</code><span class="sig-paren">(</span><em>feature_name</em>, <em>data_dir</em>, <em>device='cpu'</em>, <em>file_pattern='{}.json'</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/data.py#L595-L608"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.data._FeatureNormaliser.load_params" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads the parameters from file and converts them to NumPy arrays and PyTorch tensors.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="meanvaraiancenormaliser">
+<h3>MeanVaraianceNormaliser<a class="headerlink" href="#meanvaraiancenormaliser" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="morgana.data.MeanVaraianceNormaliser">
+<em class="property">class </em><code class="descclassname">morgana.data.</code><code class="descname">MeanVaraianceNormaliser</code><span class="sig-paren">(</span><em>feature_name</em>, <em>data_dir</em>, <em>use_deltas=False</em>, <em>device='cpu'</em>, <em>data_root='.'</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/data.py#L611-L640"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.data.MeanVaraianceNormaliser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#morgana.data._FeatureNormaliser" title="morgana.data._FeatureNormaliser"><code class="xref py py-class docutils literal notranslate"><span class="pre">morgana.data._FeatureNormaliser</span></code></a></p>
+<p>Normalises features such that they have zero mean and unit variance.</p>
+<dl class="simple">
+<dt>Normalisation:</dt><dd><p><code class="code docutils literal notranslate"><span class="pre">norm_f</span> <span class="pre">=</span> <span class="pre">(f</span> <span class="pre">-</span> <span class="pre">mean)</span> <span class="pre">/</span> <span class="pre">std_dev</span></code></p>
+</dd>
+<dt>Denormalisation:</dt><dd><p><code class="code docutils literal notranslate"><span class="pre">f</span> <span class="pre">=</span> <span class="pre">(norm_f</span> <span class="pre">*</span> <span class="pre">std_dev)</span> <span class="pre">+</span> <span class="pre">mean</span></code></p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>feature_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Name of the feature.</p></li>
+<li><p><strong>data_dir</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Directory containing all data for this dataset split.</p></li>
+<li><p><strong>use_deltas</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – Whether to load normalisation parameters for delta features.</p></li>
+<li><p><strong>device</strong> (str or <code class="code docutils literal notranslate"><span class="pre">torch.device</span></code>) – Name of the device to place the parameters on.</p></li>
+<li><p><strong>data_root</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Directory root for this dataset.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="minmaxnormaliser">
+<h3>MinMaxNormaliser<a class="headerlink" href="#minmaxnormaliser" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="morgana.data.MinMaxNormaliser">
+<em class="property">class </em><code class="descclassname">morgana.data.</code><code class="descname">MinMaxNormaliser</code><span class="sig-paren">(</span><em>feature_name</em>, <em>data_dir</em>, <em>use_deltas=False</em>, <em>device='cpu'</em>, <em>data_root='.'</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/data.py#L643-L678"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.data.MinMaxNormaliser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#morgana.data._FeatureNormaliser" title="morgana.data._FeatureNormaliser"><code class="xref py py-class docutils literal notranslate"><span class="pre">morgana.data._FeatureNormaliser</span></code></a></p>
+<p>Normalises features such that they have a minimum value of 0 and a maximum value of 1.</p>
+<dl class="simple">
+<dt>Normalisation:</dt><dd><p><code class="code docutils literal notranslate"><span class="pre">norm_f</span> <span class="pre">=</span> <span class="pre">(f</span> <span class="pre">-</span> <span class="pre">min)</span> <span class="pre">/</span> <span class="pre">(max</span> <span class="pre">-</span> <span class="pre">min)</span></code></p>
+</dd>
+<dt>Denormalisation:</dt><dd><p><code class="code docutils literal notranslate"><span class="pre">f</span> <span class="pre">=</span> <span class="pre">norm_f</span> <span class="pre">*</span> <span class="pre">(max</span> <span class="pre">-</span> <span class="pre">min)</span> <span class="pre">+</span> <span class="pre">min</span></code></p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>feature_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Name of the feature.</p></li>
+<li><p><strong>data_dir</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Directory containing all data for this dataset split.</p></li>
+<li><p><strong>use_deltas</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – Whether to load normalisation parameters for delta features.</p></li>
+<li><p><strong>device</strong> (str or <code class="code docutils literal notranslate"><span class="pre">torch.device</span></code>) – Name of the device to place the parameters on.</p></li>
+<li><p><strong>data_root</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Directory root for this dataset.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="wrappers-to-change-existing-dataloader-instance">
+<h2>Wrappers to change existing DataLoader instance<a class="headerlink" href="#wrappers-to-change-existing-dataloader-instance" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="dataloaderwrapper">
+<h3>_DataLoaderWrapper<a class="headerlink" href="#dataloaderwrapper" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="morgana.data._DataLoaderWrapper">
+<em class="property">class </em><code class="descclassname">morgana.data.</code><code class="descname">_DataLoaderWrapper</code><span class="sig-paren">(</span><em>data_loader</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/data.py#L681-L695"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.data._DataLoaderWrapper" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Abstract <a class="reference external" href="https://pytorch.org/docs/stable/data.html#torch.utils.data.DataLoader" title="(in PyTorch vmaster (1.1.0 ))"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.utils.data.DataLoader</span></code></a> wrapper. Allows attribute reference for underlying data loader.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="todevicewrapper">
+<h3>ToDeviceWrapper<a class="headerlink" href="#todevicewrapper" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="morgana.data.ToDeviceWrapper">
+<em class="property">class </em><code class="descclassname">morgana.data.</code><code class="descname">ToDeviceWrapper</code><span class="sig-paren">(</span><em>data_loader</em>, <em>device</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/data.py#L698-L710"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.data.ToDeviceWrapper" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#morgana.data._DataLoaderWrapper" title="morgana.data._DataLoaderWrapper"><code class="xref py py-class docutils literal notranslate"><span class="pre">morgana.data._DataLoaderWrapper</span></code></a></p>
+<p>Wraps the <code class="code docutils literal notranslate"><span class="pre">__iter__</span></code> method of <a class="reference external" href="https://pytorch.org/docs/stable/data.html#torch.utils.data.DataLoader" title="(in PyTorch vmaster (1.1.0 ))"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.utils.data.DataLoader</span></code></a>, mapping each batch to a given device.</p>
+</dd></dl>
+
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="morgana.base_models.html">base_models</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">data</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#batching-utility">Batching utility</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#datasource-specification">DataSource specification</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#datasource">_DataSource</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#numpybinarysource">NumpyBinarySource</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#textsource">TextSource</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#stringsource">StringSource</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#wavsource">WavSource</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#dataset-to-combine-datasource-instances">Dataset to combine DataSource instances</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#filesdataset">FilesDataset</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#feature-normalisers">Feature normalisers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#featurenormaliser">_FeatureNormaliser</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#meanvaraiancenormaliser">MeanVaraianceNormaliser</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#minmaxnormaliser">MinMaxNormaliser</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#wrappers-to-change-existing-dataloader-instance">Wrappers to change existing DataLoader instance</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#dataloaderwrapper">_DataLoaderWrapper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#todevicewrapper">ToDeviceWrapper</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="morgana.experiment_builder.html">experiment_builder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="morgana.utils.html">utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="morgana.logging.html">logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="morgana.metrics.html">metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="morgana.losses.html">losses</a></li>
+<li class="toctree-l1"><a class="reference internal" href="morgana.sampling.html">sampling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="morgana.viz.html">viz</a></li>
+</ul>
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation index</a><ul>
+      <li>Previous: <a href="morgana.base_models.html" title="previous chapter">base_models</a></li>
+      <li>Next: <a href="morgana.experiment_builder.html" title="next chapter">experiment_builder</a></li>
+  </ul></li>
+</ul>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/reference/morgana.data.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer">
+    &copy; Copyright 2019, Zack Hodari.
+    Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.0.1.
+  </div>
+  
+  </body>
+</html>

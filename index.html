@@ -1,0 +1,320 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Morgana documentation &#8212; morgana 0.0.1 documentation</title>
+    <link rel="stylesheet" href="_static/readable.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/css/custom.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="base_models" href="reference/morgana.base_models.html" />
+   
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head><body>
+  
+  
+  <div class="indexwrapper">
+  
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="reference/morgana.base_models.html" title="base_models"
+             accesskey="N">next</a> |</li>
+        <li class="nav-item nav-item-0"><a href="#">morgana 0.0.1 documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-morgana">
+<span id="morgana-documentation"></span><h1>Morgana documentation<a class="headerlink" href="#module-morgana" title="Permalink to this headline">¶</a></h1>
+<p>Morgana on GitHub: <a class="reference external" href="https://github.com/ZackHodari/morgana">https://github.com/ZackHodari/morgana</a></p>
+<p>API documentation can be found at the bottom of this page: <a class="reference internal" href="#package-reference">Package reference</a></p>
+<p>See the command line usage for running experiments: <a class="reference internal" href="reference/command_line_arguments.html#command-line-arguments"><span class="std std-ref">Command line arguments</span></a></p>
+<p>Morgana is a toolkit for defining and training Text-to-Speech voices in PyTorch.</p>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<p>To install as a package, from source:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install git+https://github.com/ZackHodari/morgana
+</pre></div>
+</div>
+<p>To clone as a git repo, allowing for local modifications to the source code:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git clone https://github.com/ZackHodari/morgana
+<span class="nb">cd</span> morgana
+python setup.py develop
+</pre></div>
+</div>
+</div>
+<div class="section" id="design">
+<h2>Design<a class="headerlink" href="#design" title="Permalink to this headline">¶</a></h2>
+<p>The support code necessary for creating Text-to-Speech (TTS) voices is not over complicated, but does require time to
+piece together. Existing packages like <a class="reference external" href="https://github.com/CSTR-Edinburgh/merlin">Merlin</a> provide an easy to use
+toolkit for training voices, but Merlin obfuscates too many details, and makes modifications hard without changing the
+source code. Similar to <a class="reference external" href="https://github.com/r9y9/nnmnkwii">nnmnkwii</a>, Morgana aims to provide flexibility in defining
+your own models. However, Morgana attempts to automate as much of the support code as possible, while still allowing for
+customisation where necessary.</p>
+</div>
+<div class="section" id="defining-a-model">
+<h2>Defining a model<a class="headerlink" href="#defining-a-model" title="Permalink to this headline">¶</a></h2>
+<p>For most use-cases, the classes provided in <a class="reference external" href="https://github.com/ZackHodari/morgana/morgana/base_models.py">base_models.py</a> is all that needs to be extended. For example, create a
+subclass of <a class="reference internal" href="reference/morgana.base_models.html#morgana.base_models.BaseSPSS" title="morgana.base_models.BaseSPSS"><code class="xref py py-class docutils literal notranslate"><span class="pre">morgana.base_models.BaseSPSS</span></code></a> and implement <code class="code docutils literal notranslate"><span class="pre">train_data_sources</span></code>, <code class="code docutils literal notranslate"><span class="pre">predict</span></code>, and <code class="code docutils literal notranslate"><span class="pre">loss</span></code>.</p>
+<ul class="simple">
+<li><p><code class="code docutils literal notranslate"><span class="pre">__init__</span></code>: Create the layers for your model.</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">train_data_sources</span></code>: Define a dictionary containing instances that are subclasses of <code class="code docutils literal notranslate"><span class="pre">morgana.data._DataSource</span></code>.</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">predict</span></code>: Define any arbitrary computation in PyTorch.</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">loss</span></code>: Define the targets (from <code class="code docutils literal notranslate"><span class="pre">features</span></code>) and predictions (output of <code class="code docutils literal notranslate"><span class="pre">predict</span></code>) used to calculate the loss. A
+sequence length feature can also be specified (for each target-prediction pair).</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
+<span class="kn">from</span> <span class="nn">morgana</span> <span class="k">import</span> <span class="n">data</span>
+<span class="kn">from</span> <span class="nn">morgana</span> <span class="k">import</span> <span class="n">utils</span>
+<span class="kn">from</span> <span class="nn">morgana.base_models</span> <span class="k">import</span> <span class="n">BaseSPSS</span>
+<span class="kn">from</span> <span class="nn">morgana.experiment_builder</span> <span class="k">import</span> <span class="n">ExperimentBuilder</span>
+
+<span class="k">class</span> <span class="nc">F0Model</span><span class="p">(</span><span class="n">BaseSPSS</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">normalisers</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">F0Model</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">normalisers</span><span class="o">=</span><span class="n">normalisers</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">layers</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">600</span><span class="p">,</span> <span class="mi">512</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Sigmoid</span><span class="p">(),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">512</span><span class="p">,</span> <span class="mi">128</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Sigmoid</span><span class="p">(),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">128</span><span class="p">,</span> <span class="mi">32</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Sigmoid</span><span class="p">(),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="p">)</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">train_data_sources</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s1">&#39;n_frames&#39;</span><span class="p">:</span> <span class="n">data</span><span class="o">.</span><span class="n">TextSource</span><span class="p">(</span><span class="s1">&#39;n_frames&#39;</span><span class="p">),</span>
+            <span class="s1">&#39;dur&#39;</span><span class="p">:</span> <span class="n">data</span><span class="o">.</span><span class="n">TextSource</span><span class="p">(</span><span class="s1">&#39;dur&#39;</span><span class="p">,</span> <span class="n">normalisation</span><span class="o">=</span><span class="s1">&#39;mvn&#39;</span><span class="p">),</span>
+            <span class="s1">&#39;lab&#39;</span><span class="p">:</span> <span class="n">data</span><span class="o">.</span><span class="n">NumpyBinarySource</span><span class="p">(</span><span class="s1">&#39;lab&#39;</span><span class="p">,</span> <span class="n">normalisation</span><span class="o">=</span><span class="s1">&#39;minmax&#39;</span><span class="p">),</span>
+            <span class="s1">&#39;lf0&#39;</span><span class="p">:</span> <span class="n">data</span><span class="o">.</span><span class="n">NumpyBinarySource</span><span class="p">(</span><span class="s1">&#39;lf0&#39;</span><span class="p">,</span> <span class="n">normalisation</span><span class="o">=</span><span class="s1">&#39;mvn&#39;</span><span class="p">),</span>
+        <span class="p">}</span>
+
+    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">features</span><span class="p">):</span>
+        <span class="n">norm_lab_at_frame_rate</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">upsample_to_repetitions</span><span class="p">(</span><span class="n">features</span><span class="p">[</span><span class="s1">&#39;normalised_lab&#39;</span><span class="p">],</span> <span class="n">features</span><span class="p">[</span><span class="s1">&#39;dur&#39;</span><span class="p">])</span>
+        <span class="n">pred_norm_lf0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">layers</span><span class="p">(</span><span class="n">norm_lab_at_frame_rate</span><span class="p">,</span> <span class="n">seq_len</span><span class="o">=</span><span class="n">features</span><span class="p">[</span><span class="s1">&#39;n_frames&#39;</span><span class="p">])</span>
+        <span class="n">pred_lf0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">normalisers</span><span class="p">[</span><span class="s1">&#39;lf0&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">denormalise</span><span class="p">(</span><span class="n">pred_norm_lf0</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;pred_norm_lf0&#39;</span><span class="p">:</span> <span class="n">pred_norm_lf0</span><span class="p">,</span>
+                <span class="s1">&#39;pred_lf0&#39;</span><span class="p">:</span> <span class="n">pred_lf0</span><span class="p">}</span>
+
+    <span class="k">def</span> <span class="nf">loss</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">features</span><span class="p">,</span> <span class="n">output_features</span><span class="p">):</span>
+        <span class="n">target_norm_lf0</span> <span class="o">=</span> <span class="n">features</span><span class="p">[</span><span class="s1">&#39;normalised_lf0&#39;</span><span class="p">]</span>
+        <span class="n">pred_norm_lf0</span> <span class="o">=</span> <span class="n">output_features</span><span class="p">[</span><span class="s1">&#39;pred_norm_lf0&#39;</span><span class="p">]</span>
+        <span class="n">seq_len</span> <span class="o">=</span> <span class="n">features</span><span class="p">[</span><span class="s1">&#39;n_frames&#39;</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_loss</span><span class="p">(</span><span class="n">target_norm_lf0</span><span class="p">,</span> <span class="n">pred_norm_lf0</span><span class="p">,</span> <span class="n">seq_len</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="running-an-experiment">
+<h2>Running an experiment<a class="headerlink" href="#running-an-experiment" title="Permalink to this headline">¶</a></h2>
+<p>Most models can be run using classes provided in <a class="reference external" href="https://github.com/ZackHodari/morgana/morgana/experiment_builder.py">experiment_builder.py</a>. If different training procedures are needed,
+then a new <a class="reference internal" href="reference/morgana.experiment_builder.html#morgana.experiment_builder.ExperimentBuilder" title="morgana.experiment_builder.ExperimentBuilder"><code class="xref py py-class docutils literal notranslate"><span class="pre">morgana.experiment_builder.ExperimentBuilder</span></code></a> subclass may be required. An <code class="code docutils literal notranslate"><span class="pre">ExperimentBuilder</span></code>
+contains the following important methods,</p>
+<ul class="simple">
+<li><p><code class="code docutils literal notranslate"><span class="pre">add_args</span></code>: Defines the command lines arguments supported for experiments of this type.</p></li>
+<li><dl class="simple">
+<dt><code class="code docutils literal notranslate"><span class="pre">__init__</span></code>:</dt><dd><ul>
+<li><p>Saves command line arguments as instance attributes.</p></li>
+<li><p>Calls <code class="code docutils literal notranslate"><span class="pre">resolve_setting_conflicts</span></code>.</p></li>
+<li><p>Loads normalisers and data specified in <code class="code docutils literal notranslate"><span class="pre">train_data_sources</span></code>.</p></li>
+<li><p>Creates the model. Loads from a checkpoint. Creates an exponential moving average (EMA) instance of the model.</p></li>
+<li><p>Sets up Python logging, saves stdout and stderr to files. Saves tqdm output to a separate log file.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">resolve_setting_conflicts</span></code>: Check (and modify) any command line arguments that are incorrect (or inconsistent).</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">train_epoch</span></code>: Epoch loop that iterates through <code class="code docutils literal notranslate"><span class="pre">ExperimentBuilder.train_iter</span></code>.</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">run_train</span></code>: Training loop that calls <code class="code docutils literal notranslate"><span class="pre">train_epoch</span></code> until <code class="code docutils literal notranslate"><span class="pre">ExperimentBuilder.epoch</span></code> reaches
+<code class="code docutils literal notranslate"><span class="pre">ExperimentBuilder.end_epoch</span></code>.</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">valid_epoch</span></code>: Epoch loop that iterates through <code class="code docutils literal notranslate"><span class="pre">ExperimentBuilder.valid_iter</span></code>.</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">run_valid</span></code>: Runs validation of the current model (or EMA model), and reports the validation loss.</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">test_epoch</span></code>: Epoch loop that iterates through <code class="code docutils literal notranslate"><span class="pre">ExperimentBuilder.test_iter</span></code>.</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">run_test</span></code>: Runs generation of the current model (or EMA model), no loss will be reported (no labels are given).</p></li>
+<li><p><code class="code docutils literal notranslate"><span class="pre">run_experiment</span></code>: Runs <code class="code docutils literal notranslate"><span class="pre">run_train</span></code>, <code class="code docutils literal notranslate"><span class="pre">run_valid</span></code>, and <code class="code docutils literal notranslate"><span class="pre">run_test</span></code> according to the command line arguments.</p></li>
+</ul>
+<p>At the bottom of the file containing <code class="code docutils literal notranslate"><span class="pre">F0Model</span></code> place the following,</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">ExperimentBuilder</span><span class="o">.</span><span class="n">get_experiment_args</span><span class="p">()</span>
+    <span class="n">experiment</span> <span class="o">=</span> <span class="n">ExperimentBuilder</span><span class="p">(</span><span class="n">F0Model</span><span class="p">,</span> <span class="o">**</span><span class="n">args</span><span class="p">)</span>
+    <span class="n">experiment</span><span class="o">.</span><span class="n">run_experiment</span><span class="p">()</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The model can then be trained using the following command (see <a class="reference external" href="https://github.com/ZackHodari/tts_data_tools">tts_data_tools</a> for guidance on pre-processing of data),</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python acoustic_model.py <span class="se">\</span>
+    --experiment_name DNN_voice <span class="se">\</span>
+    --data_root ~/data/Blizzard2017 <span class="se">\</span>
+    --train_dir train <span class="se">\</span>
+    --train_id_list train_file_id_list.scp <span class="se">\</span>
+    --valid_dir valid <span class="se">\</span>
+    --valid_id_list valid_file_id_list.scp
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="package-reference">
+<h1>Package reference<a class="headerlink" href="#package-reference" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="reference/morgana.base_models.html">base_models</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="reference/morgana.base_models.html#basemodel">BaseModel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/morgana.base_models.html#basespss">BaseSPSS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/morgana.base_models.html#basevae">BaseVAE</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="reference/morgana.data.html">data</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="reference/morgana.data.html#batching-utility">Batching utility</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/morgana.data.html#datasource-specification">DataSource specification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/morgana.data.html#dataset-to-combine-datasource-instances">Dataset to combine DataSource instances</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/morgana.data.html#feature-normalisers">Feature normalisers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/morgana.data.html#wrappers-to-change-existing-dataloader-instance">Wrappers to change existing DataLoader instance</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="reference/morgana.experiment_builder.html">experiment_builder</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="reference/command_line_arguments.html">Command line usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/morgana.experiment_builder.html#experimentbuilder">ExperimentBuilder</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="reference/morgana.utils.html">utils</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="reference/morgana.utils.html#listify">listify</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/morgana.utils.html#format-float-tensor">format_float_tensor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/morgana.utils.html#map-nested">map_nested</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/morgana.utils.html#infer-device">infer_device</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/morgana.utils.html#get-epoch-from-checkpoint-path">get_epoch_from_checkpoint_path</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/morgana.utils.html#sequence-mask">sequence_mask</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/morgana.utils.html#both-voiced-mask">both_voiced_mask</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/morgana.utils.html#upsample-to-repetitions">upsample_to_repetitions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/morgana.utils.html#string-to-ascii">string_to_ascii</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/morgana.utils.html#ascii-to-string">ascii_to_string</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/morgana.utils.html#recurrentcudnnwrapper">RecurrentCuDNNWrapper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/morgana.utils.html#sequentialwithrecurrent">SequentialWithRecurrent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/morgana.utils.html#exponentialmovingaverage">ExponentialMovingAverage</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="reference/morgana.logging.html">logging</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="reference/morgana.logging.html#create-logger">create_logger</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/morgana.logging.html#progressbar">ProgressBar</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="reference/morgana.metrics.html">metrics</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="reference/morgana.metrics.html#statefulmetric">StatefulMetric</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/morgana.metrics.html#handler">Handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/morgana.metrics.html#print">Print</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/morgana.metrics.html#tensorhistory">TensorHistory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/morgana.metrics.html#mean">Mean</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/morgana.metrics.html#rmse">RMSE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/morgana.metrics.html#f0distortion">F0Distortion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/morgana.metrics.html#lf0distortion">LF0Distortion</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="reference/morgana.losses.html">losses</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="reference/morgana.losses.html#kld-standard-normal">KLD_standard_normal</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="reference/morgana.sampling.html">sampling</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="reference/morgana.sampling.html#uniformspheresurfacesampler">UniformSphereSurfaceSampler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/morgana.sampling.html#uniformellipsoidsurfaceapproximatesampler">UniformEllipsoidSurfaceApproximateSampler</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="reference/morgana.viz.html">viz</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="reference/viz/morgana.viz.plotting.html">plotting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/viz/morgana.viz.synthesis.html">synthesis</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+</ul>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="#">Table of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="reference/morgana.base_models.html">base_models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference/morgana.data.html">data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference/morgana.experiment_builder.html">experiment_builder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference/morgana.utils.html">utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference/morgana.logging.html">logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference/morgana.metrics.html">metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference/morgana.losses.html">losses</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference/morgana.sampling.html">sampling</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference/morgana.viz.html">viz</a></li>
+</ul>
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="#">Documentation index</a><ul>
+      <li>Next: <a href="reference/morgana.base_models.html" title="next chapter">base_models</a></li>
+  </ul></li>
+</ul>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/index.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer">
+    &copy; Copyright 2019, Zack Hodari.
+    Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.0.1.
+  </div>
+  
+  </div>
+  
+  </body>
+</html>

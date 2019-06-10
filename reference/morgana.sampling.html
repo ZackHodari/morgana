@@ -1,0 +1,164 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>sampling &#8212; morgana 0.0.1 documentation</title>
+    <link rel="stylesheet" href="../_static/readable.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="viz" href="morgana.viz.html" />
+    <link rel="prev" title="losses" href="morgana.losses.html" />
+   
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head><body>
+  
+  
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="morgana.viz.html" title="viz"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="morgana.losses.html" title="losses"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">morgana 0.0.1 documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="sampling">
+<h1>sampling<a class="headerlink" href="#sampling" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="uniformspheresurfacesampler">
+<h2>UniformSphereSurfaceSampler<a class="headerlink" href="#uniformspheresurfacesampler" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="morgana.sampling.UniformSphereSurfaceSampler">
+<em class="property">class </em><code class="descclassname">morgana.sampling.</code><code class="descname">UniformSphereSurfaceSampler</code><span class="sig-paren">(</span><em>centre</em>, <em>radius</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/sampling.py#L7-L27"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.sampling.UniformSphereSurfaceSampler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://pytorch.org/docs/stable/distributions.html#torch.distributions.distribution.Distribution" title="(in PyTorch vmaster (1.1.0 ))"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.distributions.distribution.Distribution</span></code></a></p>
+<p>Samples points uniformly on an n-dimensional sphere’s surface.</p>
+<p class="rubric">Notes</p>
+<p>This is the same sampling procedure used by the von Mises-Fisher distribution for <span class="math notranslate nohighlight">\(\kappa = 0\)</span>.
+<a class="reference external" href="https://en.wikipedia.org/wiki/Von_Mises–Fisher_distribution">von Mises-Fisher distribution</a></p>
+<dl class="method">
+<dt id="morgana.sampling.UniformSphereSurfaceSampler.rsample">
+<code class="descname">rsample</code><span class="sig-paren">(</span><em>self</em>, <em>sample_shape=torch.Size([])</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/sampling.py#L23-L27"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.sampling.UniformSphereSurfaceSampler.rsample" title="Permalink to this definition">¶</a></dt>
+<dd><p>Samples points on the surface of the hypersphere.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="uniformellipsoidsurfaceapproximatesampler">
+<h2>UniformEllipsoidSurfaceApproximateSampler<a class="headerlink" href="#uniformellipsoidsurfaceapproximatesampler" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="morgana.sampling.UniformEllipsoidSurfaceApproximateSampler">
+<em class="property">class </em><code class="descclassname">morgana.sampling.</code><code class="descname">UniformEllipsoidSurfaceApproximateSampler</code><span class="sig-paren">(</span><em>centre</em>, <em>radii</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/sampling.py#L30-L111"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.sampling.UniformEllipsoidSurfaceApproximateSampler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://pytorch.org/docs/stable/distributions.html#torch.distributions.distribution.Distribution" title="(in PyTorch vmaster (1.1.0 ))"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.distributions.distribution.Distribution</span></code></a></p>
+<p>Samples points ~uniformly on an n-dimensional ellipse’s surface.</p>
+<p class="rubric">Notes</p>
+<p>This is not a fair sampler, at the poles (especially for dimensions with large radii) samples will be denser.</p>
+<dl class="method">
+<dt id="morgana.sampling.UniformEllipsoidSurfaceApproximateSampler.sample_angles">
+<code class="descname">sample_angles</code><span class="sig-paren">(</span><em>self</em>, <em>shape</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/sampling.py#L48-L57"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.sampling.UniformEllipsoidSurfaceApproximateSampler.sample_angles" title="Permalink to this definition">¶</a></dt>
+<dd><p>Samples angles from n-1 uniform distributions.</p>
+<p>One of these angles is in the range [0, 2*pi] and it determines tha angle in the first two dimensions.
+The remaining n-2 angles are in the range [0, pi] and determine the angle in the remaining dimensions.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="morgana.sampling.UniformEllipsoidSurfaceApproximateSampler.rsample">
+<code class="descname">rsample</code><span class="sig-paren">(</span><em>self</em>, <em>sample_shape=torch.Size([])</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/sampling.py#L59-L111"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.sampling.UniformEllipsoidSurfaceApproximateSampler.rsample" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the transformation for each cartesian dimension <code class="code docutils literal notranslate"><span class="pre">n</span></code>.</p>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}x_1     &amp;= r_1     * \cos( \theta_1 )\\x_2     &amp;= r_2     * \sin( \theta_1 ) * \cos( \theta_2 )\\x_3     &amp;= r_3     * \sin( \theta_1 ) * \sin( \theta_2 ) * \cos( \theta_3 )\\...\\x_{n-2} &amp;= r_{n-2} * \sin( \theta_1 ) * \sin( \theta_2 ) * ... * \sin( \theta_{n-3} ) * \cos( \theta_{n-2} )\\x_{n-1} &amp;= r_{n-1} * \sin( \theta_1 ) * \sin( \theta_2 ) * ... * \sin( \theta_{n-2} ) * \cos( \theta_{n-1} )\\x_n     &amp;= r_{n}   * \sin( \theta_1 ) * \sin( \theta_2 ) * ... * \sin( \theta_{n-1} )\end{aligned}\end{align} \]</div>
+<p>Note the first dimension <span class="math notranslate nohighlight">\(x_1\)</span> does not use <span class="math notranslate nohighlight">\(\sin\)</span>, and the final dimension <span class="math notranslate nohighlight">\(x_n\)</span> does not use
+<span class="math notranslate nohighlight">\(\cos\)</span>.</p>
+<p>This is equivalent to,</p>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}\mathtt{cumprod\_sin}_1 &amp;= 1.\\\mathtt{cumprod\_sin}_n &amp;= \prod_{i=1}^n \sin( \theta_i )\\\begin{split}\\\end{split}\\\mathtt{cos}_n &amp;= \cos( \theta_n )\\\mathtt{cos}_N &amp;= 1.\\\begin{split}\\\end{split}\\x_n &amp;= r_n * \mathtt{cumprod\_sin}_n * \mathtt{cos}_n\end{aligned}\end{align} \]</div>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="morgana.base_models.html">base_models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="morgana.data.html">data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="morgana.experiment_builder.html">experiment_builder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="morgana.utils.html">utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="morgana.logging.html">logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="morgana.metrics.html">metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="morgana.losses.html">losses</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">sampling</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#uniformspheresurfacesampler">UniformSphereSurfaceSampler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#uniformellipsoidsurfaceapproximatesampler">UniformEllipsoidSurfaceApproximateSampler</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="morgana.viz.html">viz</a></li>
+</ul>
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation index</a><ul>
+      <li>Previous: <a href="morgana.losses.html" title="previous chapter">losses</a></li>
+      <li>Next: <a href="morgana.viz.html" title="next chapter">viz</a></li>
+  </ul></li>
+</ul>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/reference/morgana.sampling.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer">
+    &copy; Copyright 2019, Zack Hodari.
+    Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.0.1.
+  </div>
+  
+  </body>
+</html>
