@@ -39,8 +39,9 @@ Defining a model
 ----------------
 
 For most use-cases, the classes provided in `base_models.py
-<https://github.com/ZackHodari/morgana/morgana/base_models.py>`_ is all that needs to be extended. For example, create a
-subclass of :class:`morgana.base_models.BaseSPSS` and implement `train_data_sources`, `predict`, and `loss`.
+<https://github.com/ZackHodari/morgana/blob/master/morgana/base_models.py>`_ is all that needs to be extended. For
+example, create a subclass of :class:`morgana.base_models.BaseSPSS` and implement `train_data_sources`, `predict`, and
+`loss`.
 
 * `__init__`: Create the layers for your model.
 * `train_data_sources`: Define a dictionary containing instances that are subclasses of `morgana.data._DataSource`.
@@ -99,9 +100,9 @@ Running an experiment
 ---------------------
 
 Most models can be run using classes provided in `experiment_builder.py
-<https://github.com/ZackHodari/morgana/morgana/experiment_builder.py>`_. If different training procedures are needed,
-then a new :class:`morgana.experiment_builder.ExperimentBuilder` subclass may be required. An `ExperimentBuilder`
-contains the following important methods,
+<https://github.com/ZackHodari/morgana/blob/master/morgana/experiment_builder.py>`_. If different training procedures
+are needed, then a new :class:`morgana.experiment_builder.ExperimentBuilder` subclass may be required. An
+`ExperimentBuilder` contains the following important methods,
 
 * `add_args`: Defines the command lines arguments supported for experiments of this type.
 * `__init__`:
