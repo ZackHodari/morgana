@@ -260,20 +260,21 @@ class ExperimentBuilder(object):
         self.device = 'cuda:0' if torch.cuda.is_available() else 'cpu'
         self.logger.info('Using device {}'.format(self.device))
 
+        # Create the model, loading from a checkpoint if specified and providing the normalisers to the model instance.
+        self.model = self.build_model(self.model_class, self.model_kwargs, checkpoint_path=self.checkpoint_path)
+
         # Create normalisers using the feature specification given by the model.
-        train_data_sources = self.model_class.train_data_sources()
+        train_data_sources = self.model.train_data_sources()
         normalisers = {
             name: data_source.create_normaliser(self.normalisation_dir, self.data_root, self.device)
             for name, data_source in train_data_sources.items()}
-
-        # Create the model, loading from a checkpoint if specified and providing the normalisers to the model instance.
-        self.model = self.build_model(
-            self.model_class, normalisers, self.model_kwargs, checkpoint_path=self.checkpoint_path)
+        self.model.normalisers = normalisers
 
         # Create a duplicate model for EMA-based generation, load parameters for this if necessary.
         if self.ema_decay:
             averaged_model = self.build_model(
-                self.model_class, normalisers, self.model_kwargs, checkpoint_path=self.ema_checkpoint_path)
+                self.model_class, self.model_kwargs, checkpoint_path=self.ema_checkpoint_path)
+            averaged_model.normalisers = normalisers
 
             self.ema = utils.ExponentialMovingAverage(model=averaged_model, decay=self.ema_decay)
 
@@ -282,11 +283,11 @@ class ExperimentBuilder(object):
             self.train_loader = self.load_data(
                 train_data_sources, self.train_dir, self.train_id_list, normalisers, name='train')
         if self.valid:
-            valid_data_sources = self.model_class.valid_data_sources()
+            valid_data_sources = self.model.valid_data_sources()
             self.valid_loader = self.load_data(
                 valid_data_sources, self.valid_dir, self.valid_id_list, normalisers, name='valid', shuffle=False)
         if self.test:
-            test_data_sources = self.model_class.test_data_sources()
+            test_data_sources = self.model.test_data_sources()
             self.test_loader = self.load_data(
                 test_data_sources, self.test_dir, self.test_id_list, normalisers, name='test', shuffle=False)
 
@@ -370,9 +371,9 @@ class ExperimentBuilder(object):
                 raise ValueError('If we are performing evaluations without training a checkpoint must be specified '
                                  'using --load_from_epoch.')
 
-    def build_model(self, model_class, normalisers, model_kwargs, checkpoint_path=None):
+    def build_model(self, model_class, model_kwargs, checkpoint_path=None):
         r"""Creates model instance. Loads parameters from a checkpoint file, if given. Moves the model to the device."""
-        model = model_class(normalisers=normalisers, **model_kwargs)
+        model = model_class(**model_kwargs)
 
         if checkpoint_path:
             self.logger.info('Loading model checkpoint from\n'

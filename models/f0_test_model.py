@@ -17,9 +17,9 @@ import tts_data_tools as tdt
 
 
 class F0Model(BaseSPSS):
-    def __init__(self, normalisers=None, dropout_prob=0., input_dim=600+9, output_dim=1*3):
+    def __init__(self, dropout_prob=0., input_dim=600+9, output_dim=1*3):
         r"""Initialises acoustic model parameters and settings."""
-        super(F0Model, self).__init__(normalisers=normalisers)
+        super(F0Model, self).__init__()
         self.input_dim = input_dim
         self.output_dim = output_dim
 
@@ -45,8 +45,7 @@ class F0Model(BaseSPSS):
         self.metrics.add_metrics('all',
                                  LF0_RMSE_Hz=metrics.LF0Distortion())
 
-    @classmethod
-    def train_data_sources(cls):
+    def train_data_sources(self):
         return {
             'n_frames': data.TextSource('n_frames'),
             'n_phones': data.TextSource('n_phones'),
@@ -57,9 +56,8 @@ class F0Model(BaseSPSS):
             'vuv': data.NumpyBinarySource('vuv', dtype=np.bool),
         }
 
-    @classmethod
-    def valid_data_sources(cls):
-        data_sources = cls.train_data_sources()
+    def valid_data_sources(self):
+        data_sources = self.train_data_sources()
         data_sources['sp'] = data.NumpyBinarySource('sp')
         data_sources['ap'] = data.NumpyBinarySource('ap')
 

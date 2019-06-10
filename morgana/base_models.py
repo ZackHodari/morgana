@@ -29,18 +29,16 @@ class BaseModel(nn.Module):
         automatically by :code:`morgana.experiment_builder.ExperimentBuilder`. Useful for logging to `self.tensorboard`.
     tensorboard : tensorboardX.SummaryWriter
     """
-    def __init__(self, normalisers=None):
+    def __init__(self):
         super(BaseModel, self).__init__()
-        self.normalisers = normalisers
 
+        self.normalisers = {}
         self.mode = ''
-        self.metrics = metrics.Handler(
-            loss=metrics.Mean())
+        self.metrics = metrics.Handler(loss=metrics.Mean())
         self.step = 0
         self.tensorboard = None
 
-    @classmethod
-    def train_data_sources(cls):
+    def train_data_sources(self):
         r"""Specifies the data that will be loaded and used in training.
 
         Only specifies what data will be loaded, but not where from.
@@ -53,8 +51,7 @@ class BaseModel(nn.Module):
         """
         raise NotImplementedError
 
-    @classmethod
-    def valid_data_sources(cls):
+    def valid_data_sources(self):
         r"""Specifies the data that will be loaded and used in validation.
 
         Only specifies what data will be loaded, but not where from.
@@ -65,10 +62,9 @@ class BaseModel(nn.Module):
             The data sources used by :class:`morgana.experiment_builder.ExperimentBuilder` for the validation data, can
             be any data structure containing :class:`morgana.data._DataSource` instances.
         """
-        return cls.train_data_sources()
+        return self.train_data_sources()
 
-    @classmethod
-    def test_data_sources(cls):
+    def test_data_sources(self):
         r"""Specifies the data that will be loaded and used in testing.
 
         Only specifies what data will be loaded, but not where from.
@@ -79,7 +75,7 @@ class BaseModel(nn.Module):
             The data sources used by :class:`morgana.experiment_builder.ExperimentBuilder` for the testing data, can be
             any data structure containing :class:`morgana.data._DataSource` instances.
         """
-        return cls.valid_data_sources()
+        return self.valid_data_sources()
 
     def forward(self, features):
         r"""Defines the computation graph, including calculation of loss.
@@ -332,8 +328,8 @@ class BaseModel(nn.Module):
 
 class BaseSPSS(BaseModel):
     r"""Creates an abstract SPSS acoustic model."""
-    def __init__(self, normalisers=None):
-        super(BaseSPSS, self).__init__(normalisers=normalisers)
+    def __init__(self):
+        super(BaseSPSS, self).__init__()
 
     def loss_fn(self, target, prediction):
         r"""Mean squared error loss."""
@@ -358,8 +354,8 @@ class BaseVAE(BaseSPSS):
     kld_weight : float
         Weight of the Kullback–Leibler divergence cost. Used to mitigate posterior collapse.
     """
-    def __init__(self, z_dim=16, kld_weight=1., normalisers=None):
-        super(BaseVAE, self).__init__(normalisers=normalisers)
+    def __init__(self, z_dim=16, kld_weight=1.):
+        super(BaseVAE, self).__init__()
         self.z_dim = z_dim
         self.kld_weight = kld_weight
 
