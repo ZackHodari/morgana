@@ -55,6 +55,7 @@ extensions = [
     'sphinx.ext.todo',
     'sphinxarg.ext',
     'sphinx.ext.autosectionlabel',
+    'sphinx.ext.githubpages',
 ]
 
 autodoc_default_flags = ['members']
