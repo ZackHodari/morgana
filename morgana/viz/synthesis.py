@@ -163,7 +163,8 @@ def MLPG(means, variances, windows=None, padding_size=0, seq_len=None):
             b, prec = _build_poe(feat_b, feat_tau, win_mats)
             feat_trajectory = bla.solveh(prec, b)
 
-            most_probable_trajectory[i, :seq_len[i], d] = feat_trajectory[padding_size:-padding_size]
+            most_probable_trajectory[i, :seq_len[i], d] = \
+                feat_trajectory[padding_size:len(feat_trajectory)-padding_size]
 
     if not using_batches:
         most_probable_trajectory = most_probable_trajectory.squeeze(axis=0)
