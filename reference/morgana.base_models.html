@@ -63,7 +63,7 @@ are three base models that you can inherit from,</p>
 <h2>BaseModel<a class="headerlink" href="#basemodel" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="morgana.base_models.BaseModel">
-<em class="property">class </em><code class="descclassname">morgana.base_models.</code><code class="descname">BaseModel</code><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/base_models.py#L14-L326"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.base_models.BaseModel" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">morgana.base_models.</code><code class="descname">BaseModel</code><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/base_models.py#L15-L331"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.base_models.BaseModel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.modules.module.Module</span></code></p>
 <p>Creates an abstract model class with utility functions.</p>
 <p>Any additional kwargs specified in <code class="code docutils literal notranslate"><span class="pre">__init__</span></code> should be passed to the command line argument <code class="code docutils literal notranslate"><span class="pre">model_kwargs</span></code>.</p>
@@ -124,7 +124,7 @@ automatically by <code class="code docutils literal notranslate"><span class="pr
 
 <dl class="method">
 <dt id="morgana.base_models.BaseModel.train_data_sources">
-<code class="descname">train_data_sources</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/base_models.py#L41-L52"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.base_models.BaseModel.train_data_sources" title="Permalink to this definition">¶</a></dt>
+<code class="descname">train_data_sources</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/base_models.py#L42-L53"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.base_models.BaseModel.train_data_sources" title="Permalink to this definition">¶</a></dt>
 <dd><p>Specifies the data that will be loaded and used in training.</p>
 <p>Only specifies what data will be loaded, but not where from.</p>
 <dl class="field-list simple">
@@ -140,7 +140,7 @@ any data structure containing <a class="reference internal" href="morgana.data.h
 
 <dl class="method">
 <dt id="morgana.base_models.BaseModel.valid_data_sources">
-<code class="descname">valid_data_sources</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/base_models.py#L54-L65"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.base_models.BaseModel.valid_data_sources" title="Permalink to this definition">¶</a></dt>
+<code class="descname">valid_data_sources</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/base_models.py#L55-L66"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.base_models.BaseModel.valid_data_sources" title="Permalink to this definition">¶</a></dt>
 <dd><p>Specifies the data that will be loaded and used in validation.</p>
 <p>Only specifies what data will be loaded, but not where from.</p>
 <dl class="field-list simple">
@@ -156,7 +156,7 @@ be any data structure containing <a class="reference internal" href="morgana.dat
 
 <dl class="method">
 <dt id="morgana.base_models.BaseModel.test_data_sources">
-<code class="descname">test_data_sources</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/base_models.py#L67-L78"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.base_models.BaseModel.test_data_sources" title="Permalink to this definition">¶</a></dt>
+<code class="descname">test_data_sources</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/base_models.py#L68-L79"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.base_models.BaseModel.test_data_sources" title="Permalink to this definition">¶</a></dt>
 <dd><p>Specifies the data that will be loaded and used in testing.</p>
 <p>Only specifies what data will be loaded, but not where from.</p>
 <dl class="field-list simple">
@@ -172,7 +172,7 @@ any data structure containing <a class="reference internal" href="morgana.data.h
 
 <dl class="method">
 <dt id="morgana.base_models.BaseModel.forward">
-<code class="descname">forward</code><span class="sig-paren">(</span><em>self</em>, <em>features</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/base_models.py#L80-L95"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.base_models.BaseModel.forward" title="Permalink to this definition">¶</a></dt>
+<code class="descname">forward</code><span class="sig-paren">(</span><em>self</em>, <em>features</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/base_models.py#L81-L96"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.base_models.BaseModel.forward" title="Permalink to this definition">¶</a></dt>
 <dd><p>Defines the computation graph, including calculation of loss.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -190,7 +190,7 @@ any data structure containing <a class="reference internal" href="morgana.data.h
 
 <dl class="method">
 <dt id="morgana.base_models.BaseModel.predict">
-<code class="descname">predict</code><span class="sig-paren">(</span><em>self</em>, <em>features</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/base_models.py#L97-L110"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.base_models.BaseModel.predict" title="Permalink to this definition">¶</a></dt>
+<code class="descname">predict</code><span class="sig-paren">(</span><em>self</em>, <em>features</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/base_models.py#L98-L111"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.base_models.BaseModel.predict" title="Permalink to this definition">¶</a></dt>
 <dd><p>Defines the computation graph.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -207,7 +207,7 @@ any data structure containing <a class="reference internal" href="morgana.data.h
 
 <dl class="method">
 <dt id="morgana.base_models.BaseModel.loss">
-<code class="descname">loss</code><span class="sig-paren">(</span><em>self</em>, <em>features</em>, <em>output_features</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/base_models.py#L112-L129"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.base_models.BaseModel.loss" title="Permalink to this definition">¶</a></dt>
+<code class="descname">loss</code><span class="sig-paren">(</span><em>self</em>, <em>features</em>, <em>output_features</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/base_models.py#L113-L130"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.base_models.BaseModel.loss" title="Permalink to this definition">¶</a></dt>
 <dd><p>Defines which predictions should be scored against which ground truth features.</p>
 <p>Typically this method should use <a class="reference internal" href="#morgana.base_models.BaseModel._loss" title="morgana.base_models.BaseModel._loss"><code class="xref py py-func docutils literal notranslate"><span class="pre">_loss()</span></code></a> to calculate the sequence loss for the target-prediction pairs.</p>
 <dl class="field-list simple">
@@ -228,7 +228,7 @@ any data structure containing <a class="reference internal" href="morgana.data.h
 
 <dl class="method">
 <dt id="morgana.base_models.BaseModel._loss">
-<code class="descname">_loss</code><span class="sig-paren">(</span><em>self</em>, <em>targets</em>, <em>predictions</em>, <em>seq_lens=None</em>, <em>loss_weights=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/base_models.py#L131-L208"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.base_models.BaseModel._loss" title="Permalink to this definition">¶</a></dt>
+<code class="descname">_loss</code><span class="sig-paren">(</span><em>self</em>, <em>targets</em>, <em>predictions</em>, <em>seq_lens=None</em>, <em>loss_weights=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/base_models.py#L132-L209"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.base_models.BaseModel._loss" title="Permalink to this definition">¶</a></dt>
 <dd><p>Defines the sequence loss for multiple target-prediction pairs.</p>
 <p>If <code class="code docutils literal notranslate"><span class="pre">targets</span></code> and <code class="code docutils literal notranslate"><span class="pre">predictions</span></code> are iterables they must be in the same order, i.e. when zipped corresponding
 elements will be used as a target-prediction pair for calculating the loss.</p>
@@ -258,7 +258,7 @@ the length of the list given must match the length of <code class="code docutils
 
 <dl class="method">
 <dt id="morgana.base_models.BaseModel.loss_fn">
-<code class="descname">loss_fn</code><span class="sig-paren">(</span><em>self</em>, <em>target</em>, <em>prediction</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/base_models.py#L210-L225"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.base_models.BaseModel.loss_fn" title="Permalink to this definition">¶</a></dt>
+<code class="descname">loss_fn</code><span class="sig-paren">(</span><em>self</em>, <em>target</em>, <em>prediction</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/base_models.py#L211-L226"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.base_models.BaseModel.loss_fn" title="Permalink to this definition">¶</a></dt>
 <dd><p>Defines the frame-wise loss calculation between ground truth and predictions.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -278,7 +278,7 @@ the length of the list given must match the length of <code class="code docutils
 
 <dl class="method">
 <dt id="morgana.base_models.BaseModel.save_parameters">
-<code class="descname">save_parameters</code><span class="sig-paren">(</span><em>self</em>, <em>experiment_dir</em>, <em>epoch</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/base_models.py#L227-L239"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.base_models.BaseModel.save_parameters" title="Permalink to this definition">¶</a></dt>
+<code class="descname">save_parameters</code><span class="sig-paren">(</span><em>self</em>, <em>experiment_dir</em>, <em>epoch</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/base_models.py#L228-L240"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.base_models.BaseModel.save_parameters" title="Permalink to this definition">¶</a></dt>
 <dd><p>Saves the model’s <code class="code docutils literal notranslate"><span class="pre">state_dict</span></code> to a <code class="code docutils literal notranslate"><span class="pre">.pt</span></code> file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -292,7 +292,7 @@ the length of the list given must match the length of <code class="code docutils
 
 <dl class="method">
 <dt id="morgana.base_models.BaseModel.load_parameters">
-<code class="descname">load_parameters</code><span class="sig-paren">(</span><em>self</em>, <em>checkpoint_path</em>, <em>strict=True</em>, <em>device=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/base_models.py#L241-L254"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.base_models.BaseModel.load_parameters" title="Permalink to this definition">¶</a></dt>
+<code class="descname">load_parameters</code><span class="sig-paren">(</span><em>self</em>, <em>checkpoint_path</em>, <em>strict=True</em>, <em>device=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/base_models.py#L242-L255"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.base_models.BaseModel.load_parameters" title="Permalink to this definition">¶</a></dt>
 <dd><p>Loads a <code class="code docutils literal notranslate"><span class="pre">state_dict</span></code> from a <code class="code docutils literal notranslate"><span class="pre">.pt</span></code> file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -307,7 +307,7 @@ the length of the list given must match the length of <code class="code docutils
 
 <dl class="method">
 <dt id="morgana.base_models.BaseModel.analysis_for_train_batch">
-<code class="descname">analysis_for_train_batch</code><span class="sig-paren">(</span><em>self</em>, <em>features</em>, <em>output_features</em>, <em>names</em>, <em>out_dir</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/base_models.py#L256-L286"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.base_models.BaseModel.analysis_for_train_batch" title="Permalink to this definition">¶</a></dt>
+<code class="descname">analysis_for_train_batch</code><span class="sig-paren">(</span><em>self</em>, <em>features</em>, <em>output_features</em>, <em>names</em>, <em>out_dir</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/base_models.py#L257-L291"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.base_models.BaseModel.analysis_for_train_batch" title="Permalink to this definition">¶</a></dt>
 <dd><p>Hook used by <a class="reference internal" href="morgana.experiment_builder.html#morgana.experiment_builder.ExperimentBuilder" title="morgana.experiment_builder.ExperimentBuilder"><code class="xref py py-class docutils literal notranslate"><span class="pre">morgana.experiment_builder.ExperimentBuilder</span></code></a> after training batches for some epochs.</p>
 <p>Can be used to save output or generate visualisations.</p>
 <dl class="field-list simple">
@@ -325,7 +325,7 @@ the length of the list given must match the length of <code class="code docutils
 
 <dl class="method">
 <dt id="morgana.base_models.BaseModel.analysis_for_valid_batch">
-<code class="descname">analysis_for_valid_batch</code><span class="sig-paren">(</span><em>self</em>, <em>features</em>, <em>output_features</em>, <em>names</em>, <em>out_dir</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/base_models.py#L288-L306"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.base_models.BaseModel.analysis_for_valid_batch" title="Permalink to this definition">¶</a></dt>
+<code class="descname">analysis_for_valid_batch</code><span class="sig-paren">(</span><em>self</em>, <em>features</em>, <em>output_features</em>, <em>names</em>, <em>out_dir</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/base_models.py#L293-L311"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.base_models.BaseModel.analysis_for_valid_batch" title="Permalink to this definition">¶</a></dt>
 <dd><p>Hook used by <a class="reference internal" href="morgana.experiment_builder.html#morgana.experiment_builder.ExperimentBuilder" title="morgana.experiment_builder.ExperimentBuilder"><code class="xref py py-class docutils literal notranslate"><span class="pre">morgana.experiment_builder.ExperimentBuilder</span></code></a> after validation batches for some epochs.</p>
 <p>Can be used to save output or generate visualisations.</p>
 <dl class="field-list simple">
@@ -343,7 +343,7 @@ the length of the list given must match the length of <code class="code docutils
 
 <dl class="method">
 <dt id="morgana.base_models.BaseModel.analysis_for_test_batch">
-<code class="descname">analysis_for_test_batch</code><span class="sig-paren">(</span><em>self</em>, <em>features</em>, <em>output_features</em>, <em>names</em>, <em>out_dir</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/base_models.py#L308-L326"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.base_models.BaseModel.analysis_for_test_batch" title="Permalink to this definition">¶</a></dt>
+<code class="descname">analysis_for_test_batch</code><span class="sig-paren">(</span><em>self</em>, <em>features</em>, <em>output_features</em>, <em>names</em>, <em>out_dir</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/base_models.py#L313-L331"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.base_models.BaseModel.analysis_for_test_batch" title="Permalink to this definition">¶</a></dt>
 <dd><p>Hook used by <a class="reference internal" href="morgana.experiment_builder.html#morgana.experiment_builder.ExperimentBuilder" title="morgana.experiment_builder.ExperimentBuilder"><code class="xref py py-class docutils literal notranslate"><span class="pre">morgana.experiment_builder.ExperimentBuilder</span></code></a> after each testing batch.</p>
 <p>Can be used to save output or generate visualisations.</p>
 <dl class="field-list simple">
@@ -366,18 +366,18 @@ the length of the list given must match the length of <code class="code docutils
 <h2>BaseSPSS<a class="headerlink" href="#basespss" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="morgana.base_models.BaseSPSS">
-<em class="property">class </em><code class="descclassname">morgana.base_models.</code><code class="descname">BaseSPSS</code><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/base_models.py#L329-L344"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.base_models.BaseSPSS" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">morgana.base_models.</code><code class="descname">BaseSPSS</code><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/base_models.py#L334-L349"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.base_models.BaseSPSS" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#morgana.base_models.BaseModel" title="morgana.base_models.BaseModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">morgana.base_models.BaseModel</span></code></a></p>
 <p>Creates an abstract SPSS acoustic model.</p>
 <dl class="method">
 <dt id="morgana.base_models.BaseSPSS.loss_fn">
-<code class="descname">loss_fn</code><span class="sig-paren">(</span><em>self</em>, <em>target</em>, <em>prediction</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/base_models.py#L334-L336"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.base_models.BaseSPSS.loss_fn" title="Permalink to this definition">¶</a></dt>
+<code class="descname">loss_fn</code><span class="sig-paren">(</span><em>self</em>, <em>target</em>, <em>prediction</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/base_models.py#L339-L341"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.base_models.BaseSPSS.loss_fn" title="Permalink to this definition">¶</a></dt>
 <dd><p>Mean squared error loss.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="morgana.base_models.BaseSPSS.forward">
-<code class="descname">forward</code><span class="sig-paren">(</span><em>self</em>, <em>features</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/base_models.py#L338-L344"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.base_models.BaseSPSS.forward" title="Permalink to this definition">¶</a></dt>
+<code class="descname">forward</code><span class="sig-paren">(</span><em>self</em>, <em>features</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/base_models.py#L343-L349"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.base_models.BaseSPSS.forward" title="Permalink to this definition">¶</a></dt>
 <dd><p>Prediction and calculation of loss.</p>
 </dd></dl>
 
@@ -388,7 +388,7 @@ the length of the list given must match the length of <code class="code docutils
 <h2>BaseVAE<a class="headerlink" href="#basevae" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="morgana.base_models.BaseVAE">
-<em class="property">class </em><code class="descclassname">morgana.base_models.</code><code class="descname">BaseVAE</code><span class="sig-paren">(</span><em>z_dim=16</em>, <em>kld_weight=1.0</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/base_models.py#L347-L450"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.base_models.BaseVAE" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">morgana.base_models.</code><code class="descname">BaseVAE</code><span class="sig-paren">(</span><em>z_dim=16</em>, <em>kld_weight=1.0</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/base_models.py#L352-L464"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.base_models.BaseVAE" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#morgana.base_models.BaseSPSS" title="morgana.base_models.BaseSPSS"><code class="xref py py-class docutils literal notranslate"><span class="pre">morgana.base_models.BaseSPSS</span></code></a></p>
 <p>Creates an abstract VAE model, where the decoder corresponds to an SPSS model.</p>
 <dl class="field-list simple">
@@ -401,7 +401,7 @@ the length of the list given must match the length of <code class="code docutils
 </dl>
 <dl class="method">
 <dt id="morgana.base_models.BaseVAE.encode">
-<code class="descname">encode</code><span class="sig-paren">(</span><em>self</em>, <em>features</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/base_models.py#L366-L379"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.base_models.BaseVAE.encode" title="Permalink to this definition">¶</a></dt>
+<code class="descname">encode</code><span class="sig-paren">(</span><em>self</em>, <em>features</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/base_models.py#L371-L384"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.base_models.BaseVAE.encode" title="Permalink to this definition">¶</a></dt>
 <dd><p>VAE encoder.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -419,7 +419,7 @@ the length of the list given must match the length of <code class="code docutils
 
 <dl class="method">
 <dt id="morgana.base_models.BaseVAE.sample">
-<code class="descname">sample</code><span class="sig-paren">(</span><em>self</em>, <em>mean</em>, <em>log_variance</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/base_models.py#L381-L395"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.base_models.BaseVAE.sample" title="Permalink to this definition">¶</a></dt>
+<code class="descname">sample</code><span class="sig-paren">(</span><em>self</em>, <em>mean</em>, <em>log_variance</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/base_models.py#L386-L400"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.base_models.BaseVAE.sample" title="Permalink to this definition">¶</a></dt>
 <dd><p>Takes one sample from the approximate posterior (an isotropic Gaussian).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -439,7 +439,7 @@ the length of the list given must match the length of <code class="code docutils
 
 <dl class="method">
 <dt id="morgana.base_models.BaseVAE.decode">
-<code class="descname">decode</code><span class="sig-paren">(</span><em>self</em>, <em>latent</em>, <em>features</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/base_models.py#L397-L411"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.base_models.BaseVAE.decode" title="Permalink to this definition">¶</a></dt>
+<code class="descname">decode</code><span class="sig-paren">(</span><em>self</em>, <em>latent</em>, <em>features</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/base_models.py#L402-L416"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.base_models.BaseVAE.decode" title="Permalink to this definition">¶</a></dt>
 <dd><p>VAE decoder.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -459,19 +459,19 @@ the length of the list given must match the length of <code class="code docutils
 
 <dl class="method">
 <dt id="morgana.base_models.BaseVAE.forward">
-<code class="descname">forward</code><span class="sig-paren">(</span><em>self</em>, <em>features</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/base_models.py#L413-L425"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.base_models.BaseVAE.forward" title="Permalink to this definition">¶</a></dt>
+<code class="descname">forward</code><span class="sig-paren">(</span><em>self</em>, <em>features</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/base_models.py#L418-L430"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.base_models.BaseVAE.forward" title="Permalink to this definition">¶</a></dt>
 <dd><p>Encodes the input features, samples from the encoding, reconstructs the input, and calculates the loss.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="morgana.base_models.BaseVAE.predict">
-<code class="descname">predict</code><span class="sig-paren">(</span><em>self</em>, <em>features</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/base_models.py#L427-L430"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.base_models.BaseVAE.predict" title="Permalink to this definition">¶</a></dt>
+<code class="descname">predict</code><span class="sig-paren">(</span><em>self</em>, <em>features</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/base_models.py#L432-L444"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.base_models.BaseVAE.predict" title="Permalink to this definition">¶</a></dt>
 <dd><p>Runs the model in testing mode (the encoder is not used), but the latent must be provided as an input.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="morgana.base_models.BaseVAE._loss">
-<code class="descname">_loss</code><span class="sig-paren">(</span><em>self</em>, <em>targets</em>, <em>predictions</em>, <em>mean</em>, <em>log_variance</em>, <em>seq_lens=None</em>, <em>loss_weights=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/base_models.py#L432-L450"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.base_models.BaseVAE._loss" title="Permalink to this definition">¶</a></dt>
+<code class="descname">_loss</code><span class="sig-paren">(</span><em>self</em>, <em>targets</em>, <em>predictions</em>, <em>mean</em>, <em>log_variance</em>, <em>seq_lens=None</em>, <em>loss_weights=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/base_models.py#L446-L464"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.base_models.BaseVAE._loss" title="Permalink to this definition">¶</a></dt>
 <dd><p>Defines the loss helper to calculate the Kullback–Leibler divergence as well as the sequence loss.</p>
 </dd></dl>
 
