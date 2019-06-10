@@ -431,7 +431,16 @@ class BaseVAE(BaseSPSS):
 
     def predict(self, features):
         r"""Runs the model in testing mode (the encoder is not used), but the latent must be provided as an input."""
-        latent = features['latent']
+        if 'latent' in features:
+            latent = features['latent']
+        else:
+            _, feature = next(iter(features.items()))
+            batch_size = feature.shape[0]
+            device = feature.device
+
+            # If no latent is provided, default to using the zero vector.
+            latent = torch.zeros((batch_size, self.z_dim)).to(device)
+
         return self.decode(latent, features)
 
     def _loss(self, targets, predictions, mean, log_variance, seq_lens=None, loss_weights=None):
