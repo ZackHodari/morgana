@@ -1,7 +1,6 @@
 from morgana import base_models
 from morgana import data
 from morgana import experiment_builder
-from morgana import logging
 from morgana import losses
 from morgana import lr_schedules
 from morgana import metrics

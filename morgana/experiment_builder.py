@@ -13,9 +13,9 @@ from tts_data_tools import file_io
 
 from morgana import data
 from morgana import lr_schedules
-from morgana import logging as morgana_logging
 from morgana import utils
 from morgana import viz
+from morgana import _logging
 
 
 def add_boolean_arg(parser, name, help):
@@ -62,7 +62,7 @@ class ExperimentBuilder(object):
         Name of the device to place the mode and parameters on.
     _lr_schedule : `torch.optim.lr_scheduler._LRScheduler`
         Partially initialised learning rate schedule. Depending on the schedule, this will be used per epoch or batch.
-    logger : logging.Logger
+    logger : _logging.Logger
         Python Logger. Copies `stdout`, `stderr`, and all tqdm output to separate files.
 
     train_loader : :class:`torch.utils.data.DataLoader` (in a :class:`data._DataLoaderWrapper` container).
@@ -240,7 +240,7 @@ class ExperimentBuilder(object):
         #
 
         self.experiment_dir = os.path.join(self.experiments_base, self.experiment_name)
-        self.logger = morgana_logging.create_logger(self.experiment_dir)
+        self.logger = _logging.create_logger(self.experiment_dir)
 
         self._lr_schedule = lr_schedules.init_lr_schedule(self.lr_schedule_name, **self.lr_schedule_kwargs)
 
@@ -420,7 +420,7 @@ class ExperimentBuilder(object):
 
         * Gradient updates, and EMA gradient updates.
         * Batch level learning rate schedule updates.
-        * Logging metrcis to tqdm and to a `metrics.json` file.
+        * Logging metrics to tqdm and to a `metrics.json` file.
 
         Parameters
         ----------
@@ -444,7 +444,7 @@ class ExperimentBuilder(object):
         self.model.metrics.reset_state('train')
 
         loss = 0.0
-        pbar = morgana_logging.ProgressBar(len(data_loader))
+        pbar = _logging.ProgressBar(len(data_loader))
         for i, (features, names) in zip(pbar, data_loader):
             self.model.step = (self.epoch - 1) * len(data_loader) + i + 1
 
@@ -564,7 +564,7 @@ class ExperimentBuilder(object):
         model.metrics.reset_state('valid')
 
         loss = 0.0
-        pbar = morgana_logging.ProgressBar(len(data_loader))
+        pbar = _logging.ProgressBar(len(data_loader))
         for i, (features, names) in zip(pbar, data_loader):
             self.model.step = (self.epoch - 1) * len(data_loader) + i + 1
 
