@@ -1,5 +1,6 @@
 import os
 
+import numpy as np
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -276,14 +277,18 @@ class BaseModel(nn.Module):
 
         n_frames = features['n_frames'].cpu().detach().numpy()
         for feat_name, values in output_features.items():
-            values = values.cpu().detach().numpy()
-            values = [value[:n_frame] for value, n_frame in zip(values, n_frames)]
 
-            tdt.file_io.save_dir(tdt.file_io.save_bin,
-                                 path=os.path.join(pred_dir, feat_name),
-                                 data=values,
-                                 file_ids=names,
-                                 feat_ext='.bin')
+            if isinstance(values, torch.Tensor):
+                values = values.cpu().detach().numpy()
+
+            if isinstance(values, np.ndarray):
+                values = [value[:n_frame] for value, n_frame in zip(values, n_frames)]
+
+                tdt.file_io.save_dir(tdt.file_io.save_bin,
+                                     path=os.path.join(pred_dir, feat_name),
+                                     data=values,
+                                     file_ids=names,
+                                     feat_ext='.bin')
 
     def analysis_for_valid_batch(self, features, output_features, names, out_dir, **kwargs):
         r"""Hook used by :class:`morgana.experiment_builder.ExperimentBuilder` after validation batches for some epochs.
