@@ -51,11 +51,16 @@
             
   <div class="section" id="experiment-builder">
 <h1>experiment_builder<a class="headerlink" href="#experiment-builder" title="Permalink to this headline">¶</a></h1>
+<p>After defining a model (as described in <a class="reference internal" href="morgana.base_models.html#base-models"><span class="std std-ref">base_models</span></a>) you can train your model (or generate from a checkpoint)
+using an experiment builder, this provides a <a class="reference external" href="command_line_arguments.html">Command line interface</a> to
+train/validation/test loops.</p>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="command_line_arguments.html">Command line usage</a></li>
 </ul>
 </div>
+<p>If you want to define custom train/validation/test loops you can create a subclass of <a class="reference internal" href="#morgana.experiment_builder.ExperimentBuilder" title="morgana.experiment_builder.ExperimentBuilder"><code class="xref py py-class docutils literal notranslate"><span class="pre">ExperimentBuilder</span></code></a> and
+override the methods you wish to change.</p>
 <div class="section" id="experimentbuilder">
 <h2>ExperimentBuilder<a class="headerlink" href="#experimentbuilder" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
@@ -145,7 +150,7 @@ This is the only command line argument that has no default value and is required
 <dd><p>Python Logger. Copies <code class="code docutils literal notranslate"><span class="pre">stdout</span></code>, <code class="code docutils literal notranslate"><span class="pre">stderr</span></code>, and all tqdm output to separate files.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/logging.html#logging.Logger" title="(in Python v3.7)">logging.Logger</a></p>
+<dd class="field-odd"><p>_logging.Logger</p>
 </dd>
 </dl>
 </dd></dl>
@@ -262,7 +267,7 @@ restrictive, but it will catch some off by one errors. Can be avoided by renamin
 <ul class="simple">
 <li><p>Gradient updates, and EMA gradient updates.</p></li>
 <li><p>Batch level learning rate schedule updates.</p></li>
-<li><p>Logging metrcis to tqdm and to a <code class="code docutils literal notranslate"><span class="pre">metrics.json</span></code> file.</p></li>
+<li><p>Logging metrics to tqdm and to a <code class="code docutils literal notranslate"><span class="pre">metrics.json</span></code> file.</p></li>
 </ul>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -371,12 +376,7 @@ restrictive, but it will catch some off by one errors. Can be avoided by renamin
 <li class="toctree-l2"><a class="reference internal" href="#experimentbuilder">ExperimentBuilder</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="morgana.utils.html">utils</a></li>
-<li class="toctree-l1"><a class="reference internal" href="morgana.logging.html">logging</a></li>
-<li class="toctree-l1"><a class="reference internal" href="morgana.metrics.html">metrics</a></li>
-<li class="toctree-l1"><a class="reference internal" href="morgana.losses.html">losses</a></li>
-<li class="toctree-l1"><a class="reference internal" href="morgana.sampling.html">sampling</a></li>
-<li class="toctree-l1"><a class="reference internal" href="morgana.viz.html">viz</a></li>
+<li class="toctree-l1"><a class="reference internal" href="helpers.html">Helpers</a></li>
 </ul>
 <h3>Related Topics</h3>
 <ul>

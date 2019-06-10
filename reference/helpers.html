@@ -1,0 +1,162 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Helpers &#8212; morgana 0.0.1 documentation</title>
+    <link rel="stylesheet" href="../_static/readable.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/custom.css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="utils" href="morgana.utils.html" />
+    <link rel="prev" title="Command line arguments" href="command_line_arguments.html" />
+   
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
+
+  </head><body>
+  
+  
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="morgana.utils.html" title="utils"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="command_line_arguments.html" title="Command line arguments"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">morgana 0.0.1 documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="helpers">
+<h1>Helpers<a class="headerlink" href="#helpers" title="Permalink to this headline">¶</a></h1>
+<p>The following sections describe the remaining functionality provided by Morgana,</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="morgana.utils.html">Miscellaneous utilities</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="morgana.utils.html#listify">listify</a></li>
+<li class="toctree-l2"><a class="reference internal" href="morgana.utils.html#format-float-tensor">format_float_tensor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="morgana.utils.html#map-nested">map_nested</a></li>
+<li class="toctree-l2"><a class="reference internal" href="morgana.utils.html#infer-device">infer_device</a></li>
+<li class="toctree-l2"><a class="reference internal" href="morgana.utils.html#get-epoch-from-checkpoint-path">get_epoch_from_checkpoint_path</a></li>
+<li class="toctree-l2"><a class="reference internal" href="morgana.utils.html#sequence-mask">sequence_mask</a></li>
+<li class="toctree-l2"><a class="reference internal" href="morgana.utils.html#both-voiced-mask">both_voiced_mask</a></li>
+<li class="toctree-l2"><a class="reference internal" href="morgana.utils.html#upsample-to-repetitions">upsample_to_repetitions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="morgana.utils.html#string-to-ascii">string_to_ascii</a></li>
+<li class="toctree-l2"><a class="reference internal" href="morgana.utils.html#ascii-to-string">ascii_to_string</a></li>
+<li class="toctree-l2"><a class="reference internal" href="morgana.utils.html#recurrentcudnnwrapper">RecurrentCuDNNWrapper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="morgana.utils.html#sequentialwithrecurrent">SequentialWithRecurrent</a></li>
+<li class="toctree-l2"><a class="reference internal" href="morgana.utils.html#exponentialmovingaverage">ExponentialMovingAverage</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="morgana.metrics.html">Streaming metrics</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="morgana.metrics.html#statefulmetric">StatefulMetric</a></li>
+<li class="toctree-l2"><a class="reference internal" href="morgana.metrics.html#handler">Handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="morgana.metrics.html#print">Print</a></li>
+<li class="toctree-l2"><a class="reference internal" href="morgana.metrics.html#tensorhistory">TensorHistory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="morgana.metrics.html#mean">Mean</a></li>
+<li class="toctree-l2"><a class="reference internal" href="morgana.metrics.html#rmse">RMSE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="morgana.metrics.html#f0distortion">F0Distortion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="morgana.metrics.html#lf0distortion">LF0Distortion</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="morgana.losses.html">Additional loss functions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="morgana.losses.html#kld-standard-normal">KLD_standard_normal</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="morgana.sampling.html">Distributions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="morgana.sampling.html#uniformspheresurfacesampler">UniformSphereSurfaceSampler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="morgana.sampling.html#uniformellipsoidsurfaceapproximatesampler">UniformEllipsoidSurfaceApproximateSampler</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="morgana.viz.html">Visualisation (synthesis, plotting)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="viz/morgana.viz.plotting.html">plotting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="viz/morgana.viz.synthesis.html">synthesis</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="morgana._logging.html">Experiment logger</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="morgana._logging.html#create-logger">create_logger</a></li>
+<li class="toctree-l2"><a class="reference internal" href="morgana._logging.html#progressbar">ProgressBar</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="../index.html">Table of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="morgana.base_models.html">base_models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="morgana.data.html">data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="morgana.experiment_builder.html">experiment_builder</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Helpers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="morgana.utils.html">Miscellaneous utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="morgana.metrics.html">Streaming metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="morgana.losses.html">Additional loss functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="morgana.sampling.html">Distributions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="morgana.viz.html">Visualisation (synthesis, plotting)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="morgana._logging.html">Experiment logger</a></li>
+</ul>
+</li>
+</ul>
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation index</a><ul>
+      <li>Previous: <a href="command_line_arguments.html" title="previous chapter">Command line arguments</a></li>
+      <li>Next: <a href="morgana.utils.html" title="next chapter">utils</a></li>
+  </ul></li>
+</ul>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/reference/helpers.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+  <div class="footer">
+    &copy; Copyright 2019, Zack Hodari.
+    Created using <a href="http://sphinx-doc.org/">Sphinx</a> 2.0.1.
+  </div>
+  
+  </body>
+</html>

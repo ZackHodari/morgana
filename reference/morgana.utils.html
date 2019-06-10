@@ -16,8 +16,8 @@
     <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="logging" href="morgana.logging.html" />
-    <link rel="prev" title="Command line arguments" href="command_line_arguments.html" />
+    <link rel="next" title="metrics" href="morgana.metrics.html" />
+    <link rel="prev" title="Helpers" href="helpers.html" />
    
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
 
@@ -35,12 +35,13 @@
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="morgana.logging.html" title="logging"
+          <a href="morgana.metrics.html" title="metrics"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="command_line_arguments.html" title="Command line arguments"
+          <a href="helpers.html" title="Helpers"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">morgana 0.0.1 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="../index.html">morgana 0.0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="helpers.html" accesskey="U">Helpers</a> &#187;</li> 
       </ul>
     </div>  
 
@@ -296,33 +297,38 @@ code for the null character x00. This character is stripped from the output stri
 <li class="toctree-l1"><a class="reference internal" href="morgana.base_models.html">base_models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="morgana.data.html">data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="morgana.experiment_builder.html">experiment_builder</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">utils</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#listify">listify</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#format-float-tensor">format_float_tensor</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#map-nested">map_nested</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#infer-device">infer_device</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#get-epoch-from-checkpoint-path">get_epoch_from_checkpoint_path</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#sequence-mask">sequence_mask</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#both-voiced-mask">both_voiced_mask</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#upsample-to-repetitions">upsample_to_repetitions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#string-to-ascii">string_to_ascii</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#ascii-to-string">ascii_to_string</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#recurrentcudnnwrapper">RecurrentCuDNNWrapper</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#sequentialwithrecurrent">SequentialWithRecurrent</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#exponentialmovingaverage">ExponentialMovingAverage</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="helpers.html">Helpers</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Miscellaneous utilities</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#listify">listify</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#format-float-tensor">format_float_tensor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#map-nested">map_nested</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#infer-device">infer_device</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#get-epoch-from-checkpoint-path">get_epoch_from_checkpoint_path</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sequence-mask">sequence_mask</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#both-voiced-mask">both_voiced_mask</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#upsample-to-repetitions">upsample_to_repetitions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#string-to-ascii">string_to_ascii</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ascii-to-string">ascii_to_string</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#recurrentcudnnwrapper">RecurrentCuDNNWrapper</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sequentialwithrecurrent">SequentialWithRecurrent</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#exponentialmovingaverage">ExponentialMovingAverage</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="morgana.logging.html">logging</a></li>
-<li class="toctree-l1"><a class="reference internal" href="morgana.metrics.html">metrics</a></li>
-<li class="toctree-l1"><a class="reference internal" href="morgana.losses.html">losses</a></li>
-<li class="toctree-l1"><a class="reference internal" href="morgana.sampling.html">sampling</a></li>
-<li class="toctree-l1"><a class="reference internal" href="morgana.viz.html">viz</a></li>
+<li class="toctree-l2"><a class="reference internal" href="morgana.metrics.html">Streaming metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="morgana.losses.html">Additional loss functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="morgana.sampling.html">Distributions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="morgana.viz.html">Visualisation (synthesis, plotting)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="morgana._logging.html">Experiment logger</a></li>
+</ul>
+</li>
 </ul>
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../index.html">Documentation index</a><ul>
-      <li>Previous: <a href="command_line_arguments.html" title="previous chapter">Command line arguments</a></li>
-      <li>Next: <a href="morgana.logging.html" title="next chapter">logging</a></li>
+  <li><a href="helpers.html">Helpers</a><ul>
+      <li>Previous: <a href="helpers.html" title="previous chapter">Helpers</a></li>
+      <li>Next: <a href="morgana.metrics.html" title="next chapter">metrics</a></li>
+  </ul></li>
   </ul></li>
 </ul>
   <div role="note" aria-label="source link">

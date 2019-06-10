@@ -51,6 +51,15 @@
             
   <div class="section" id="data">
 <h1>data<a class="headerlink" href="#data" title="Permalink to this headline">¶</a></h1>
+<p>Specification of what data the model will load is given as part of your (<a class="reference internal" href="morgana.base_models.html#base-models"><span class="std std-ref">base_models</span></a>) model
+class, this does not specify where the data will be loaded from, but what data (e.g. the given name, the directory name,
+normalisation used, delta and delta-delta inclusion, and file extension). The location of the data is given when running
+an experiment using the <a class="reference internal" href="command_line_arguments.html#command-line-arguments"><span class="std std-ref">Command line arguments</span></a>.</p>
+<p>If you need to load a file with a custom function create a subclass of <a class="reference internal" href="#morgana.data._DataSource" title="morgana.data._DataSource"><code class="xref py py-class docutils literal notranslate"><span class="pre">_DataSource</span></code></a> (loading can include
+preprocessing if needed).</p>
+<p>The following sections describe the provided utilities for loading code in Morgana, however
+these are all used internally by <a class="reference internal" href="morgana.experiment_builder.html#experiment-builder"><span class="std std-ref">experiment_builder</span></a>, typically the only thing you need to be aware of are the
+available data sources and feature normalisers.</p>
 <ul class="simple">
 <li><p><a class="reference internal" href="#batching-utility">Batching utility</a></p></li>
 <li><p><a class="reference internal" href="#datasource-specification">DataSource specification</a></p></li>
@@ -86,6 +95,11 @@
 </div>
 <div class="section" id="datasource-specification">
 <h2>DataSource specification<a class="headerlink" href="#datasource-specification" title="Permalink to this headline">¶</a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Supported <a class="reference internal" href="#feature-normalisers">Feature normalisers</a> are limited to <code class="code docutils literal notranslate"><span class="pre">mvn</span></code> and <code class="code docutils literal notranslate"><span class="pre">minmax</span></code>. To define a new normalisers you should override
+<code class="xref py py-func docutils literal notranslate"><span class="pre">create_normaliser()</span></code> for your data source class.</p>
+</div>
 <div class="section" id="datasource">
 <h3>_DataSource<a class="headerlink" href="#datasource" title="Permalink to this headline">¶</a></h3>
 <dl class="class">
@@ -647,12 +661,7 @@ present adjacent to the directory that contains the features.</p></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="morgana.experiment_builder.html">experiment_builder</a></li>
-<li class="toctree-l1"><a class="reference internal" href="morgana.utils.html">utils</a></li>
-<li class="toctree-l1"><a class="reference internal" href="morgana.logging.html">logging</a></li>
-<li class="toctree-l1"><a class="reference internal" href="morgana.metrics.html">metrics</a></li>
-<li class="toctree-l1"><a class="reference internal" href="morgana.losses.html">losses</a></li>
-<li class="toctree-l1"><a class="reference internal" href="morgana.sampling.html">sampling</a></li>
-<li class="toctree-l1"><a class="reference internal" href="morgana.viz.html">viz</a></li>
+<li class="toctree-l1"><a class="reference internal" href="helpers.html">Helpers</a></li>
 </ul>
 <h3>Related Topics</h3>
 <ul>

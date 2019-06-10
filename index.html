@@ -77,8 +77,9 @@ customisation where necessary.</p>
 </div>
 <div class="section" id="defining-a-model">
 <h2>Defining a model<a class="headerlink" href="#defining-a-model" title="Permalink to this headline">¶</a></h2>
-<p>For most use-cases, the classes provided in <a class="reference external" href="https://github.com/ZackHodari/morgana/morgana/base_models.py">base_models.py</a> is all that needs to be extended. For example, create a
-subclass of <a class="reference internal" href="reference/morgana.base_models.html#morgana.base_models.BaseSPSS" title="morgana.base_models.BaseSPSS"><code class="xref py py-class docutils literal notranslate"><span class="pre">morgana.base_models.BaseSPSS</span></code></a> and implement <code class="code docutils literal notranslate"><span class="pre">train_data_sources</span></code>, <code class="code docutils literal notranslate"><span class="pre">predict</span></code>, and <code class="code docutils literal notranslate"><span class="pre">loss</span></code>.</p>
+<p>For most use-cases, the classes provided in <a class="reference external" href="https://github.com/ZackHodari/morgana/blob/master/morgana/base_models.py">base_models.py</a> is all that needs to be extended. For
+example, create a subclass of <a class="reference internal" href="reference/morgana.base_models.html#morgana.base_models.BaseSPSS" title="morgana.base_models.BaseSPSS"><code class="xref py py-class docutils literal notranslate"><span class="pre">morgana.base_models.BaseSPSS</span></code></a> and implement <code class="code docutils literal notranslate"><span class="pre">train_data_sources</span></code>, <code class="code docutils literal notranslate"><span class="pre">predict</span></code>, and
+<code class="code docutils literal notranslate"><span class="pre">loss</span></code>.</p>
 <ul class="simple">
 <li><p><code class="code docutils literal notranslate"><span class="pre">__init__</span></code>: Create the layers for your model.</p></li>
 <li><p><code class="code docutils literal notranslate"><span class="pre">train_data_sources</span></code>: Define a dictionary containing instances that are subclasses of <code class="code docutils literal notranslate"><span class="pre">morgana.data._DataSource</span></code>.</p></li>
@@ -134,9 +135,9 @@ sequence length feature can also be specified (for each target-prediction pair).
 </div>
 <div class="section" id="running-an-experiment">
 <h2>Running an experiment<a class="headerlink" href="#running-an-experiment" title="Permalink to this headline">¶</a></h2>
-<p>Most models can be run using classes provided in <a class="reference external" href="https://github.com/ZackHodari/morgana/morgana/experiment_builder.py">experiment_builder.py</a>. If different training procedures are needed,
-then a new <a class="reference internal" href="reference/morgana.experiment_builder.html#morgana.experiment_builder.ExperimentBuilder" title="morgana.experiment_builder.ExperimentBuilder"><code class="xref py py-class docutils literal notranslate"><span class="pre">morgana.experiment_builder.ExperimentBuilder</span></code></a> subclass may be required. An <code class="code docutils literal notranslate"><span class="pre">ExperimentBuilder</span></code>
-contains the following important methods,</p>
+<p>Most models can be run using classes provided in <a class="reference external" href="https://github.com/ZackHodari/morgana/blob/master/morgana/experiment_builder.py">experiment_builder.py</a>. If different training procedures
+are needed, then a new <a class="reference internal" href="reference/morgana.experiment_builder.html#morgana.experiment_builder.ExperimentBuilder" title="morgana.experiment_builder.ExperimentBuilder"><code class="xref py py-class docutils literal notranslate"><span class="pre">morgana.experiment_builder.ExperimentBuilder</span></code></a> subclass may be required. An
+<code class="code docutils literal notranslate"><span class="pre">ExperimentBuilder</span></code> contains the following important methods,</p>
 <ul class="simple">
 <li><p><code class="code docutils literal notranslate"><span class="pre">add_args</span></code>: Defines the command lines arguments supported for experiments of this type.</p></li>
 <li><dl class="simple">
@@ -206,50 +207,13 @@ contains the following important methods,</p>
 <li class="toctree-l2"><a class="reference internal" href="reference/morgana.experiment_builder.html#experimentbuilder">ExperimentBuilder</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="reference/morgana.utils.html">utils</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="reference/morgana.utils.html#listify">listify</a></li>
-<li class="toctree-l2"><a class="reference internal" href="reference/morgana.utils.html#format-float-tensor">format_float_tensor</a></li>
-<li class="toctree-l2"><a class="reference internal" href="reference/morgana.utils.html#map-nested">map_nested</a></li>
-<li class="toctree-l2"><a class="reference internal" href="reference/morgana.utils.html#infer-device">infer_device</a></li>
-<li class="toctree-l2"><a class="reference internal" href="reference/morgana.utils.html#get-epoch-from-checkpoint-path">get_epoch_from_checkpoint_path</a></li>
-<li class="toctree-l2"><a class="reference internal" href="reference/morgana.utils.html#sequence-mask">sequence_mask</a></li>
-<li class="toctree-l2"><a class="reference internal" href="reference/morgana.utils.html#both-voiced-mask">both_voiced_mask</a></li>
-<li class="toctree-l2"><a class="reference internal" href="reference/morgana.utils.html#upsample-to-repetitions">upsample_to_repetitions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="reference/morgana.utils.html#string-to-ascii">string_to_ascii</a></li>
-<li class="toctree-l2"><a class="reference internal" href="reference/morgana.utils.html#ascii-to-string">ascii_to_string</a></li>
-<li class="toctree-l2"><a class="reference internal" href="reference/morgana.utils.html#recurrentcudnnwrapper">RecurrentCuDNNWrapper</a></li>
-<li class="toctree-l2"><a class="reference internal" href="reference/morgana.utils.html#sequentialwithrecurrent">SequentialWithRecurrent</a></li>
-<li class="toctree-l2"><a class="reference internal" href="reference/morgana.utils.html#exponentialmovingaverage">ExponentialMovingAverage</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="reference/morgana.logging.html">logging</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="reference/morgana.logging.html#create-logger">create_logger</a></li>
-<li class="toctree-l2"><a class="reference internal" href="reference/morgana.logging.html#progressbar">ProgressBar</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="reference/morgana.metrics.html">metrics</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="reference/morgana.metrics.html#statefulmetric">StatefulMetric</a></li>
-<li class="toctree-l2"><a class="reference internal" href="reference/morgana.metrics.html#handler">Handler</a></li>
-<li class="toctree-l2"><a class="reference internal" href="reference/morgana.metrics.html#print">Print</a></li>
-<li class="toctree-l2"><a class="reference internal" href="reference/morgana.metrics.html#tensorhistory">TensorHistory</a></li>
-<li class="toctree-l2"><a class="reference internal" href="reference/morgana.metrics.html#mean">Mean</a></li>
-<li class="toctree-l2"><a class="reference internal" href="reference/morgana.metrics.html#rmse">RMSE</a></li>
-<li class="toctree-l2"><a class="reference internal" href="reference/morgana.metrics.html#f0distortion">F0Distortion</a></li>
-<li class="toctree-l2"><a class="reference internal" href="reference/morgana.metrics.html#lf0distortion">LF0Distortion</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="reference/morgana.losses.html">losses</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="reference/morgana.losses.html#kld-standard-normal">KLD_standard_normal</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="reference/morgana.sampling.html">sampling</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="reference/morgana.sampling.html#uniformspheresurfacesampler">UniformSphereSurfaceSampler</a></li>
-<li class="toctree-l2"><a class="reference internal" href="reference/morgana.sampling.html#uniformellipsoidsurfaceapproximatesampler">UniformEllipsoidSurfaceApproximateSampler</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="reference/morgana.viz.html">viz</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="reference/viz/morgana.viz.plotting.html">plotting</a></li>
-<li class="toctree-l2"><a class="reference internal" href="reference/viz/morgana.viz.synthesis.html">synthesis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference/helpers.html">Helpers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="reference/morgana.utils.html">Miscellaneous utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/morgana.metrics.html">Streaming metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/morgana.losses.html">Additional loss functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/morgana.sampling.html">Distributions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/morgana.viz.html">Visualisation (synthesis, plotting)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reference/morgana._logging.html">Experiment logger</a></li>
 </ul>
 </li>
 </ul>
@@ -275,12 +239,7 @@ contains the following important methods,</p>
 <li class="toctree-l1"><a class="reference internal" href="reference/morgana.base_models.html">base_models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="reference/morgana.data.html">data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="reference/morgana.experiment_builder.html">experiment_builder</a></li>
-<li class="toctree-l1"><a class="reference internal" href="reference/morgana.utils.html">utils</a></li>
-<li class="toctree-l1"><a class="reference internal" href="reference/morgana.logging.html">logging</a></li>
-<li class="toctree-l1"><a class="reference internal" href="reference/morgana.metrics.html">metrics</a></li>
-<li class="toctree-l1"><a class="reference internal" href="reference/morgana.losses.html">losses</a></li>
-<li class="toctree-l1"><a class="reference internal" href="reference/morgana.sampling.html">sampling</a></li>
-<li class="toctree-l1"><a class="reference internal" href="reference/morgana.viz.html">viz</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference/helpers.html">Helpers</a></li>
 </ul>
 <h3>Related Topics</h3>
 <ul>

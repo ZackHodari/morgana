@@ -17,7 +17,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="losses" href="morgana.losses.html" />
-    <link rel="prev" title="logging" href="morgana.logging.html" />
+    <link rel="prev" title="utils" href="morgana.utils.html" />
    
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9">
 
@@ -38,9 +38,10 @@
           <a href="morgana.losses.html" title="losses"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="morgana.logging.html" title="logging"
+          <a href="morgana.utils.html" title="utils"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">morgana 0.0.1 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="../index.html">morgana 0.0.1 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="helpers.html" accesskey="U">Helpers</a> &#187;</li> 
       </ul>
     </div>  
 
@@ -51,9 +52,16 @@
             
   <div class="section" id="metrics">
 <h1>metrics<a class="headerlink" href="#metrics" title="Permalink to this headline">¶</a></h1>
+<p>To allow logging of model performance during each epoch of training we provide an interface to compute metrics in an
+online (streaming) fashion. This is not only more memory/time efficient than loading all generated files and calculating
+performance after an epoch, but it allows for performance to be reported at each batch.</p>
+<p>See <a class="reference internal" href="#morgana.metrics.StatefulMetric" title="morgana.metrics.StatefulMetric"><code class="xref py py-class docutils literal notranslate"><span class="pre">StatefulMetric</span></code></a> for details on how to define a new streaming metric.</p>
 <ul class="simple">
 <li><p><a class="reference internal" href="#statefulmetric">StatefulMetric</a></p></li>
 <li><p><a class="reference internal" href="#handler">Handler</a></p></li>
+</ul>
+<p>The following are metrics provided by Morgana. See <a class="reference external" href="https://github.com/ZackHodari/morgana/blob/master/models/f0_test_model.py">F0Model</a> for example usage.</p>
+<ul class="simple">
 <li><p><a class="reference internal" href="#print">Print</a></p></li>
 <li><p><a class="reference internal" href="#tensorhistory">TensorHistory</a></p></li>
 <li><p><a class="reference internal" href="#mean">Mean</a></p></li>
@@ -105,6 +113,8 @@
 </div>
 <div class="section" id="handler">
 <h2>Handler<a class="headerlink" href="#handler" title="Permalink to this headline">¶</a></h2>
+<p>This metric is used to maintain multiple collections of metrics, it is created automatically by
+<a class="reference internal" href="morgana.experiment_builder.html#morgana.experiment_builder.ExperimentBuilder" title="morgana.experiment_builder.ExperimentBuilder"><code class="xref py py-class docutils literal notranslate"><span class="pre">morgana.experiment_builder.ExperimentBuilder</span></code></a> and added to your model instance as an attribute called <code class="code docutils literal notranslate"><span class="pre">metrics</span></code>.</p>
 <dl class="class">
 <dt id="morgana.metrics.Handler">
 <em class="property">class </em><code class="descclassname">morgana.metrics.</code><code class="descname">Handler</code><span class="sig-paren">(</span><em>**metrics</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/metrics.py#L43-L173"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.metrics.Handler" title="Permalink to this definition">¶</a></dt>
@@ -345,28 +355,33 @@ possible to have multiple collections as different training modes (train/valid) 
 <li class="toctree-l1"><a class="reference internal" href="morgana.base_models.html">base_models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="morgana.data.html">data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="morgana.experiment_builder.html">experiment_builder</a></li>
-<li class="toctree-l1"><a class="reference internal" href="morgana.utils.html">utils</a></li>
-<li class="toctree-l1"><a class="reference internal" href="morgana.logging.html">logging</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">metrics</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#statefulmetric">StatefulMetric</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#handler">Handler</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#print">Print</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#tensorhistory">TensorHistory</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#mean">Mean</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#rmse">RMSE</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#f0distortion">F0Distortion</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#lf0distortion">LF0Distortion</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="helpers.html">Helpers</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="morgana.utils.html">Miscellaneous utilities</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Streaming metrics</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#statefulmetric">StatefulMetric</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#handler">Handler</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#print">Print</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#tensorhistory">TensorHistory</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#mean">Mean</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rmse">RMSE</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#f0distortion">F0Distortion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#lf0distortion">LF0Distortion</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="morgana.losses.html">losses</a></li>
-<li class="toctree-l1"><a class="reference internal" href="morgana.sampling.html">sampling</a></li>
-<li class="toctree-l1"><a class="reference internal" href="morgana.viz.html">viz</a></li>
+<li class="toctree-l2"><a class="reference internal" href="morgana.losses.html">Additional loss functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="morgana.sampling.html">Distributions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="morgana.viz.html">Visualisation (synthesis, plotting)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="morgana._logging.html">Experiment logger</a></li>
+</ul>
+</li>
 </ul>
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../index.html">Documentation index</a><ul>
-      <li>Previous: <a href="morgana.logging.html" title="previous chapter">logging</a></li>
+  <li><a href="helpers.html">Helpers</a><ul>
+      <li>Previous: <a href="morgana.utils.html" title="previous chapter">utils</a></li>
       <li>Next: <a href="morgana.losses.html" title="next chapter">losses</a></li>
+  </ul></li>
   </ul></li>
 </ul>
   <div role="note" aria-label="source link">

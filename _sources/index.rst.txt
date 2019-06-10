@@ -23,12 +23,7 @@ Package reference
    reference/morgana.base_models
    reference/morgana.data
    reference/morgana.experiment_builder
-   reference/morgana.utils
-   reference/morgana.logging
-   reference/morgana.metrics
-   reference/morgana.losses
-   reference/morgana.sampling
-   reference/morgana.viz
+   reference/helpers
 
 
 Indices and tables
