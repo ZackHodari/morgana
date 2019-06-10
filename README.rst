@@ -2,7 +2,8 @@
 morgana
 =======
 
-Morgana is a toolkit for defining and training Text-to-Speech voices in PyTorch.
+Morgana (`GitHub <https://github.com/ZackHodari/morgana>`_) (`docs <https://zackhodari.github.io/morgana/>`_) is a
+toolkit for defining and training Text-to-Speech voices in PyTorch.
 
 
 Installation

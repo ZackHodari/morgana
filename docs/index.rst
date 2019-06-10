@@ -2,8 +2,6 @@ Morgana documentation
 =====================
 .. automodule:: morgana
 
-Morgana on GitHub: https://github.com/ZackHodari/morgana
-
 API documentation can be found at the bottom of this page: `Package reference`_
 
 See the command line usage for running experiments: :ref:`Command line arguments`
