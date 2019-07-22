@@ -287,8 +287,7 @@ class BaseModel(nn.Module):
                 tdt.file_io.save_dir(tdt.file_io.save_bin,
                                      path=os.path.join(pred_dir, feat_name),
                                      data=values,
-                                     file_ids=names,
-                                     feat_ext='.bin')
+                                     file_ids=names)
 
     def analysis_for_valid_batch(self, features, output_features, names, out_dir, **kwargs):
         r"""Hook used by :class:`morgana.experiment_builder.ExperimentBuilder` after validation batches for some epochs.
@@ -443,7 +442,11 @@ class BaseVAE(BaseSPSS):
 
         return self.decode(latent, features)
 
-    def _loss(self, targets, predictions, mean, log_variance, seq_lens=None, loss_weights=None):
+    def KL_divergence(self, latent, mean, log_variance):
+        r"""Calculates the KL-divergence using the prior `p(z) = N(0, 1)`."""
+        return losses.KLD_standard_normal(mean, log_variance)
+
+    def _loss(self, targets, predictions, latent, mean, log_variance, seq_lens=None, loss_weights=None):
         r"""Defines the loss helper to calculate the Kullback–Leibler divergence as well as the sequence loss."""
         if loss_weights is None:
             mse_weight = len(utils.listify(targets))
@@ -453,7 +456,7 @@ class BaseVAE(BaseSPSS):
         mse = super(BaseVAE, self)._loss(targets, predictions, seq_lens, loss_weights)
         mse *= mse_weight
 
-        kld = losses.KLD_standard_normal(mean, log_variance)
+        kld = self.KL_divergence(latent, mean, log_variance)
 
         self.metrics.accumulate(
             self.mode,
