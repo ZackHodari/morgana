@@ -9,11 +9,11 @@ import torch.nn as nn
 from morgana.base_models import BaseSPSS
 from morgana.experiment_builder import ExperimentBuilder
 from morgana import viz
-from morgana import data
 from morgana import metrics
 from morgana import utils
 
-import tts_data_tools as tdt
+from tts_data_tools import data_sources
+from tts_data_tools import file_io
 
 
 class F0Model(BaseSPSS):
@@ -47,21 +47,21 @@ class F0Model(BaseSPSS):
 
     def train_data_sources(self):
         return {
-            'n_frames': data.TextSource('n_frames'),
-            'n_phones': data.TextSource('n_phones'),
-            'dur': data.TextSource('dur', normalisation='mvn'),
-            'lab': data.NumpyBinarySource('lab', normalisation='minmax'),
-            'counters': data.NumpyBinarySource('counters', normalisation='minmax'),
-            'lf0': data.NumpyBinarySource('lf0', normalisation='mvn', use_deltas=True),
-            'vuv': data.NumpyBinarySource('vuv', dtype=np.bool),
+            'n_frames': data_sources.TextSource('n_frames'),
+            'n_phones': data_sources.TextSource('n_phones'),
+            'dur': data_sources.TextSource('dur', normalisation='mvn'),
+            'lab': data_sources.NumpyBinarySource('lab', normalisation='minmax'),
+            'counters': data_sources.NumpyBinarySource('counters', normalisation='minmax'),
+            'lf0': data_sources.NumpyBinarySource('lf0', normalisation='mvn', use_deltas=True),
+            'vuv': data_sources.NumpyBinarySource('vuv'),
         }
 
     def valid_data_sources(self):
-        data_sources = self.train_data_sources()
-        data_sources['sp'] = data.NumpyBinarySource('sp')
-        data_sources['ap'] = data.NumpyBinarySource('ap')
+        sources = self.train_data_sources()
+        sources['sp'] = data_sources.NumpyBinarySource('sp')
+        sources['ap'] = data_sources.NumpyBinarySource('ap')
 
-        return data_sources
+        return sources
 
     def predict(self, features):
         # Prepare inputs.
@@ -123,7 +123,7 @@ class F0Model(BaseSPSS):
 
             wav_path = os.path.join(synth_dir, '{}.wav'.format(name))
             wav = pyworld.synthesize(f0_i, sp_i, ap_i, sample_rate)
-            tdt.file_io.save_wav(wav_path, wav, sample_rate=sample_rate)
+            file_io.save_wav(wav, wav_path, sample_rate=sample_rate)
 
 
 def main():

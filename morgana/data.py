@@ -6,7 +6,7 @@ from torch.utils.data import Dataset, DataLoader
 
 from morgana import utils
 
-import tts_data_tools as tdt
+from tts_data_tools import file_io
 
 
 TO_TORCH_DTYPE = {
@@ -56,325 +56,6 @@ def batch(data_generator, batch_size=32, shuffle=True, num_data_threads=0, devic
     return data_loader
 
 
-class _DataSource(object):
-    r"""Abstract data loading class.
-
-    Parameters
-    ----------
-    name : str
-        Name of directory that will contain this feature.
-    normalisation : {None, 'mvn', 'minmax'}
-        Type of normalisation to perform. If not None, a JSON file containing the normalisation parameters must be
-        present adjacent to the directory that contains the features.
-    use_deltas : bool
-        Whether to compute delta features. If normalisation is being used it will also perform normalisation of deltas.
-    ext : str, optional
-        The file extension of the saved features, if not set `self.name` is used.
-
-    Attributes
-    ----------
-    normaliser : _FeatureNormaliser
-        The normaliser instance, set automatically by :class:`morgana.experiment_builder.ExperimentBuilder`.
-
-    Notes
-    -----
-    The data setup assumes a folder structure such as the following example,
-
-    .. code-block::
-
-        dataset_name (data_root)
-
-            train (data_dir)
-
-                lab (name)
-                    *.lab
-                lab.dim
-                lab_minmax.json
-
-                lf0 (name)
-                    *.npy
-                lf0.dim
-                lf0_mvn.json
-                lf0_deltas_mvn.json
-                ...
-
-            valid (data_dir)
-                ...
-
-            ...
-
-    All data is contained below `data_root`.
-
-    There can be multiple `data_dir` directories, e.g. one for each data split (train, valid, test).
-
-    Each feature should have a directory within `data_dir`, this will contain all files for this feature.
-
-    If the feature is to be loaded with :func:`np.fromfile` a `.dim` text file can be included, this can be used to
-    determine the number of feature dimension in the files being loaded.
-
-    There should be JSON files within the `data_dir` used for the training split, these JSON files should contain the
-    normalisation parameters. There should be an additional JSON file for delta features if deltas need to be used.
-    """
-    def __init__(self, name, normalisation=None, use_deltas=False, ext=None):
-        if normalisation not in [None, 'mvn', 'minmax']:
-            raise ValueError("Normalisation for feature {} not known/supported: {}".format(name, normalisation))
-
-        self.name = name
-        self.normalisation = normalisation
-        self.use_deltas = use_deltas
-        self.ext = ext if ext is not None else name
-
-        # This should be set by `FilesDataset` if a normaliser is to be used.
-        self.normaliser = None
-
-    def create_normaliser(self, normalisation_dir, data_root, device):
-        r"""Creates the normaliser if one was specified for this data source.
-
-        Parameters
-        ----------
-        normalisation_dir : str
-            The directory containing the normalisation parameters (in a JSON file).
-        data_root : str
-            The directory root for this dataset.
-        device : str or `torch.device`
-            The name of the device to place the parameters on.
-
-        Returns
-        -------
-        None or _FeatureNormaliser
-        """
-        if self.normalisation == 'mvn':
-            normaliser = MeanVaraianceNormaliser(self.name, normalisation_dir, self.use_deltas, device, data_root)
-        elif self.normalisation == 'minmax':
-            normaliser = MinMaxNormaliser(self.name, normalisation_dir, self.use_deltas, device, data_root)
-        else:
-            normaliser = None
-
-        return normaliser
-
-    def file_path(self, base_name, data_dir):
-        r"""Creates file path for a given base name and data directory."""
-        return os.path.join(data_dir, self.name, '{}.{}'.format(base_name, self.ext))
-
-    def load_file(self, base_name, data_dir):
-        r"""Loads the contents of a given file. Must either be a sequence feature with 2 dimensions or a scalar value.
-
-        Parameters
-        ----------
-        base_name : str
-            The name (without extensions) of the file to be loaded.
-        data_dir : str
-            The directory containing all feature types for this dataset.
-
-        Returns
-        -------
-        int or float or bool or `np.ndarray`, shape (seq_len, feat_dim)
-        """
-        raise NotImplementedError
-
-    def __call__(self, base_name, data_dir):
-        r"""Loads the feature and creates deltas and/or normalised versions if specified by this data source.
-
-        Parameters
-        ----------
-        base_name : str
-            The name (without extensions) of the file to be loaded.
-        data_dir : str
-            The directory containing all feature types for this dataset.
-
-        Returns
-        -------
-        dict[str, (int or float or bool or np.ndarray)]
-            Loaded feature, and if specified delta and/or normalised versions of the feature.
-        """
-        feature = self.load_file(base_name, data_dir)
-        features = {self.name: feature}
-
-        if self.use_deltas:
-            deltas = tdt.wav_features.compute_deltas(feature)
-            features['{}_deltas'.format(self.name)] = deltas.astype(np.float32)
-
-        if self.normaliser is not None:
-            normalised = self.normaliser.normalise(feature)
-            features['normalised_{}'.format(self.name)] = normalised.astype(np.float32)
-
-            if self.use_deltas:
-                normalised_deltas = self.normaliser.normalise(deltas, deltas=True)
-                features['normalised_{}_deltas'.format(self.name)] = normalised_deltas.astype(np.float32)
-
-        return features
-
-
-class NumpyBinarySource(_DataSource):
-    r"""Data loading class for features saved with `np.ndarray.tofile`, loading is thus performed using `np.fromfile`.
-
-    Parameters
-    ----------
-    name : str
-        Name of directory that will contain this feature.
-    normalisation : {None, 'mvn', 'minmax'}
-        Type of normalisation to perform. If not None, a JSON file containing the normalisation parameters must be
-        present adjacent to the directory that contains the features.
-    use_deltas : bool
-        Whether to compute delta features. If normalisation is being used it will also perform normalisation of deltas.
-    ext : str, optional
-        The file extension of the saved features, if not set `name` is used.
-    dtype : type
-        The numpy dtype to use when loading with `np.fromfile`.
-    dim : int, optional
-        The dimensionality of the feature being loaded. If None, this will be searched for in the file `{name}.dim`.
-    """
-    def __init__(self, name, normalisation=None, use_deltas=False, ext=None, dtype=np.float32, dim=None):
-        super(NumpyBinarySource, self).__init__(name, normalisation, use_deltas, ext)
-
-        self.dtype = dtype
-        self.dim = dim
-
-    def get_feat_dim(self, data_dir):
-        r"""Gets the dimensionality of the feature being loaded from the file `{name}.dim`."""
-        feat_dim_path = os.path.join(data_dir, '{}.dim'.format(self.name))
-        feat_dim = tdt.file_io.load_txt(feat_dim_path).item()
-        return feat_dim
-
-    def load_file(self, base_name, data_dir):
-        r"""Loads the feature using `np.fromfile`.
-
-        Parameters
-        ----------
-        base_name : str
-            The name (without extensions) of the file to be loaded.
-        data_dir : str
-            The directory containing all feature types for this dataset.
-
-        Returns
-        -------
-        int or float or bool or np.ndarray, shape (seq_len, feat_dim)
-        """
-        if self.dim is None:
-            self.dim = self.get_feat_dim(data_dir)
-
-        feat_path = self.file_path(base_name, data_dir)
-        feature = tdt.file_io.load_bin(feat_path, feat_dim=self.dim, dtype=self.dtype)
-
-        return feature
-
-
-class TextSource(_DataSource):
-    r"""Loads data from a text file, this can contain integers or floats and will have up to 2 dimensions.
-
-    Parameters
-    ----------
-    name : str
-        Name of directory that will contain this feature.
-    normalisation : {None, 'mvn', 'minmax'}
-        Type of normalisation to perform. If not None, a JSON file containing the normalisation parameters must be
-        present adjacent to the directory that contains the features.
-    use_deltas : bool
-        Whether to compute delta features. If normalisation is being used it will also perform normalisation of deltas.
-    ext : str, optional
-        The file extension of the saved features, if not set `name` is used.
-    """
-    def __init__(self, name, normalisation=None, use_deltas=False, ext=None):
-        super(TextSource, self).__init__(name, normalisation, use_deltas, ext)
-
-    def load_file(self, base_name, data_dir):
-        r"""Loads the feature using `tts_data_tools.file_io.load_txt`.
-
-        Parameters
-        ----------
-        base_name : str
-            The name (without extensions) of the file to be loaded.
-        data_dir : str
-            The directory containing all feature types for this dataset.
-
-        Returns
-        -------
-        int or float or np.ndarray, shape (seq_len, feat_dim)
-        """
-        feat_path = self.file_path(base_name, data_dir)
-        feature = tdt.file_io.load_txt(feat_path)
-
-        # If the sequence length feature is describing a sentence level length, convert it to a scalar.
-        if feature.shape[0] == 1:
-            feature = feature.item()
-
-        return feature
-
-
-class StringSource(_DataSource):
-    r"""Loads data from a text file, this will be loaded as strings where each item should be on a new line.
-
-    Parameters
-    ----------
-    name : str
-        Name of directory that will contain this feature.
-    ext : str, optional
-        The file extension of the saved features, if not set `name` is used.
-    """
-    def __init__(self, name, ext=None):
-        super(StringSource, self).__init__(name, normalisation=None, use_deltas=False, ext=ext)
-
-    def load_file(self, base_name, data_dir):
-        r"""Loads the lines and converts to ascii codes (np.int8), each line is considered as a sequence item.
-
-        Each line can have a different number of characters, the maximum number of characters will be used to determine
-        the shape of the 2nd dimension of the array.
-
-        Parameters
-        ----------
-        base_name : str
-            The name (without extensions) of the file to be loaded.
-        data_dir : str
-            The directory containing all feature types for this dataset.
-
-        Returns
-        -------
-        np.ndarray, shape (seq_len, max_num_characters), dtype (np.int8)
-        """
-        feat_path = self.file_path(base_name, data_dir)
-        lines = tdt.file_io.load_lines(feat_path)
-
-        # Convert the strings into ASCII integers. Padding is also partially handled here.
-        feature = utils.string_to_ascii(lines)
-        return feature
-
-
-class WavSource(_DataSource):
-    r"""Loads wavfiles using `scipy.io.wavfile`.
-
-    Parameters
-    ----------
-    name : str
-        Name of directory that will contain this feature.
-    normalisation : {None, 'mvn', 'minmax'}
-        Type of normalisation to perform. If not None, a JSON file containing the normalisation parameters must be
-        present adjacent to the directory that contains the features.
-    use_deltas : bool
-        Whether to compute delta features. If normalisation is being used it will also perform normalisation of deltas.
-    """
-    def __init__(self, name, normalisation=None, use_deltas=False):
-        super(WavSource, self).__init__(name, normalisation, use_deltas, ext='wav')
-
-    def load_file(self, base_name, data_dir):
-        r"""Loads a wavfile using `scipy.io.wavfile`.
-
-        Parameters
-        ----------
-        base_name : str
-            The name (without extensions) of the file to be loaded.
-        data_dir : str
-            The directory containing all feature types for this dataset.
-
-        Returns
-        -------
-        np.ndarray, shape (num_samples,), dtype (np.int16)
-        """
-        feat_path = self.file_path(base_name, data_dir)
-        feature = tdt.file_io.load_wav(feat_path)
-
-        return feature
-
-
 class FilesDataset(Dataset):
     r"""Combines multiple :class:`_DataSource` instances, and enables batching of a dictionary of sequence features.
 
@@ -386,8 +67,8 @@ class FilesDataset(Dataset):
         The directory containing all data for this dataset split.
     id_list : str
         The name of the file id-list containing base names to load, contained withing `data_root`.
-    normalisers : None or dict[str, _FeatureNormaliser]
-        Normalisers to be passed to the :class:`_DataSource` instances.
+    normalisers : Normalisers or dict[str, _FeatureNormaliser]
+        Normaliser instances used to normalise loaded features (and delta features).
     data_root : str
         The directory root for this dataset.
 
@@ -395,21 +76,22 @@ class FilesDataset(Dataset):
     ----------
     file_ids : list[str]
         List of base names loaded from `id_list`.
+    normalisers : Normalisers or dict[str, _FeatureNormaliser]
+        The normaliser instances, set automatically by :class:`morgana.experiment_builder.ExperimentBuilder`.
     """
-    def __init__(self, data_sources, data_dir, id_list, normalisers=None, data_root='.'):
+    def __init__(self, data_sources, data_dir, id_list, normalisers, data_root='.'):
         self.data_sources = data_sources
         self.data_root = data_root
         self.data_dir = os.path.join(self.data_root, data_dir)
+
         self.id_list = os.path.join(self.data_root, id_list)
+        with open(self.id_list, 'r') as f:
+            self.file_ids = list(filter(bool, map(str.strip, f.readlines())))
 
-        if normalisers is not None:
-            for name, normaliser in normalisers.items():
-                self.data_sources[name].normaliser = normaliser
-
-        self.file_ids = tdt.file_io.load_lines(self.id_list)
+        self.normalisers = normalisers
 
     def __getitem__(self, index):
-        r"""Combines the features loaded by each data source.
+        r"""Combines the features loaded by each data source and adds normalised features where specified.
 
         Parameters
         ----------
@@ -427,7 +109,16 @@ class FilesDataset(Dataset):
 
         features = {}
         for name, data_source in self.data_sources.items():
-            features.update(data_source(base_name, self.data_dir))
+            data_source_features = data_source(base_name, self.data_dir)
+
+            if name in self.normalisers:
+                for feature_name, feature in list(data_source_features.items()):
+                    is_deltas = feature_name.endswith('_deltas')
+                    normalised_feature = self.normalisers[name].normalise(feature, deltas=is_deltas)
+
+                    data_source_features['normalised_{}'.format(feature_name)] = normalised_feature.astype(np.float32)
+
+            features.update(data_source_features)
 
         return features, base_name
 
@@ -499,6 +190,56 @@ class FilesDataset(Dataset):
             batched_features[feat_name] = feature_list_to_batched_tensor(feature_list)
 
         return batched_features, base_names
+
+
+class Normalisers(dict):
+    r"""A dictionary-like container for normalisers, provides an interface for creating the normalisers.
+
+    Parameters
+    ----------
+    normalisation_dir : str
+        The directory containing the normalisation parameters (in a JSON file).
+    data_root : str
+        The directory root for this dataset.
+    device : str or `torch.device`
+        The name of the device to place the parameters on.
+    """
+    def __init__(self, data_sources, normalisation_dir, data_root='.', device='cpu'):
+        super(Normalisers, self).__init__()
+
+        self.normalisation_dir = normalisation_dir
+        self.data_root = data_root
+        self.device = device
+
+        for name, data_source in data_sources.items():
+            if data_source.normalisation is not None:
+                self[name] = self.create_normaliser(name, data_source)
+
+    def create_normaliser(self, name, data_source):
+        r"""Creates the normaliser if one was specified for this data source.
+
+        Parameters
+        ----------
+        name : str
+            Name used to index this data source in the model.
+        data_source : _DataSource
+            Specification of how to load this feature.
+
+        Returns
+        -------
+        _FeatureNormaliser
+        """
+        if data_source.normalisation == 'mvn':
+            normaliser = MeanVaraianceNormaliser(
+                name, self.normalisation_dir, data_source.use_deltas, self.device, self.data_root)
+        elif data_source.normalisation == 'minmax':
+            normaliser = MinMaxNormaliser(
+                name, self.normalisation_dir, data_source.use_deltas, self.device, self.data_root)
+        else:
+            raise ValueError("Unknown or unsupported feature normaliser specified, {}"
+                             .format(data_source.normalisation))
+
+        return normaliser
 
 
 class _FeatureNormaliser(object):
@@ -595,7 +336,7 @@ class _FeatureNormaliser(object):
     @staticmethod
     def load_params(feature_name, data_dir, device='cpu', file_pattern='{}.json'):
         r"""Loads the parameters from file and converts them to NumPy arrays and PyTorch tensors."""
-        feat_params = tdt.file_io.load_json(os.path.join(data_dir, file_pattern.format(feature_name)))
+        feat_params = file_io.load_json(os.path.join(data_dir, file_pattern.format(feature_name)))
 
         params = {}
         params_torch = {}

@@ -265,9 +265,7 @@ class ExperimentBuilder(object):
 
         # Create normalisers using the feature specification given by the model.
         train_data_sources = self.model.train_data_sources()
-        normalisers = {
-            name: data_source.create_normaliser(self.normalisation_dir, self.data_root, self.device)
-            for name, data_source in train_data_sources.items()}
+        normalisers = data.Normalisers(train_data_sources, self.normalisation_dir, self.data_root, self.device)
         self.model.normalisers = normalisers
 
         # Create a duplicate model for EMA-based generation, load parameters for this if necessary.

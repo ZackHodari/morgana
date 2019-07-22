@@ -63,6 +63,41 @@ def infer_device(tensor):
     return torch.device(device)
 
 
+def detach_batched_seqs(*sequence_features, seq_len):
+    r"""Converts :class:`torch.Tensor` to `np.ndarray`. Moves data to CPU, detaches gradients, and removes padding.
+
+    Parameters
+    ----------
+    sequence_features : list[torch.Tensor] or torch.Tensor, shape (batch_size, max_seq_len, feat_dim)
+        List of batched sequence features to be detached.
+    seq_len : np.ndarray or torch.Tensor, shape (batch_size,)
+        Sequence length used to remove padding from each batch item.
+
+    Returns
+    -------
+    list[list[np.ndarray]] or list[np.ndarray], shape (batch_size, (seq_len, feat_dim))
+        Sequence features as `np.ndarray` without paddingWhat.
+    """
+    if isinstance(seq_len, torch.Tensor):
+        seq_len = seq_len.cpu().detach().numpy()
+
+    detached = []
+    for sequence_feature_batch in sequence_features:
+
+        # Convert to numpy.
+        sequence_feature_batch = sequence_feature_batch.cpu().detach().numpy()
+
+        # Remove padding.
+        sequence_feature_list = [sequence_feature[:len_].squeeze()
+                                 for sequence_feature, len_ in zip(sequence_feature_batch, seq_len)]
+
+        detached.append(sequence_feature_list)
+
+    if len(detached) == 1:
+        return detached[0]
+    return detached
+
+
 def get_epoch_from_checkpoint_path(checkpoint_path):
     r"""Extracts the epoch number from a checkpoint path of the form `.*checkpoints/epoch_(NUM)_.*.pt`"""
     epoch_regex = re.compile(r'.*checkpoints/epoch_(?P<epoch>\d+)(_\w+)?\.\w+')
@@ -163,74 +198,6 @@ def upsample_to_repetitions(sequence_feature, repeats):
     upsampled_sequence_feature = sequence_feature_with_padder[batch_idxs, repeated_idxs]
 
     return upsampled_sequence_feature
-
-
-def string_to_ascii(strings, max_len=None):
-    r"""Converts a list of strings to a NumPy array of integers (ASCII codes).
-
-    Parameters
-    ----------
-    strings : str or list<str>
-        Strings of ASCII characters.
-    max_len : int, optional
-        The maximum number of characters in any of the strings. If None, this will be calculated using `strings`.
-
-    Returns
-    -------
-    encoded : np.ndarray, shape (num_lines, max_len), dtype (np.int8)
-        ASCII codes of each character. Each row represents one item in the list `strings`.
-
-    See Also
-    --------
-    ascii_to_string : Performs the opposite opteration to `string_to_ascii`.
-    """
-    strings = listify(strings)
-    num_lines = len(strings)
-
-    if max_len is None:
-        max_num_chars = max(map(len, strings))
-    else:
-        max_num_chars = max_len
-
-    # Padding is partially handled here as each string may have a different length.
-    encoded = np.zeros((num_lines, max_num_chars), dtype=np.int8)
-
-    # Convert the strings into ASCII integers.
-    for i, line in enumerate(strings):
-        ascii = list(map(ord, line))
-        encoded[i, :len(line)] = ascii
-
-    return encoded
-
-
-def ascii_to_string(ascii):
-    r"""Converts an array of ASCII codes to a list of strings (each string is a row from the array).
-
-    If the input `ascii` is a NumPy array it will likely contain padding. Padding is encoded using 0, which is the ASCII
-    code for the null character \x00. This character is stripped from the output strings.
-
-    Parameters
-    ----------
-    ascii : array_like, shape (num_lines, max_len)
-        ASCII codes of each character. Each row represents one item in the list `strings`.
-
-    Returns
-    -------
-    strings : str or list<str>
-        Strings of ASCII characters.
-
-    See Also
-    --------
-    string_to_ascii : Performs the opposite opteration to `ascii_to_string`.
-    """
-    # Convert the ASCII codes into python strings.
-    chars_list_with_padding = [map(chr, codes) for codes in ascii]
-
-    # Remove the padding, which is stored as a zero, i.e. the null character \x00.
-    chars_list = [filter(lambda s: s != chr(0), chars) for chars in chars_list_with_padding]
-
-    # Return a list of strings.
-    return [''.join(chars) for chars in chars_list]
 
 
 class RecurrentCuDNNWrapper(nn.Module):
