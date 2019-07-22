@@ -60,7 +60,8 @@ class Handler(StatefulMetric):
         self.collections = {
             'all': metrics,
             'train': {},
-            'valid': {}}
+            'valid': {},
+            'test': {}}
 
         # This is an alias for all metrics, i.e. self.collections['all']
         self.metrics = self.collections['all']

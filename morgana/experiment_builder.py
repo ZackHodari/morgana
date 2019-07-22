@@ -623,14 +623,25 @@ class ExperimentBuilder(object):
             model = self.model
 
         model.mode = 'test'
+        model.metrics.reset_state('test')
 
-        for i, (features, names) in enumerate(data_loader):
+        pbar = _logging.ProgressBar(len(data_loader))
+        for i, (features, names) in zip(pbar, data_loader):
             self.model.step = (self.epoch - 1) * len(data_loader) + i + 1
 
             output_features = model.predict(features)
 
             model.analysis_for_test_batch(features, output_features, names,
                                           out_dir=out_dir, sample_rate=self.sample_rate)
+
+            # Log metrics.
+            pbar.print('test', self.epoch,
+                       **model.metrics.results_as_str_dict('test'))
+
+        if out_dir:
+            os.makedirs(out_dir, exist_ok=True)
+            file_io.save_json(model.metrics.results_as_json_dict('test'),
+                              os.path.join(out_dir, 'metrics.json'))
 
         model.mode = ''
 
