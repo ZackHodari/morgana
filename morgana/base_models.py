@@ -282,7 +282,8 @@ class BaseModel(nn.Module):
                 values = values.cpu().detach().numpy()
 
             if isinstance(values, np.ndarray):
-                values = [value[:n_frame] for value, n_frame in zip(values, n_frames)]
+                if values.ndim == 3:
+                    values = [value[:n_frame] for value, n_frame in zip(values, n_frames)]
 
                 tdt.file_io.save_dir(tdt.file_io.save_bin,
                                      path=os.path.join(pred_dir, feat_name),
