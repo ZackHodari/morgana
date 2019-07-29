@@ -10,7 +10,7 @@ from tts_data_tools import file_io
 from morgana import utils
 
 
-logger = logging.getLogger()
+logger = logging.getLogger('morgana')
 
 
 def load_experiment_results(experiment_name, metric_names='loss', mode='train', experiments_base='experiments'):

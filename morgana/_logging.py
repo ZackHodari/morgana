@@ -12,7 +12,7 @@ def create_logger(experiment_dir):
     base_dir = os.path.join(experiment_dir, 'log')
     os.makedirs(base_dir, exist_ok=True)
 
-    logger = logging.getLogger()
+    logger = logging.getLogger('morgana')
     logger.setLevel(logging.DEBUG)
 
     format_str = '{asctime} – {levelname:8s} – {module}.{funcName}:{lineno} – {message}'
@@ -62,7 +62,7 @@ class ProgressBar(tqdm):
         bar_format = '{desc}{percentage:3.0f}% |{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}{postfix}]'
         super(ProgressBar, self).__init__(range(num_batches), bar_format=bar_format)
 
-        self.logger = logging.getLogger()
+        self.logger = logging.getLogger('morgana')
 
     def print(self, mode, epoch, **kwargs):
         r"""Format metric outputs as part of tqdm description, and log to a file."""
