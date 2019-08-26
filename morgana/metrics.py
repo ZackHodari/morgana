@@ -195,6 +195,49 @@ class Print(StatefulMetric):
         return self.value
 
 
+class History(StatefulMetric):
+    r"""Class for storing the history of any object.
+
+    Parameters
+    ----------
+    max_len : int
+        Maximum length of the history being stored.
+
+    Attributes
+    ----------
+    history
+        Tensor of (up to `max_len`) previous inputs.
+    """
+    def __init__(self, max_len=None):
+        super(History, self).__init__()
+        self.max_len = max_len
+
+        self.reset_state()
+
+    def reset_state(self):
+        self.history = []
+
+    def accumulate(self, obj):
+        self.history.extend(obj)
+
+        # Only save the most recent `self.max_len` tensors.
+        if self.max_len is not None:
+            self.history = self.history[-self.max_len:]
+
+    def result(self):
+        return self.history
+
+    def str_summary(self, result):
+        return str(result[-1])
+
+    def result_as_json(self):
+        return str(self)
+
+    def __str__(self):
+        result = self.result()
+        return self.str_summary(result)
+
+
 class TensorHistory(StatefulMetric):
     r"""Class for storing the history of a tensor.
 
