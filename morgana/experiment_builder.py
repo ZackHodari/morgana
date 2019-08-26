@@ -478,6 +478,9 @@ class ExperimentBuilder(object):
                 self.model.analysis_for_train_batch(features, output_features,
                                                     out_dir=out_dir, sample_rate=self.sample_rate)
 
+        if gen_output:
+            self.model.analysis_for_train_epoch(out_dir=out_dir, sample_rate=self.sample_rate)
+
         if out_dir:
             file_io.save_json(self.model.metrics.results_as_json_dict('train'),
                               os.path.join(out_dir, 'metrics.json'))
@@ -589,6 +592,9 @@ class ExperimentBuilder(object):
                 model.analysis_for_valid_batch(features, output_features,
                                                out_dir=out_dir, sample_rate=self.sample_rate)
 
+        if gen_output:
+            model.analysis_for_valid_epoch(out_dir=out_dir, sample_rate=self.sample_rate)
+
         if out_dir:
             file_io.save_json(model.metrics.results_as_json_dict('valid'),
                               os.path.join(out_dir, 'metrics.json'))
@@ -648,6 +654,8 @@ class ExperimentBuilder(object):
             # Log metrics.
             pbar.print('test', self.epoch,
                        **model.metrics.results_as_str_dict('test'))
+
+        model.analysis_for_test_epoch(out_dir=out_dir, sample_rate=self.sample_rate)
 
         if out_dir:
             file_io.save_json(model.metrics.results_as_json_dict('test'),

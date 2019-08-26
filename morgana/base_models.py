@@ -330,6 +330,48 @@ class BaseModel(nn.Module):
         """
         self.analysis_for_valid_batch(features, output_features, out_dir, **kwargs)
 
+    def analysis_for_train_epoch(self, out_dir, **kwargs):
+        r"""Hook used by :class:`morgana.experiment_builder.ExperimentBuilder` after some training epochs.
+
+        Can be used to save output or generate visualisations.
+
+        Parameters
+        ----------
+        out_dir : str
+            The directory used to save output (changes for each epoch).
+        kwargs : dict
+            Additional keyword arguments used for generating output.
+        """
+        pass
+
+    def analysis_for_valid_epoch(self, out_dir, **kwargs):
+        r"""Hook used by :class:`morgana.experiment_builder.ExperimentBuilder` after some validation epochs.
+
+        Can be used to save output or generate visualisations.
+
+        Parameters
+        ----------
+        out_dir : str
+            The directory used to save output (changes for each epoch).
+        kwargs : dict
+            Additional keyword arguments used for generating output.
+        """
+        self.analysis_for_train_epoch(out_dir, **kwargs)
+
+    def analysis_for_test_epoch(self, out_dir, **kwargs):
+        r"""Hook used by :class:`morgana.experiment_builder.ExperimentBuilder` after each testing epoch.
+
+        Can be used to save output or generate visualisations.
+
+        Parameters
+        ----------
+        out_dir : str
+            The directory used to save output (changes for each epoch).
+        kwargs : dict
+            Additional keyword arguments used for generating output.
+        """
+        self.analysis_for_valid_epoch(out_dir, **kwargs)
+
 
 class BaseSPSS(BaseModel):
     r"""Creates an abstract SPSS acoustic model."""
