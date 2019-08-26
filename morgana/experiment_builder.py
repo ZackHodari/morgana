@@ -442,9 +442,12 @@ class ExperimentBuilder(object):
         self.model.mode = 'train'
         self.model.metrics.reset_state('train')
 
+        if out_dir:
+            os.makedirs(out_dir, exist_ok=True)
+
         loss = 0.0
         pbar = _logging.ProgressBar(len(data_loader))
-        for i, (features, names) in zip(pbar, data_loader):
+        for i, features in zip(pbar, data_loader):
             self.model.step = (self.epoch - 1) * len(data_loader) + i + 1
 
             # zero the parameter gradients
@@ -472,11 +475,10 @@ class ExperimentBuilder(object):
                        **self.model.metrics.results_as_str_dict('train'))
 
             if gen_output:
-                self.model.analysis_for_train_batch(features, output_features, names,
+                self.model.analysis_for_train_batch(features, output_features,
                                                     out_dir=out_dir, sample_rate=self.sample_rate)
 
         if out_dir:
-            os.makedirs(out_dir, exist_ok=True)
             file_io.save_json(self.model.metrics.results_as_json_dict('train'),
                               os.path.join(out_dir, 'metrics.json'))
 
@@ -497,23 +499,27 @@ class ExperimentBuilder(object):
         lr_schedule = self._lr_schedule(optimizer)
 
         for self.epoch in range(self.start_epoch, self.end_epoch + 1):
+            gen_train_output = self.epoch % self.train_output_interval == 0
             epoch_train_dir = os.path.join(self.experiment_dir, 'train', 'epoch_{}'.format(self.epoch))
 
+            self.logger.info('epoch {e: >2}: Training model'.format(e=self.epoch))
+            if gen_train_output:
+                self.logger.info('\toutput being saved to\n\t{dir}'.format(dir=epoch_train_dir))
+
             # Train model.
-            gen_train_output = self.epoch % self.train_output_interval == 0
             train_loss = self.train_epoch(self.train_loader, optimizer, lr_schedule,
                                           gen_output=gen_train_output, out_dir=epoch_train_dir)
 
             # Save model.
             if self.epoch % self.model_checkpoint_interval == 0:
                 self.logger.info(
-                    'epoch {e: >2}: loss {loss:.3f}:  Saving model to\n'
+                    'epoch {e: >2}: loss {loss:.3f}: Saving model to\n'
                     '\t{dir}/checkpoints/epoch_{e}.pt'.format(e=self.epoch, loss=train_loss, dir=self.experiment_dir))
                 self.model.save_parameters(self.experiment_dir, self.epoch)
 
                 if self.ema_decay:
                     self.logger.info(
-                        'epoch {e: >2}:  Saving EMA model to\n'
+                        'epoch {e: >2}: Saving EMA model to\n'
                         '\t{dir}/checkpoints/epoch_{e}_ema.pt'.format(e=self.epoch, dir=self.experiment_dir))
                     self.ema.model.save_parameters(self.experiment_dir, '{}_ema'.format(self.epoch))
 
@@ -562,9 +568,12 @@ class ExperimentBuilder(object):
         model.mode = 'valid'
         model.metrics.reset_state('valid')
 
+        if out_dir:
+            os.makedirs(out_dir, exist_ok=True)
+
         loss = 0.0
         pbar = _logging.ProgressBar(len(data_loader))
-        for i, (features, names) in zip(pbar, data_loader):
+        for i, features in zip(pbar, data_loader):
             self.model.step = (self.epoch - 1) * len(data_loader) + i + 1
 
             batch_loss, output_features = model(features)
@@ -577,11 +586,10 @@ class ExperimentBuilder(object):
                        **model.metrics.results_as_str_dict('valid'))
 
             if gen_output:
-                model.analysis_for_valid_batch(features, output_features, names,
+                model.analysis_for_valid_batch(features, output_features,
                                                out_dir=out_dir, sample_rate=self.sample_rate)
 
         if out_dir:
-            os.makedirs(out_dir, exist_ok=True)
             file_io.save_json(model.metrics.results_as_json_dict('valid'),
                               os.path.join(out_dir, 'metrics.json'))
 
@@ -622,16 +630,19 @@ class ExperimentBuilder(object):
         if model is None:
             model = self.model
 
+        if out_dir:
+            os.makedirs(out_dir, exist_ok=True)
+
         model.mode = 'test'
         model.metrics.reset_state('test')
 
         pbar = _logging.ProgressBar(len(data_loader))
-        for i, (features, names) in zip(pbar, data_loader):
+        for i, features in zip(pbar, data_loader):
             self.model.step = (self.epoch - 1) * len(data_loader) + i + 1
 
             output_features = model.predict(features)
 
-            model.analysis_for_test_batch(features, output_features, names,
+            model.analysis_for_test_batch(features, output_features,
                                           out_dir=out_dir, sample_rate=self.sample_rate)
 
             # Log metrics.
@@ -639,7 +650,6 @@ class ExperimentBuilder(object):
                        **model.metrics.results_as_str_dict('test'))
 
         if out_dir:
-            os.makedirs(out_dir, exist_ok=True)
             file_io.save_json(model.metrics.results_as_json_dict('test'),
                               os.path.join(out_dir, 'metrics.json'))
 

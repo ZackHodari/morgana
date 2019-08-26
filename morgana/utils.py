@@ -44,7 +44,7 @@ def map_nested(func, data):
         for k, v in data.items():
             mapped[k] = map_nested(func, v)
 
-    elif isinstance(data, Iterable):
+    elif isinstance(data, Iterable) and not isinstance(data, str):
         mapped = [map_nested(func, v) for v in data]
 
     else:

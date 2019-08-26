@@ -97,8 +97,8 @@ class F0Model(BaseSPSS):
 
         return self._loss(inputs, outputs, seq_len)
 
-    def analysis_for_valid_batch(self, features, output_features, names, out_dir, sample_rate=16000, **kwargs):
-        super(F0Model, self).analysis_for_valid_batch(features, output_features, names, out_dir, **kwargs)
+    def analysis_for_valid_batch(self, features, output_features, out_dir, sample_rate=16000, **kwargs):
+        super(F0Model, self).analysis_for_valid_batch(features, output_features, out_dir, **kwargs)
 
         # Synthesise outputs using WORLD.
         synth_dir = os.path.join(out_dir, 'synth')
@@ -111,7 +111,7 @@ class F0Model(BaseSPSS):
         ap = features['ap'].cpu().detach().numpy()
 
         n_frames = features['n_frames'].cpu().detach().numpy()
-        for i, (n_frame, name) in enumerate(zip(n_frames, names)):
+        for i, (n_frame, name) in enumerate(zip(n_frames, features['name'])):
 
             f0_i = np.exp(lf0[i, :n_frame, 0])
             f0_i = savgol_filter(f0_i, 7, 1)

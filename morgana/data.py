@@ -102,12 +102,10 @@ class FilesDataset(Dataset):
         -------
         features : dict[str, np.array]
             Features loaded by each data source, contained in a non-nested dictionary.
-        base_name : str
-            The name (without extensions) of the loaded file.
         """
         base_name = self.file_ids[index]
 
-        features = {}
+        features = {'name': base_name}
         for name, data_source in self.data_sources.items():
             data_source_features = data_source(base_name, self.data_dir)
 
@@ -120,7 +118,7 @@ class FilesDataset(Dataset):
 
             features.update(data_source_features)
 
-        return features, base_name
+        return features
 
     def __len__(self):
         return len(self.file_ids)
@@ -131,28 +129,25 @@ class FilesDataset(Dataset):
 
         Parameters
         ----------
-        batch : list[tuple[features, base_name]]
-            features : dict[str, `np.array`]
-                Features loaded by each data source, contained in a non-nested dictionary.
-            base_name : str
-                The name (without extensions) of the loaded file.
+        batch : list[dict[str, object]]
+            Each element in the list is a non-nested dictionary containing features loaded by each data source.
 
         Returns
         -------
         batched_features : dict[str, :class:`torch.Tensor`]
             Batched version of the list of `features` items in `batch`.
-        base_names
-            List of `base_name` strings in `batch`.
+            Note, it is possible to provide objects such as strings that will not be converted to `torch.Tensor`, these
+            will not be padded or sent to the correct device, but can be accessed in the features dictionary.
         """
         batch_size = len(batch)
-        feature_template, _ = batch[0]
+        feature_template = batch[0]
 
         def feature_list_to_batched_tensor(feature_list):
             """Handles padding and type conversion."""
             feature_item = feature_list[0]
 
-            # Features can be a single number, or sequence data, in which case find the sequence length.
-            if isinstance(feature_item, np.ndarray):
+            # Sequence feature.
+            if isinstance(feature_item, np.ndarray) and feature_item.ndim > 1:
                 max_seq_len = max(map(len, feature_list))
                 feat_dim = feature_item.shape[-1]
                 dtype = TO_TORCH_DTYPE[feature_item.dtype]
@@ -168,28 +163,41 @@ class FilesDataset(Dataset):
                     seq_len = feature.shape[0]
                     batched_feature[i, :seq_len, ...] = torch.tensor(feature, dtype=dtype)
 
-            else:
+            # Static 1 dimensional feature.
+            elif isinstance(feature_item, np.ndarray) and feature_item.dtype in TO_TORCH_DTYPE:
+                dtype = TO_TORCH_DTYPE[feature_item.dtype]
+
+                # Check if the array contains unsupported types, these need to be explicitly cast.
+                if feature_item.dtype in [np.bool, np.int8]:
+                    feature_list = [feature.astype(np.uint8) for feature in feature_list]
+
+                batched_feature = torch.tensor(feature_list, dtype=dtype)
+
+            # Static 0 dimensional feature.
+            elif not isinstance(feature_item, np.ndarray) and type(feature_item) in TO_TORCH_DTYPE:
                 dtype = TO_TORCH_DTYPE[type(feature_item)]
                 batched_feature = torch.tensor(feature_list, dtype=dtype)
+
+            # Feature that will not be converted to `torch.Tensor`.
+            else:
+                batched_feature = feature_list
 
             return batched_feature
 
         # First transpose the list of dictionaries:
-        #   from - [ { feat_name: _DataSource.load_file() }, base_name ]
-        #   to - { feat_name: [ _DataSource.load_file() ] }, [ base_name ]
+        #   from - [ { feat_name: _DataSource.load_file() } ]
+        #   to - { feat_name: [ _DataSource.load_file() ] }
         features = {feat_name: [] for feat_name in feature_template.keys()}
-        base_names = []
-        for i, (item_features, base_name) in enumerate(batch):
+        for i, item_features in enumerate(batch):
             for feat_name, value in item_features.items():
                 features[feat_name].append(value)
-            base_names.append(base_name)
 
-        # For all `feat_name` features in the batch (in feature_list) convert to a tensor.
+        # Convert all features in the batch to `torch.Tensors` if possible.
         batched_features = {feat_name: [] for feat_name in feature_template.keys()}
         for feat_name, feature_list in features.items():
             batched_features[feat_name] = feature_list_to_batched_tensor(feature_list)
 
-        return batched_features, base_names
+        return batched_features
 
 
 class Normalisers(dict):
@@ -443,10 +451,13 @@ class ToDeviceWrapper(_DataLoaderWrapper):
 
         self.torch_device = torch.device(device)
 
+    def to_device(self, tensor):
+        if isinstance(tensor, torch.Tensor):
+            return tensor.to(self.torch_device)
+        else:
+            return tensor
+
     def __iter__(self):
-        for features, names in self.data_loader:
-
-            features_on_device = utils.map_nested(lambda tensor: tensor.to(self.torch_device), features)
-
-            yield features_on_device, names
+        for features in self.data_loader:
+            yield utils.map_nested(self.to_device, features)
 

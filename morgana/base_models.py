@@ -250,11 +250,17 @@ class BaseModel(nn.Module):
             Whether to strictly enforce that the keys in the loaded `state_dict` match this model's structure.
         device : str or `torch.device` or dict or callable
             Specifies how to remap storage locations, passed to :func:`torch.load`.
+
+        Returns
+        -------
+        state_dict : dict
+            Parameters and persistent buffers that define the model.
         """
         state_dict = torch.load(checkpoint_path, map_location=device)
         super(BaseModel, self).load_state_dict(state_dict, strict=strict)
+        return state_dict
 
-    def analysis_for_train_batch(self, features, output_features, names, out_dir, **kwargs):
+    def analysis_for_train_batch(self, features, output_features, out_dir, **kwargs):
         r"""Hook used by :class:`morgana.experiment_builder.ExperimentBuilder` after training batches for some epochs.
 
         Can be used to save output or generate visualisations.
@@ -265,8 +271,6 @@ class BaseModel(nn.Module):
             The ground truth features produced by `self.*_data_sources`.
         output_features : torch.Tensor or list[torch.Tensor] or dict[str, torch.Tensor]
             Predictions output by user-defined `self.predict`.
-        names : list[str]
-            File base names of each item in the batch.
         out_dir : str
             The directory used to save output (changes for each epoch).
         kwargs : dict
@@ -288,9 +292,9 @@ class BaseModel(nn.Module):
                 tdt.file_io.save_dir(tdt.file_io.save_bin,
                                      path=os.path.join(pred_dir, feat_name),
                                      data=values,
-                                     file_ids=names)
+                                     file_ids=features['name'])
 
-    def analysis_for_valid_batch(self, features, output_features, names, out_dir, **kwargs):
+    def analysis_for_valid_batch(self, features, output_features, out_dir, **kwargs):
         r"""Hook used by :class:`morgana.experiment_builder.ExperimentBuilder` after validation batches for some epochs.
 
         Can be used to save output or generate visualisations.
@@ -301,16 +305,14 @@ class BaseModel(nn.Module):
             The ground truth features produced by `self.*_data_sources`.
         output_features : torch.Tensor or list[torch.Tensor] or dict[str, torch.Tensor]
             Predictions output by user-defined `self.predict`.
-        names : list[str]
-            File base names of each item in the batch.
         out_dir : str
             The directory used to save output (changes for each epoch).
         kwargs : dict
             Additional keyword arguments used for generating output.
         """
-        self.analysis_for_train_batch(features, output_features, names, out_dir, **kwargs)
+        self.analysis_for_train_batch(features, output_features, out_dir, **kwargs)
 
-    def analysis_for_test_batch(self, features, output_features, names, out_dir, **kwargs):
+    def analysis_for_test_batch(self, features, output_features, out_dir, **kwargs):
         r"""Hook used by :class:`morgana.experiment_builder.ExperimentBuilder` after each testing batch.
 
         Can be used to save output or generate visualisations.
@@ -321,14 +323,12 @@ class BaseModel(nn.Module):
             The ground truth features produced by `self.*_data_sources`.
         output_features : torch.Tensor or list[torch.Tensor] or dict[str, torch.Tensor]
             Predictions output by user-defined :func:`~predict`.
-        names : list[str]
-            File base names of each item in the batch.
         out_dir : str
             The directory used to save output (changes for each epoch).
         kwargs : dict
             Additional keyword arguments used for generating output.
         """
-        self.analysis_for_valid_batch(features, output_features, names, out_dir, **kwargs)
+        self.analysis_for_valid_batch(features, output_features, out_dir, **kwargs)
 
 
 class BaseSPSS(BaseModel):
