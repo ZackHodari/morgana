@@ -112,6 +112,9 @@ def linkcode_resolve(domain, info):
     modname = info['module']
     fullname = info['fullname']
 
+    package = modname.split('.')[0]
+    version = pkg_resources.get_distribution(package).version
+
     submod = sys.modules.get(modname)
     if submod is None:
         return None
@@ -151,10 +154,15 @@ def linkcode_resolve(domain, info):
 
     fn = relpath(fn, start=dirname(morgana.__file__))
 
-    if 'dev' in __version__:
-        return "https://github.com/ZackHodari/morgana/blob/master/morgana/%s%s" % (
-           fn, linespec)
+    # The function is from another package.
+    if package in fn:
+        cut_idx = fn[::-1].index(package[::-1])
+        fn = fn[-cut_idx+1:]
+
+    if 'dev' in version:
+        return "https://github.com/ZackHodari/{package}/blob/master/{package}/{function}{line}".format(
+           package=package, function=fn, line=linespec)
     else:
-        return "https://github.com/ZackHodari/morgana/blob/v%s/morgana/%s%s" % (
-           __version__, fn, linespec)
+        return "https://github.com/ZackHodari/{package}/blob/v{version}/{package}/{function}{line}".format(
+           package=package, version=version, function=fn, line=linespec)
 

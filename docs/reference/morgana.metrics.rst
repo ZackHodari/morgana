@@ -54,6 +54,15 @@ Print
    :show-inheritance:
 
 
+History
+-------
+
+.. autoclass:: History
+   :members:
+   :private-members:
+   :show-inheritance:
+
+
 TensorHistory
 -------------
 
