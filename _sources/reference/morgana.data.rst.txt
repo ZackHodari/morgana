@@ -17,8 +17,8 @@ these are all used internally by :ref:`experiment_builder`, typically the only t
 available data sources and feature normalisers.
 
 * `Batching utility`_
+* `FilesDataset`_
 * `DataSource specification`_
-* `Dataset to combine DataSource instances`_
 * `Feature normalisers`_
 * `Wrappers to change existing DataLoader instance`_
 
@@ -29,17 +29,34 @@ Batching utility
 .. autofunction:: batch
 
 
+FilesDataset
+------------
+
+.. note::
+   This dataset provides indexing access to the :ref:`_DataSource<DataSource specification>` instances given. It provides
+   a custom `collate_fn` for transposing and padding a dictionary of features.
+
+.. autoclass:: FilesDataset
+   :members:
+   :private-members:
+   :show-inheritance:
+
+
 DataSource specification
 ------------------------
 
 .. note::
+   Data sources are defined in `tts_data_tools <https://github.com/ZackHodari/tts_data_tools>`_, these provide a
+   consistent interface to define what features to load for a model.
+
+.. note::
    Supported `Feature normalisers`_ are limited to `mvn` and `minmax`. To define a new normalisers you should override
-   :func:`create_normaliser` for your data source class.
+   :func:`Normalisers.create_normaliser`.
 
 _DataSource
 +++++++++++
 
-.. autoclass:: _DataSource
+.. autoclass:: tts_data_tools.data_sources._DataSource
    :members:
    :private-members:
    :special-members:
@@ -49,7 +66,7 @@ _DataSource
 NumpyBinarySource
 +++++++++++++++++
 
-.. autoclass:: NumpyBinarySource
+.. autoclass:: tts_data_tools.data_sources.NumpyBinarySource
    :members:
    :private-members:
    :show-inheritance:
@@ -58,7 +75,7 @@ NumpyBinarySource
 TextSource
 ++++++++++
 
-.. autoclass:: TextSource
+.. autoclass:: tts_data_tools.data_sources.TextSource
    :members:
    :private-members:
    :show-inheritance:
@@ -67,7 +84,16 @@ TextSource
 StringSource
 ++++++++++++
 
-.. autoclass:: StringSource
+.. autoclass:: tts_data_tools.data_sources.StringSource
+   :members:
+   :private-members:
+   :show-inheritance:
+
+
+ASCIISource
++++++++++++
+
+.. autoclass:: tts_data_tools.data_sources.ASCIISource
    :members:
    :private-members:
    :show-inheritance:
@@ -76,20 +102,7 @@ StringSource
 WavSource
 +++++++++
 
-.. autoclass:: WavSource
-   :members:
-   :private-members:
-   :show-inheritance:
-
-
-Dataset to combine DataSource instances
----------------------------------------
-
-
-FilesDataset
-++++++++++++
-
-.. autoclass:: FilesDataset
+.. autoclass:: tts_data_tools.data_sources.WavSource
    :members:
    :private-members:
    :show-inheritance:
@@ -97,6 +110,15 @@ FilesDataset
 
 Feature normalisers
 -------------------
+
+
+Normalisers
++++++++++++
+
+.. autoclass:: Normalisers
+   :members:
+   :private-members:
+   :show-inheritance:
 
 
 _FeatureNormaliser

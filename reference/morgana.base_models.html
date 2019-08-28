@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>base_models &#8212; morgana 0.0.1 documentation</title>
+    <title>base_models &#8212; morgana 0.1.0 documentation</title>
     <link rel="stylesheet" href="../_static/readable.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/css/custom.css" />
@@ -40,7 +40,7 @@
         <li class="right" >
           <a href="../index.html" title="Morgana documentation"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">morgana 0.0.1 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="../index.html">morgana 0.1.0 documentation</a> &#187;</li> 
       </ul>
     </div>  
 
@@ -63,14 +63,14 @@ are three base models that you can inherit from,</p>
 <h2>BaseModel<a class="headerlink" href="#basemodel" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="morgana.base_models.BaseModel">
-<em class="property">class </em><code class="descclassname">morgana.base_models.</code><code class="descname">BaseModel</code><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/base_models.py#L15-L331"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.base_models.BaseModel" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">morgana.base_models.</code><code class="descname">BaseModel</code><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.1.0/morgana/base_models.py#L15-L373"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.base_models.BaseModel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.modules.module.Module</span></code></p>
 <p>Creates an abstract model class with utility functions.</p>
 <p>Any additional kwargs specified in <code class="code docutils literal notranslate"><span class="pre">__init__</span></code> should be passed to the command line argument <code class="code docutils literal notranslate"><span class="pre">model_kwargs</span></code>.</p>
 <dl class="attribute">
 <dt id="morgana.base_models.BaseModel.normalisers">
 <code class="descname">normalisers</code><a class="headerlink" href="#morgana.base_models.BaseModel.normalisers" title="Permalink to this definition">¶</a></dt>
-<dd><p>Normalisers specified within the <a class="reference internal" href="morgana.data.html#morgana.data._DataSource" title="morgana.data._DataSource"><code class="xref py py-class docutils literal notranslate"><span class="pre">morgana.data._DataSource</span></code></a> in <code class="code docutils literal notranslate"><span class="pre">self.train_data_sources</span></code>.</p>
+<dd><p>Normalisers specified within the <code class="xref py py-class docutils literal notranslate"><span class="pre">morgana.data._DataSource</span></code> in <code class="code docutils literal notranslate"><span class="pre">self.train_data_sources</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)">None</a> or <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)">dict</a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a>, <a class="reference internal" href="morgana.data.html#morgana.data._FeatureNormaliser" title="morgana.data._FeatureNormaliser">morgana.data._FeatureNormaliser</a>]</p>
@@ -124,13 +124,13 @@ automatically by <code class="code docutils literal notranslate"><span class="pr
 
 <dl class="method">
 <dt id="morgana.base_models.BaseModel.train_data_sources">
-<code class="descname">train_data_sources</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/base_models.py#L42-L53"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.base_models.BaseModel.train_data_sources" title="Permalink to this definition">¶</a></dt>
+<code class="descname">train_data_sources</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.1.0/morgana/base_models.py#L42-L53"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.base_models.BaseModel.train_data_sources" title="Permalink to this definition">¶</a></dt>
 <dd><p>Specifies the data that will be loaded and used in training.</p>
 <p>Only specifies what data will be loaded, but not where from.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>The data sources used by <a class="reference internal" href="morgana.experiment_builder.html#morgana.experiment_builder.ExperimentBuilder" title="morgana.experiment_builder.ExperimentBuilder"><code class="xref py py-class docutils literal notranslate"><span class="pre">morgana.experiment_builder.ExperimentBuilder</span></code></a> for the training data, can be
-any data structure containing <a class="reference internal" href="morgana.data.html#morgana.data._DataSource" title="morgana.data._DataSource"><code class="xref py py-class docutils literal notranslate"><span class="pre">morgana.data._DataSource</span></code></a> instances.</p>
+any data structure containing <code class="xref py py-class docutils literal notranslate"><span class="pre">morgana.data._DataSource</span></code> instances.</p>
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p>features</p>
@@ -140,13 +140,13 @@ any data structure containing <a class="reference internal" href="morgana.data.h
 
 <dl class="method">
 <dt id="morgana.base_models.BaseModel.valid_data_sources">
-<code class="descname">valid_data_sources</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/base_models.py#L55-L66"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.base_models.BaseModel.valid_data_sources" title="Permalink to this definition">¶</a></dt>
+<code class="descname">valid_data_sources</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.1.0/morgana/base_models.py#L55-L66"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.base_models.BaseModel.valid_data_sources" title="Permalink to this definition">¶</a></dt>
 <dd><p>Specifies the data that will be loaded and used in validation.</p>
 <p>Only specifies what data will be loaded, but not where from.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>The data sources used by <a class="reference internal" href="morgana.experiment_builder.html#morgana.experiment_builder.ExperimentBuilder" title="morgana.experiment_builder.ExperimentBuilder"><code class="xref py py-class docutils literal notranslate"><span class="pre">morgana.experiment_builder.ExperimentBuilder</span></code></a> for the validation data, can
-be any data structure containing <a class="reference internal" href="morgana.data.html#morgana.data._DataSource" title="morgana.data._DataSource"><code class="xref py py-class docutils literal notranslate"><span class="pre">morgana.data._DataSource</span></code></a> instances.</p>
+be any data structure containing <code class="xref py py-class docutils literal notranslate"><span class="pre">morgana.data._DataSource</span></code> instances.</p>
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p>features</p>
@@ -156,13 +156,13 @@ be any data structure containing <a class="reference internal" href="morgana.dat
 
 <dl class="method">
 <dt id="morgana.base_models.BaseModel.test_data_sources">
-<code class="descname">test_data_sources</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/base_models.py#L68-L79"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.base_models.BaseModel.test_data_sources" title="Permalink to this definition">¶</a></dt>
+<code class="descname">test_data_sources</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.1.0/morgana/base_models.py#L68-L79"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.base_models.BaseModel.test_data_sources" title="Permalink to this definition">¶</a></dt>
 <dd><p>Specifies the data that will be loaded and used in testing.</p>
 <p>Only specifies what data will be loaded, but not where from.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>The data sources used by <a class="reference internal" href="morgana.experiment_builder.html#morgana.experiment_builder.ExperimentBuilder" title="morgana.experiment_builder.ExperimentBuilder"><code class="xref py py-class docutils literal notranslate"><span class="pre">morgana.experiment_builder.ExperimentBuilder</span></code></a> for the testing data, can be
-any data structure containing <a class="reference internal" href="morgana.data.html#morgana.data._DataSource" title="morgana.data._DataSource"><code class="xref py py-class docutils literal notranslate"><span class="pre">morgana.data._DataSource</span></code></a> instances.</p>
+any data structure containing <code class="xref py py-class docutils literal notranslate"><span class="pre">morgana.data._DataSource</span></code> instances.</p>
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p>features</p>
@@ -172,16 +172,16 @@ any data structure containing <a class="reference internal" href="morgana.data.h
 
 <dl class="method">
 <dt id="morgana.base_models.BaseModel.forward">
-<code class="descname">forward</code><span class="sig-paren">(</span><em>self</em>, <em>features</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/base_models.py#L81-L96"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.base_models.BaseModel.forward" title="Permalink to this definition">¶</a></dt>
+<code class="descname">forward</code><span class="sig-paren">(</span><em>self</em>, <em>features</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.1.0/morgana/base_models.py#L81-L96"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.base_models.BaseModel.forward" title="Permalink to this definition">¶</a></dt>
 <dd><p>Defines the computation graph, including calculation of loss.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>features</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch vmaster (1.1.0 ))"><em>torch.Tensor</em></a><em>]</em>) – The ground truth features produced by <code class="code docutils literal notranslate"><span class="pre">self.*_data_sources</span></code>.</p>
+<dd class="field-odd"><p><strong>features</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch vmaster (1.2.0a0+8554416 ))"><em>torch.Tensor</em></a><em>]</em>) – The ground truth features produced by <code class="code docutils literal notranslate"><span class="pre">self.*_data_sources</span></code>.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><ul class="simple">
 <li><p><strong>loss</strong> (<em>float</em>) – Loss of the model, as defined by <code class="code docutils literal notranslate"><span class="pre">self.loss</span></code>.</p></li>
-<li><p><em>output_features</em> – Predictions made by the model, can be any data structure containing <a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch vmaster (1.1.0 ))"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a> instances.</p></li>
+<li><p><em>output_features</em> – Predictions made by the model, can be any data structure containing <a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch vmaster (1.2.0a0+8554416 ))"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a> instances.</p></li>
 </ul>
 </p>
 </dd>
@@ -190,14 +190,14 @@ any data structure containing <a class="reference internal" href="morgana.data.h
 
 <dl class="method">
 <dt id="morgana.base_models.BaseModel.predict">
-<code class="descname">predict</code><span class="sig-paren">(</span><em>self</em>, <em>features</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/base_models.py#L98-L111"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.base_models.BaseModel.predict" title="Permalink to this definition">¶</a></dt>
+<code class="descname">predict</code><span class="sig-paren">(</span><em>self</em>, <em>features</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.1.0/morgana/base_models.py#L98-L111"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.base_models.BaseModel.predict" title="Permalink to this definition">¶</a></dt>
 <dd><p>Defines the computation graph.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>features</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch vmaster (1.1.0 ))"><em>torch.Tensor</em></a><em>]</em>) – The ground truth features produced by <code class="code docutils literal notranslate"><span class="pre">self.*_data_sources</span></code>.</p>
+<dd class="field-odd"><p><strong>features</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch vmaster (1.2.0a0+8554416 ))"><em>torch.Tensor</em></a><em>]</em>) – The ground truth features produced by <code class="code docutils literal notranslate"><span class="pre">self.*_data_sources</span></code>.</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Predictions made by the model, can be any data structure containing <a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch vmaster (1.1.0 ))"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a> instances.</p>
+<dd class="field-even"><p>Predictions made by the model, can be any data structure containing <a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch vmaster (1.2.0a0+8554416 ))"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a> instances.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>output_features</p>
@@ -207,14 +207,14 @@ any data structure containing <a class="reference internal" href="morgana.data.h
 
 <dl class="method">
 <dt id="morgana.base_models.BaseModel.loss">
-<code class="descname">loss</code><span class="sig-paren">(</span><em>self</em>, <em>features</em>, <em>output_features</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/base_models.py#L113-L130"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.base_models.BaseModel.loss" title="Permalink to this definition">¶</a></dt>
+<code class="descname">loss</code><span class="sig-paren">(</span><em>self</em>, <em>features</em>, <em>output_features</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.1.0/morgana/base_models.py#L113-L130"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.base_models.BaseModel.loss" title="Permalink to this definition">¶</a></dt>
 <dd><p>Defines which predictions should be scored against which ground truth features.</p>
 <p>Typically this method should use <a class="reference internal" href="#morgana.base_models.BaseModel._loss" title="morgana.base_models.BaseModel._loss"><code class="xref py py-func docutils literal notranslate"><span class="pre">_loss()</span></code></a> to calculate the sequence loss for the target-prediction pairs.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>features</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch vmaster (1.1.0 ))"><em>torch.Tensor</em></a><em>]</em>) – The ground truth features produced by <code class="code docutils literal notranslate"><span class="pre">self.*_data_sources</span></code>.</p></li>
-<li><p><strong>output_features</strong> (<a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch vmaster (1.1.0 ))"><em>torch.Tensor</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>[</em><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch vmaster (1.1.0 ))"><em>torch.Tensor</em></a><em>] or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch vmaster (1.1.0 ))"><em>torch.Tensor</em></a><em>]</em>) – Predictions output by user-defined <a class="reference internal" href="#morgana.base_models.BaseModel.predict" title="morgana.base_models.BaseModel.predict"><code class="xref py py-func docutils literal notranslate"><span class="pre">predict()</span></code></a>.</p></li>
+<li><p><strong>features</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch vmaster (1.2.0a0+8554416 ))"><em>torch.Tensor</em></a><em>]</em>) – The ground truth features produced by <code class="code docutils literal notranslate"><span class="pre">self.*_data_sources</span></code>.</p></li>
+<li><p><strong>output_features</strong> (<a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch vmaster (1.2.0a0+8554416 ))"><em>torch.Tensor</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>[</em><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch vmaster (1.2.0a0+8554416 ))"><em>torch.Tensor</em></a><em>] or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch vmaster (1.2.0a0+8554416 ))"><em>torch.Tensor</em></a><em>]</em>) – Predictions output by user-defined <a class="reference internal" href="#morgana.base_models.BaseModel.predict" title="morgana.base_models.BaseModel.predict"><code class="xref py py-func docutils literal notranslate"><span class="pre">predict()</span></code></a>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -228,7 +228,7 @@ any data structure containing <a class="reference internal" href="morgana.data.h
 
 <dl class="method">
 <dt id="morgana.base_models.BaseModel._loss">
-<code class="descname">_loss</code><span class="sig-paren">(</span><em>self</em>, <em>targets</em>, <em>predictions</em>, <em>seq_lens=None</em>, <em>loss_weights=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/base_models.py#L132-L209"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.base_models.BaseModel._loss" title="Permalink to this definition">¶</a></dt>
+<code class="descname">_loss</code><span class="sig-paren">(</span><em>self</em>, <em>targets</em>, <em>predictions</em>, <em>seq_lens=None</em>, <em>loss_weights=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.1.0/morgana/base_models.py#L132-L209"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.base_models.BaseModel._loss" title="Permalink to this definition">¶</a></dt>
 <dd><p>Defines the sequence loss for multiple target-prediction pairs.</p>
 <p>If <code class="code docutils literal notranslate"><span class="pre">targets</span></code> and <code class="code docutils literal notranslate"><span class="pre">predictions</span></code> are iterables they must be in the same order, i.e. when zipped corresponding
 elements will be used as a target-prediction pair for calculating the loss.</p>
@@ -237,9 +237,9 @@ this must be the same for all target-prediction pairs.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>targets</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>[</em><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch vmaster (1.1.0 ))"><em>torch.Tensor</em></a><em>] or </em><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch vmaster (1.1.0 ))"><em>torch.Tensor</em></a><em>, </em><em>shape</em><em> (</em><em>batch_size</em><em>, </em><em>seq_len</em><em>, </em><em>feat_dim</em><em>)</em>) – Ground truth tensor(s).</p></li>
-<li><p><strong>predictions</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>[</em><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch vmaster (1.1.0 ))"><em>torch.Tensor</em></a><em>] or </em><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch vmaster (1.1.0 ))"><em>torch.Tensor</em></a><em>, </em><em>shape</em><em> (</em><em>batch_size</em><em>, </em><em>seq_len</em><em>, </em><em>feat_dim</em><em>)</em>) – Prediction tensor(s).</p></li>
-<li><p><strong>seq_lens</strong> (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><em>None</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>[</em><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch vmaster (1.1.0 ))"><em>torch.Tensor</em></a><em>] or </em><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch vmaster (1.1.0 ))"><em>torch.Tensor</em></a><em>, </em><em>shape</em><em> (</em><em>batch_size</em><em>,</em><em>)</em>) – Sequence length features. If one tensor is given it will be used for all target-prediction pairs, otherwise
+<li><p><strong>targets</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>[</em><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch vmaster (1.2.0a0+8554416 ))"><em>torch.Tensor</em></a><em>] or </em><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch vmaster (1.2.0a0+8554416 ))"><em>torch.Tensor</em></a><em>, </em><em>shape</em><em> (</em><em>batch_size</em><em>, </em><em>seq_len</em><em>, </em><em>feat_dim</em><em>)</em>) – Ground truth tensor(s).</p></li>
+<li><p><strong>predictions</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>[</em><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch vmaster (1.2.0a0+8554416 ))"><em>torch.Tensor</em></a><em>] or </em><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch vmaster (1.2.0a0+8554416 ))"><em>torch.Tensor</em></a><em>, </em><em>shape</em><em> (</em><em>batch_size</em><em>, </em><em>seq_len</em><em>, </em><em>feat_dim</em><em>)</em>) – Prediction tensor(s).</p></li>
+<li><p><strong>seq_lens</strong> (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><em>None</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>[</em><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch vmaster (1.2.0a0+8554416 ))"><em>torch.Tensor</em></a><em>] or </em><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch vmaster (1.2.0a0+8554416 ))"><em>torch.Tensor</em></a><em>, </em><em>shape</em><em> (</em><em>batch_size</em><em>,</em><em>)</em>) – Sequence length features. If one tensor is given it will be used for all target-prediction pairs, otherwise
 the length of the list given must match the length of <code class="code docutils literal notranslate"><span class="pre">targets</span></code> and <code class="code docutils literal notranslate"><span class="pre">predictions</span></code>.</p></li>
 <li><p><strong>loss_weights</strong> (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><em>None</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em><em>, </em><em>shape</em><em> (</em><em>num_pairs</em><em>)</em>) – The weight for each target-prediction pair’s loss. If <code class="code docutils literal notranslate"><span class="pre">None</span></code> then returns the average of all pair’s losses.</p></li>
 </ul>
@@ -258,27 +258,27 @@ the length of the list given must match the length of <code class="code docutils
 
 <dl class="method">
 <dt id="morgana.base_models.BaseModel.loss_fn">
-<code class="descname">loss_fn</code><span class="sig-paren">(</span><em>self</em>, <em>target</em>, <em>prediction</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/base_models.py#L211-L226"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.base_models.BaseModel.loss_fn" title="Permalink to this definition">¶</a></dt>
+<code class="descname">loss_fn</code><span class="sig-paren">(</span><em>self</em>, <em>target</em>, <em>prediction</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.1.0/morgana/base_models.py#L211-L226"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.base_models.BaseModel.loss_fn" title="Permalink to this definition">¶</a></dt>
 <dd><p>Defines the frame-wise loss calculation between ground truth and predictions.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>target</strong> (<a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch vmaster (1.1.0 ))"><em>torch.Tensor</em></a><em>, </em><em>shape</em><em> (</em><em>batch_size</em><em>, </em><em>seq_len</em><em>, </em><em>feat_dim</em><em>)</em>) – Ground truth feature.</p></li>
-<li><p><strong>prediction</strong> (<a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch vmaster (1.1.0 ))"><em>torch.Tensor</em></a><em>, </em><em>shape</em><em> (</em><em>batch_size</em><em>, </em><em>seq_len</em><em>, </em><em>feat_dim</em><em>)</em>) – Predicted feature.</p></li>
+<li><p><strong>target</strong> (<a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch vmaster (1.2.0a0+8554416 ))"><em>torch.Tensor</em></a><em>, </em><em>shape</em><em> (</em><em>batch_size</em><em>, </em><em>seq_len</em><em>, </em><em>feat_dim</em><em>)</em>) – Ground truth feature.</p></li>
+<li><p><strong>prediction</strong> (<a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch vmaster (1.2.0a0+8554416 ))"><em>torch.Tensor</em></a><em>, </em><em>shape</em><em> (</em><em>batch_size</em><em>, </em><em>seq_len</em><em>, </em><em>feat_dim</em><em>)</em>) – Predicted feature.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>Loss between <code class="code docutils literal notranslate"><span class="pre">feature</span></code> and <code class="code docutils literal notranslate"><span class="pre">prediction</span></code>.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch vmaster (1.1.0 ))">torch.Tensor</a>, shape (batch_size, seq_len, feat_dim)</p>
+<dd class="field-odd"><p><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch vmaster (1.2.0a0+8554416 ))">torch.Tensor</a>, shape (batch_size, seq_len, feat_dim)</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="morgana.base_models.BaseModel.save_parameters">
-<code class="descname">save_parameters</code><span class="sig-paren">(</span><em>self</em>, <em>experiment_dir</em>, <em>epoch</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/base_models.py#L228-L240"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.base_models.BaseModel.save_parameters" title="Permalink to this definition">¶</a></dt>
+<code class="descname">save_parameters</code><span class="sig-paren">(</span><em>self</em>, <em>experiment_dir</em>, <em>epoch</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.1.0/morgana/base_models.py#L228-L240"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.base_models.BaseModel.save_parameters" title="Permalink to this definition">¶</a></dt>
 <dd><p>Saves the model’s <code class="code docutils literal notranslate"><span class="pre">state_dict</span></code> to a <code class="code docutils literal notranslate"><span class="pre">.pt</span></code> file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -292,30 +292,35 @@ the length of the list given must match the length of <code class="code docutils
 
 <dl class="method">
 <dt id="morgana.base_models.BaseModel.load_parameters">
-<code class="descname">load_parameters</code><span class="sig-paren">(</span><em>self</em>, <em>checkpoint_path</em>, <em>strict=True</em>, <em>device=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/base_models.py#L242-L255"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.base_models.BaseModel.load_parameters" title="Permalink to this definition">¶</a></dt>
+<code class="descname">load_parameters</code><span class="sig-paren">(</span><em>self</em>, <em>checkpoint_path</em>, <em>strict=True</em>, <em>device=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.1.0/morgana/base_models.py#L242-L261"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.base_models.BaseModel.load_parameters" title="Permalink to this definition">¶</a></dt>
 <dd><p>Loads a <code class="code docutils literal notranslate"><span class="pre">state_dict</span></code> from a <code class="code docutils literal notranslate"><span class="pre">.pt</span></code> file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>checkpoint_path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The file path of the <code class="code docutils literal notranslate"><span class="pre">.pt</span></code> file containing the <code class="code docutils literal notranslate"><span class="pre">state_dict</span></code> to be loaded</p></li>
 <li><p><strong>strict</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – Whether to strictly enforce that the keys in the loaded <code class="code docutils literal notranslate"><span class="pre">state_dict</span></code> match this model’s structure.</p></li>
-<li><p><strong>device</strong> (str or <code class="code docutils literal notranslate"><span class="pre">torch.device</span></code> or dict or callable) – Specifies how to remap storage locations, passed to <a class="reference external" href="https://pytorch.org/docs/stable/torch.html#torch.load" title="(in PyTorch vmaster (1.1.0 ))"><code class="xref py py-func docutils literal notranslate"><span class="pre">torch.load()</span></code></a>.</p></li>
+<li><p><strong>device</strong> (str or <code class="code docutils literal notranslate"><span class="pre">torch.device</span></code> or dict or callable) – Specifies how to remap storage locations, passed to <a class="reference external" href="https://pytorch.org/docs/stable/torch.html#torch.load" title="(in PyTorch vmaster (1.2.0a0+8554416 ))"><code class="xref py py-func docutils literal notranslate"><span class="pre">torch.load()</span></code></a>.</p></li>
 </ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>state_dict</strong> – Parameters and persistent buffers that define the model.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)">dict</a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="morgana.base_models.BaseModel.analysis_for_train_batch">
-<code class="descname">analysis_for_train_batch</code><span class="sig-paren">(</span><em>self</em>, <em>features</em>, <em>output_features</em>, <em>names</em>, <em>out_dir</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/base_models.py#L257-L291"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.base_models.BaseModel.analysis_for_train_batch" title="Permalink to this definition">¶</a></dt>
+<code class="descname">analysis_for_train_batch</code><span class="sig-paren">(</span><em>self</em>, <em>features</em>, <em>output_features</em>, <em>out_dir</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.1.0/morgana/base_models.py#L263-L295"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.base_models.BaseModel.analysis_for_train_batch" title="Permalink to this definition">¶</a></dt>
 <dd><p>Hook used by <a class="reference internal" href="morgana.experiment_builder.html#morgana.experiment_builder.ExperimentBuilder" title="morgana.experiment_builder.ExperimentBuilder"><code class="xref py py-class docutils literal notranslate"><span class="pre">morgana.experiment_builder.ExperimentBuilder</span></code></a> after training batches for some epochs.</p>
 <p>Can be used to save output or generate visualisations.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>features</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch vmaster (1.1.0 ))"><em>torch.Tensor</em></a><em>]</em>) – The ground truth features produced by <code class="code docutils literal notranslate"><span class="pre">self.*_data_sources</span></code>.</p></li>
-<li><p><strong>output_features</strong> (<a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch vmaster (1.1.0 ))"><em>torch.Tensor</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>[</em><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch vmaster (1.1.0 ))"><em>torch.Tensor</em></a><em>] or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch vmaster (1.1.0 ))"><em>torch.Tensor</em></a><em>]</em>) – Predictions output by user-defined <code class="code docutils literal notranslate"><span class="pre">self.predict</span></code>.</p></li>
-<li><p><strong>names</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em>) – File base names of each item in the batch.</p></li>
+<li><p><strong>features</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch vmaster (1.2.0a0+8554416 ))"><em>torch.Tensor</em></a><em>]</em>) – The ground truth features produced by <code class="code docutils literal notranslate"><span class="pre">self.*_data_sources</span></code>.</p></li>
+<li><p><strong>output_features</strong> (<a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch vmaster (1.2.0a0+8554416 ))"><em>torch.Tensor</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>[</em><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch vmaster (1.2.0a0+8554416 ))"><em>torch.Tensor</em></a><em>] or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch vmaster (1.2.0a0+8554416 ))"><em>torch.Tensor</em></a><em>]</em>) – Predictions output by user-defined <code class="code docutils literal notranslate"><span class="pre">self.predict</span></code>.</p></li>
 <li><p><strong>out_dir</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The directory used to save output (changes for each epoch).</p></li>
 <li><p><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – Additional keyword arguments used for generating output.</p></li>
 </ul>
@@ -325,15 +330,14 @@ the length of the list given must match the length of <code class="code docutils
 
 <dl class="method">
 <dt id="morgana.base_models.BaseModel.analysis_for_valid_batch">
-<code class="descname">analysis_for_valid_batch</code><span class="sig-paren">(</span><em>self</em>, <em>features</em>, <em>output_features</em>, <em>names</em>, <em>out_dir</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/base_models.py#L293-L311"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.base_models.BaseModel.analysis_for_valid_batch" title="Permalink to this definition">¶</a></dt>
+<code class="descname">analysis_for_valid_batch</code><span class="sig-paren">(</span><em>self</em>, <em>features</em>, <em>output_features</em>, <em>out_dir</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.1.0/morgana/base_models.py#L297-L313"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.base_models.BaseModel.analysis_for_valid_batch" title="Permalink to this definition">¶</a></dt>
 <dd><p>Hook used by <a class="reference internal" href="morgana.experiment_builder.html#morgana.experiment_builder.ExperimentBuilder" title="morgana.experiment_builder.ExperimentBuilder"><code class="xref py py-class docutils literal notranslate"><span class="pre">morgana.experiment_builder.ExperimentBuilder</span></code></a> after validation batches for some epochs.</p>
 <p>Can be used to save output or generate visualisations.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>features</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch vmaster (1.1.0 ))"><em>torch.Tensor</em></a><em>]</em>) – The ground truth features produced by <code class="code docutils literal notranslate"><span class="pre">self.*_data_sources</span></code>.</p></li>
-<li><p><strong>output_features</strong> (<a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch vmaster (1.1.0 ))"><em>torch.Tensor</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>[</em><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch vmaster (1.1.0 ))"><em>torch.Tensor</em></a><em>] or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch vmaster (1.1.0 ))"><em>torch.Tensor</em></a><em>]</em>) – Predictions output by user-defined <code class="code docutils literal notranslate"><span class="pre">self.predict</span></code>.</p></li>
-<li><p><strong>names</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em>) – File base names of each item in the batch.</p></li>
+<li><p><strong>features</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch vmaster (1.2.0a0+8554416 ))"><em>torch.Tensor</em></a><em>]</em>) – The ground truth features produced by <code class="code docutils literal notranslate"><span class="pre">self.*_data_sources</span></code>.</p></li>
+<li><p><strong>output_features</strong> (<a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch vmaster (1.2.0a0+8554416 ))"><em>torch.Tensor</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>[</em><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch vmaster (1.2.0a0+8554416 ))"><em>torch.Tensor</em></a><em>] or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch vmaster (1.2.0a0+8554416 ))"><em>torch.Tensor</em></a><em>]</em>) – Predictions output by user-defined <code class="code docutils literal notranslate"><span class="pre">self.predict</span></code>.</p></li>
 <li><p><strong>out_dir</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The directory used to save output (changes for each epoch).</p></li>
 <li><p><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – Additional keyword arguments used for generating output.</p></li>
 </ul>
@@ -343,15 +347,59 @@ the length of the list given must match the length of <code class="code docutils
 
 <dl class="method">
 <dt id="morgana.base_models.BaseModel.analysis_for_test_batch">
-<code class="descname">analysis_for_test_batch</code><span class="sig-paren">(</span><em>self</em>, <em>features</em>, <em>output_features</em>, <em>names</em>, <em>out_dir</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/base_models.py#L313-L331"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.base_models.BaseModel.analysis_for_test_batch" title="Permalink to this definition">¶</a></dt>
+<code class="descname">analysis_for_test_batch</code><span class="sig-paren">(</span><em>self</em>, <em>features</em>, <em>output_features</em>, <em>out_dir</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.1.0/morgana/base_models.py#L315-L331"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.base_models.BaseModel.analysis_for_test_batch" title="Permalink to this definition">¶</a></dt>
 <dd><p>Hook used by <a class="reference internal" href="morgana.experiment_builder.html#morgana.experiment_builder.ExperimentBuilder" title="morgana.experiment_builder.ExperimentBuilder"><code class="xref py py-class docutils literal notranslate"><span class="pre">morgana.experiment_builder.ExperimentBuilder</span></code></a> after each testing batch.</p>
 <p>Can be used to save output or generate visualisations.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>features</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch vmaster (1.1.0 ))"><em>torch.Tensor</em></a><em>]</em>) – The ground truth features produced by <code class="code docutils literal notranslate"><span class="pre">self.*_data_sources</span></code>.</p></li>
-<li><p><strong>output_features</strong> (<a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch vmaster (1.1.0 ))"><em>torch.Tensor</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>[</em><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch vmaster (1.1.0 ))"><em>torch.Tensor</em></a><em>] or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch vmaster (1.1.0 ))"><em>torch.Tensor</em></a><em>]</em>) – Predictions output by user-defined <a class="reference internal" href="#morgana.base_models.BaseModel.predict" title="morgana.base_models.BaseModel.predict"><code class="xref py py-func docutils literal notranslate"><span class="pre">predict()</span></code></a>.</p></li>
-<li><p><strong>names</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>]</em>) – File base names of each item in the batch.</p></li>
+<li><p><strong>features</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch vmaster (1.2.0a0+8554416 ))"><em>torch.Tensor</em></a><em>]</em>) – The ground truth features produced by <code class="code docutils literal notranslate"><span class="pre">self.*_data_sources</span></code>.</p></li>
+<li><p><strong>output_features</strong> (<a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch vmaster (1.2.0a0+8554416 ))"><em>torch.Tensor</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>[</em><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch vmaster (1.2.0a0+8554416 ))"><em>torch.Tensor</em></a><em>] or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch vmaster (1.2.0a0+8554416 ))"><em>torch.Tensor</em></a><em>]</em>) – Predictions output by user-defined <a class="reference internal" href="#morgana.base_models.BaseModel.predict" title="morgana.base_models.BaseModel.predict"><code class="xref py py-func docutils literal notranslate"><span class="pre">predict()</span></code></a>.</p></li>
+<li><p><strong>out_dir</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The directory used to save output (changes for each epoch).</p></li>
+<li><p><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – Additional keyword arguments used for generating output.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="morgana.base_models.BaseModel.analysis_for_train_epoch">
+<code class="descname">analysis_for_train_epoch</code><span class="sig-paren">(</span><em>self</em>, <em>out_dir</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.1.0/morgana/base_models.py#L333-L345"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.base_models.BaseModel.analysis_for_train_epoch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hook used by <a class="reference internal" href="morgana.experiment_builder.html#morgana.experiment_builder.ExperimentBuilder" title="morgana.experiment_builder.ExperimentBuilder"><code class="xref py py-class docutils literal notranslate"><span class="pre">morgana.experiment_builder.ExperimentBuilder</span></code></a> after some training epochs.</p>
+<p>Can be used to save output or generate visualisations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>out_dir</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The directory used to save output (changes for each epoch).</p></li>
+<li><p><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – Additional keyword arguments used for generating output.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="morgana.base_models.BaseModel.analysis_for_valid_epoch">
+<code class="descname">analysis_for_valid_epoch</code><span class="sig-paren">(</span><em>self</em>, <em>out_dir</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.1.0/morgana/base_models.py#L347-L359"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.base_models.BaseModel.analysis_for_valid_epoch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hook used by <a class="reference internal" href="morgana.experiment_builder.html#morgana.experiment_builder.ExperimentBuilder" title="morgana.experiment_builder.ExperimentBuilder"><code class="xref py py-class docutils literal notranslate"><span class="pre">morgana.experiment_builder.ExperimentBuilder</span></code></a> after some validation epochs.</p>
+<p>Can be used to save output or generate visualisations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>out_dir</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The directory used to save output (changes for each epoch).</p></li>
+<li><p><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – Additional keyword arguments used for generating output.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="morgana.base_models.BaseModel.analysis_for_test_epoch">
+<code class="descname">analysis_for_test_epoch</code><span class="sig-paren">(</span><em>self</em>, <em>out_dir</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.1.0/morgana/base_models.py#L361-L373"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.base_models.BaseModel.analysis_for_test_epoch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hook used by <a class="reference internal" href="morgana.experiment_builder.html#morgana.experiment_builder.ExperimentBuilder" title="morgana.experiment_builder.ExperimentBuilder"><code class="xref py py-class docutils literal notranslate"><span class="pre">morgana.experiment_builder.ExperimentBuilder</span></code></a> after each testing epoch.</p>
+<p>Can be used to save output or generate visualisations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
 <li><p><strong>out_dir</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The directory used to save output (changes for each epoch).</p></li>
 <li><p><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – Additional keyword arguments used for generating output.</p></li>
 </ul>
@@ -366,18 +414,18 @@ the length of the list given must match the length of <code class="code docutils
 <h2>BaseSPSS<a class="headerlink" href="#basespss" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="morgana.base_models.BaseSPSS">
-<em class="property">class </em><code class="descclassname">morgana.base_models.</code><code class="descname">BaseSPSS</code><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/base_models.py#L334-L349"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.base_models.BaseSPSS" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">morgana.base_models.</code><code class="descname">BaseSPSS</code><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.1.0/morgana/base_models.py#L376-L391"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.base_models.BaseSPSS" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#morgana.base_models.BaseModel" title="morgana.base_models.BaseModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">morgana.base_models.BaseModel</span></code></a></p>
 <p>Creates an abstract SPSS acoustic model.</p>
 <dl class="method">
 <dt id="morgana.base_models.BaseSPSS.loss_fn">
-<code class="descname">loss_fn</code><span class="sig-paren">(</span><em>self</em>, <em>target</em>, <em>prediction</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/base_models.py#L339-L341"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.base_models.BaseSPSS.loss_fn" title="Permalink to this definition">¶</a></dt>
+<code class="descname">loss_fn</code><span class="sig-paren">(</span><em>self</em>, <em>target</em>, <em>prediction</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.1.0/morgana/base_models.py#L381-L383"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.base_models.BaseSPSS.loss_fn" title="Permalink to this definition">¶</a></dt>
 <dd><p>Mean squared error loss.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="morgana.base_models.BaseSPSS.forward">
-<code class="descname">forward</code><span class="sig-paren">(</span><em>self</em>, <em>features</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/base_models.py#L343-L349"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.base_models.BaseSPSS.forward" title="Permalink to this definition">¶</a></dt>
+<code class="descname">forward</code><span class="sig-paren">(</span><em>self</em>, <em>features</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.1.0/morgana/base_models.py#L385-L391"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.base_models.BaseSPSS.forward" title="Permalink to this definition">¶</a></dt>
 <dd><p>Prediction and calculation of loss.</p>
 </dd></dl>
 
@@ -388,7 +436,7 @@ the length of the list given must match the length of <code class="code docutils
 <h2>BaseVAE<a class="headerlink" href="#basevae" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="morgana.base_models.BaseVAE">
-<em class="property">class </em><code class="descclassname">morgana.base_models.</code><code class="descname">BaseVAE</code><span class="sig-paren">(</span><em>z_dim=16</em>, <em>kld_weight=1.0</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/base_models.py#L352-L464"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.base_models.BaseVAE" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">morgana.base_models.</code><code class="descname">BaseVAE</code><span class="sig-paren">(</span><em>z_dim=16</em>, <em>kld_weight=1.0</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.1.0/morgana/base_models.py#L394-L510"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.base_models.BaseVAE" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#morgana.base_models.BaseSPSS" title="morgana.base_models.BaseSPSS"><code class="xref py py-class docutils literal notranslate"><span class="pre">morgana.base_models.BaseSPSS</span></code></a></p>
 <p>Creates an abstract VAE model, where the decoder corresponds to an SPSS model.</p>
 <dl class="field-list simple">
@@ -401,11 +449,11 @@ the length of the list given must match the length of <code class="code docutils
 </dl>
 <dl class="method">
 <dt id="morgana.base_models.BaseVAE.encode">
-<code class="descname">encode</code><span class="sig-paren">(</span><em>self</em>, <em>features</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/base_models.py#L371-L384"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.base_models.BaseVAE.encode" title="Permalink to this definition">¶</a></dt>
+<code class="descname">encode</code><span class="sig-paren">(</span><em>self</em>, <em>features</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.1.0/morgana/base_models.py#L413-L426"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.base_models.BaseVAE.encode" title="Permalink to this definition">¶</a></dt>
 <dd><p>VAE encoder.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>features</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch vmaster (1.1.0 ))"><em>torch.Tensor</em></a><em>]</em>) – The ground truth features produced by <code class="code docutils literal notranslate"><span class="pre">self.*_data_sources</span></code>.</p>
+<dd class="field-odd"><p><strong>features</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch vmaster (1.2.0a0+8554416 ))"><em>torch.Tensor</em></a><em>]</em>) – The ground truth features produced by <code class="code docutils literal notranslate"><span class="pre">self.*_data_sources</span></code>.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><ul class="simple">
@@ -419,59 +467,65 @@ the length of the list given must match the length of <code class="code docutils
 
 <dl class="method">
 <dt id="morgana.base_models.BaseVAE.sample">
-<code class="descname">sample</code><span class="sig-paren">(</span><em>self</em>, <em>mean</em>, <em>log_variance</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/base_models.py#L386-L400"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.base_models.BaseVAE.sample" title="Permalink to this definition">¶</a></dt>
+<code class="descname">sample</code><span class="sig-paren">(</span><em>self</em>, <em>mean</em>, <em>log_variance</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.1.0/morgana/base_models.py#L428-L442"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.base_models.BaseVAE.sample" title="Permalink to this definition">¶</a></dt>
 <dd><p>Takes one sample from the approximate posterior (an isotropic Gaussian).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>mean</strong> (<a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch vmaster (1.1.0 ))"><em>torch.Tensor</em></a><em>, </em><em>shape</em><em> (</em><em>batch_size</em><em>, </em><em>z_dim</em><em>)</em>) – </p></li>
-<li><p><strong>log_variance</strong> (<a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch vmaster (1.1.0 ))"><em>torch.Tensor</em></a><em>, </em><em>shape</em><em> (</em><em>batch_size</em><em>, </em><em>z_dim</em><em>)</em>) – </p></li>
+<li><p><strong>mean</strong> (<a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch vmaster (1.2.0a0+8554416 ))"><em>torch.Tensor</em></a><em>, </em><em>shape</em><em> (</em><em>batch_size</em><em>, </em><em>z_dim</em><em>)</em>) – </p></li>
+<li><p><strong>log_variance</strong> (<a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch vmaster (1.2.0a0+8554416 ))"><em>torch.Tensor</em></a><em>, </em><em>shape</em><em> (</em><em>batch_size</em><em>, </em><em>z_dim</em><em>)</em>) – </p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><strong>latent_sample</strong></p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch vmaster (1.1.0 ))">torch.Tensor</a>, shape (batch_size, z_dim)</p>
+<dd class="field-odd"><p><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch vmaster (1.2.0a0+8554416 ))">torch.Tensor</a>, shape (batch_size, z_dim)</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="morgana.base_models.BaseVAE.decode">
-<code class="descname">decode</code><span class="sig-paren">(</span><em>self</em>, <em>latent</em>, <em>features</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/base_models.py#L402-L416"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.base_models.BaseVAE.decode" title="Permalink to this definition">¶</a></dt>
+<code class="descname">decode</code><span class="sig-paren">(</span><em>self</em>, <em>latent</em>, <em>features</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.1.0/morgana/base_models.py#L444-L458"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.base_models.BaseVAE.decode" title="Permalink to this definition">¶</a></dt>
 <dd><p>VAE decoder.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>latent</strong> (<a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch vmaster (1.1.0 ))"><em>torch.Tensor</em></a><em>, </em><em>shape</em><em> (</em><em>batch_size</em><em>, </em><em>z_dim</em><em>)</em>) – </p></li>
-<li><p><strong>features</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch vmaster (1.1.0 ))"><em>torch.Tensor</em></a><em>]</em>) – The ground truth features produced by <code class="code docutils literal notranslate"><span class="pre">self.*_data_sources</span></code>.</p></li>
+<li><p><strong>latent</strong> (<a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch vmaster (1.2.0a0+8554416 ))"><em>torch.Tensor</em></a><em>, </em><em>shape</em><em> (</em><em>batch_size</em><em>, </em><em>z_dim</em><em>)</em>) – </p></li>
+<li><p><strong>features</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch vmaster (1.2.0a0+8554416 ))"><em>torch.Tensor</em></a><em>]</em>) – The ground truth features produced by <code class="code docutils literal notranslate"><span class="pre">self.*_data_sources</span></code>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><strong>output_features</strong> – Reconstructions from the model, can be any data structure containing <code class="code docutils literal notranslate"><span class="pre">torch.Tensor</span></code> instances.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch vmaster (1.1.0 ))">torch.Tensor</a> or <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)">list</a>[<a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch vmaster (1.1.0 ))">torch.Tensor</a>] or <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)">dict</a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a>, <a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch vmaster (1.1.0 ))">torch.Tensor</a>]</p>
+<dd class="field-odd"><p><a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch vmaster (1.2.0a0+8554416 ))">torch.Tensor</a> or <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)">list</a>[<a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch vmaster (1.2.0a0+8554416 ))">torch.Tensor</a>] or <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)">dict</a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a>, <a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch vmaster (1.2.0a0+8554416 ))">torch.Tensor</a>]</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="morgana.base_models.BaseVAE.forward">
-<code class="descname">forward</code><span class="sig-paren">(</span><em>self</em>, <em>features</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/base_models.py#L418-L430"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.base_models.BaseVAE.forward" title="Permalink to this definition">¶</a></dt>
+<code class="descname">forward</code><span class="sig-paren">(</span><em>self</em>, <em>features</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.1.0/morgana/base_models.py#L460-L472"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.base_models.BaseVAE.forward" title="Permalink to this definition">¶</a></dt>
 <dd><p>Encodes the input features, samples from the encoding, reconstructs the input, and calculates the loss.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="morgana.base_models.BaseVAE.predict">
-<code class="descname">predict</code><span class="sig-paren">(</span><em>self</em>, <em>features</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/base_models.py#L432-L444"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.base_models.BaseVAE.predict" title="Permalink to this definition">¶</a></dt>
+<code class="descname">predict</code><span class="sig-paren">(</span><em>self</em>, <em>features</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.1.0/morgana/base_models.py#L474-L486"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.base_models.BaseVAE.predict" title="Permalink to this definition">¶</a></dt>
 <dd><p>Runs the model in testing mode (the encoder is not used), but the latent must be provided as an input.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="morgana.base_models.BaseVAE.KL_divergence">
+<code class="descname">KL_divergence</code><span class="sig-paren">(</span><em>self</em>, <em>latent</em>, <em>mean</em>, <em>log_variance</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.1.0/morgana/base_models.py#L488-L490"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.base_models.BaseVAE.KL_divergence" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the KL-divergence using the prior <code class="code docutils literal notranslate"><span class="pre">p(z)</span> <span class="pre">=</span> <span class="pre">N(0,</span> <span class="pre">1)</span></code>.</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="morgana.base_models.BaseVAE._loss">
-<code class="descname">_loss</code><span class="sig-paren">(</span><em>self</em>, <em>targets</em>, <em>predictions</em>, <em>mean</em>, <em>log_variance</em>, <em>seq_lens=None</em>, <em>loss_weights=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/base_models.py#L446-L464"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.base_models.BaseVAE._loss" title="Permalink to this definition">¶</a></dt>
+<code class="descname">_loss</code><span class="sig-paren">(</span><em>self</em>, <em>targets</em>, <em>predictions</em>, <em>latent</em>, <em>mean</em>, <em>log_variance</em>, <em>seq_lens=None</em>, <em>loss_weights=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.1.0/morgana/base_models.py#L492-L510"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.base_models.BaseVAE._loss" title="Permalink to this definition">¶</a></dt>
 <dd><p>Defines the loss helper to calculate the Kullback–Leibler divergence as well as the sequence loss.</p>
 </dd></dl>
 

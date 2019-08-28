@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>metrics &#8212; morgana 0.0.1 documentation</title>
+    <title>metrics &#8212; morgana 0.1.0 documentation</title>
     <link rel="stylesheet" href="../_static/readable.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/css/custom.css" />
@@ -40,7 +40,7 @@
         <li class="right" >
           <a href="morgana.utils.html" title="utils"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">morgana 0.0.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">morgana 0.1.0 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="helpers.html" accesskey="U">Helpers</a> &#187;</li> 
       </ul>
     </div>  
@@ -73,7 +73,7 @@ performance after an epoch, but it allows for performance to be reported at each
 <h2>StatefulMetric<a class="headerlink" href="#statefulmetric" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="morgana.metrics.StatefulMetric">
-<em class="property">class </em><code class="descclassname">morgana.metrics.</code><code class="descname">StatefulMetric</code><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/metrics.py#L8-L40"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.metrics.StatefulMetric" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">morgana.metrics.</code><code class="descname">StatefulMetric</code><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.1.0/morgana/metrics.py#L8-L40"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.metrics.StatefulMetric" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Abstract class for accumulating information and calculating a result using current stored data.</p>
 <dl class="simple">
@@ -86,26 +86,26 @@ performance after an epoch, but it allows for performance to be reported at each
 </dl>
 <dl class="method">
 <dt id="morgana.metrics.StatefulMetric.reset_state">
-<code class="descname">reset_state</code><span class="sig-paren">(</span><em>self</em>, <em>*args</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/metrics.py#L19-L21"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.metrics.StatefulMetric.reset_state" title="Permalink to this definition">¶</a></dt>
+<code class="descname">reset_state</code><span class="sig-paren">(</span><em>self</em>, <em>*args</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.1.0/morgana/metrics.py#L19-L21"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.metrics.StatefulMetric.reset_state" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates any stateful variables and sets their initial values.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="morgana.metrics.StatefulMetric.accumulate">
-<code class="descname">accumulate</code><span class="sig-paren">(</span><em>self</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/metrics.py#L23-L25"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.metrics.StatefulMetric.accumulate" title="Permalink to this definition">¶</a></dt>
+<code class="descname">accumulate</code><span class="sig-paren">(</span><em>self</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.1.0/morgana/metrics.py#L23-L25"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.metrics.StatefulMetric.accumulate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Accumulates a batch of values into the stateful variables.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="morgana.metrics.StatefulMetric.result">
-<code class="descname">result</code><span class="sig-paren">(</span><em>self</em>, <em>*args</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/metrics.py#L27-L29"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.metrics.StatefulMetric.result" title="Permalink to this definition">¶</a></dt>
+<code class="descname">result</code><span class="sig-paren">(</span><em>self</em>, <em>*args</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.1.0/morgana/metrics.py#L27-L29"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.metrics.StatefulMetric.result" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculates the current result using the stateful variables.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="morgana.metrics.StatefulMetric.result_as_json">
-<code class="descname">result_as_json</code><span class="sig-paren">(</span><em>self</em>, <em>*args</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/metrics.py#L31-L37"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.metrics.StatefulMetric.result_as_json" title="Permalink to this definition">¶</a></dt>
-<dd><p>If the result is a <a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch vmaster (1.1.0 ))"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a> then it must be converted to <code class="code docutils literal notranslate"><span class="pre">np.ndarray</span></code> to be saved as JSON.</p>
+<code class="descname">result_as_json</code><span class="sig-paren">(</span><em>self</em>, <em>*args</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.1.0/morgana/metrics.py#L31-L37"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.metrics.StatefulMetric.result_as_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>If the result is a <a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch vmaster (1.2.0a0+8554416 ))"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a> then it must be converted to <code class="code docutils literal notranslate"><span class="pre">np.ndarray</span></code> to be saved as JSON.</p>
 </dd></dl>
 
 </dd></dl>
@@ -117,7 +117,7 @@ performance after an epoch, but it allows for performance to be reported at each
 <a class="reference internal" href="morgana.experiment_builder.html#morgana.experiment_builder.ExperimentBuilder" title="morgana.experiment_builder.ExperimentBuilder"><code class="xref py py-class docutils literal notranslate"><span class="pre">morgana.experiment_builder.ExperimentBuilder</span></code></a> and added to your model instance as an attribute called <code class="code docutils literal notranslate"><span class="pre">metrics</span></code>.</p>
 <dl class="class">
 <dt id="morgana.metrics.Handler">
-<em class="property">class </em><code class="descclassname">morgana.metrics.</code><code class="descname">Handler</code><span class="sig-paren">(</span><em>**metrics</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/metrics.py#L43-L173"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.metrics.Handler" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">morgana.metrics.</code><code class="descname">Handler</code><span class="sig-paren">(</span><em>**metrics</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.1.0/morgana/metrics.py#L43-L174"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.metrics.Handler" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#morgana.metrics.StatefulMetric" title="morgana.metrics.StatefulMetric"><code class="xref py py-class docutils literal notranslate"><span class="pre">morgana.metrics.StatefulMetric</span></code></a></p>
 <p>Container for running a set of metrics.</p>
 <dl class="field-list simple">
@@ -139,7 +139,7 @@ possible to have multiple collections as different training modes (train/valid) 
 
 <dl class="method">
 <dt id="morgana.metrics.Handler.add_metrics">
-<code class="descname">add_metrics</code><span class="sig-paren">(</span><em>self</em>, <em>collections=('all'</em>, <em>)</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/metrics.py#L78-L99"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.metrics.Handler.add_metrics" title="Permalink to this definition">¶</a></dt>
+<code class="descname">add_metrics</code><span class="sig-paren">(</span><em>self</em>, <em>collections=('all'</em>, <em>)</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.1.0/morgana/metrics.py#L79-L100"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.metrics.Handler.add_metrics" title="Permalink to this definition">¶</a></dt>
 <dd><p>Updates the given collections with all names and metrics in <code class="code docutils literal notranslate"><span class="pre">kwargs</span></code>.</p>
 <p>The new metrics will also be added to <code class="code docutils literal notranslate"><span class="pre">self.metrics</span></code>, even if no collections are specified.</p>
 <dl class="field-list simple">
@@ -154,7 +154,7 @@ possible to have multiple collections as different training modes (train/valid) 
 
 <dl class="method">
 <dt id="morgana.metrics.Handler.add_collection">
-<code class="descname">add_collection</code><span class="sig-paren">(</span><em>self</em>, <em>collection</em>, <em>from_collections=()</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/metrics.py#L101-L117"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.metrics.Handler.add_collection" title="Permalink to this definition">¶</a></dt>
+<code class="descname">add_collection</code><span class="sig-paren">(</span><em>self</em>, <em>collection</em>, <em>from_collections=()</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.1.0/morgana/metrics.py#L102-L118"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.metrics.Handler.add_collection" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a new collection, and copies the metrics of other collection(s).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -168,13 +168,13 @@ possible to have multiple collections as different training modes (train/valid) 
 
 <dl class="method">
 <dt id="morgana.metrics.Handler.accumulate">
-<code class="descname">accumulate</code><span class="sig-paren">(</span><em>self</em>, <em>collection</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/metrics.py#L123-L143"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.metrics.Handler.accumulate" title="Permalink to this definition">¶</a></dt>
+<code class="descname">accumulate</code><span class="sig-paren">(</span><em>self</em>, <em>collection</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.1.0/morgana/metrics.py#L124-L144"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.metrics.Handler.accumulate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Accumulates to all metrics in kwargs.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>collection</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Metrics in this collection will be updated.</p></li>
-<li><p><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.7)"><em>tuple</em></a><em>]</em>) – Names of metrics, and inputs to each metric’s accumulate function, e.g. a list of <a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch vmaster (1.1.0 ))"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a>.</p></li>
+<li><p><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.7)"><em>tuple</em></a><em>]</em>) – Names of metrics, and inputs to each metric’s accumulate function, e.g. a list of <a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch vmaster (1.2.0a0+8554416 ))"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a>.</p></li>
 </ul>
 </dd>
 </dl>
@@ -182,19 +182,19 @@ possible to have multiple collections as different training modes (train/valid) 
 
 <dl class="method">
 <dt id="morgana.metrics.Handler.result">
-<code class="descname">result</code><span class="sig-paren">(</span><em>self</em>, <em>collection='all'</em>, <em>*args</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/metrics.py#L145-L151"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.metrics.Handler.result" title="Permalink to this definition">¶</a></dt>
+<code class="descname">result</code><span class="sig-paren">(</span><em>self</em>, <em>collection='all'</em>, <em>*args</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.1.0/morgana/metrics.py#L146-L152"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.metrics.Handler.result" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets the result for all metrics in the given collection.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="morgana.metrics.Handler.results_as_json_dict">
-<code class="descname">results_as_json_dict</code><span class="sig-paren">(</span><em>self</em>, <em>collection='all'</em>, <em>prefix=''</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/metrics.py#L153-L159"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.metrics.Handler.results_as_json_dict" title="Permalink to this definition">¶</a></dt>
+<code class="descname">results_as_json_dict</code><span class="sig-paren">(</span><em>self</em>, <em>collection='all'</em>, <em>prefix=''</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.1.0/morgana/metrics.py#L154-L160"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.metrics.Handler.results_as_json_dict" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets the result (in a JSON friendly format) for all metrics in the given collection.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="morgana.metrics.Handler.results_as_str_dict">
-<code class="descname">results_as_str_dict</code><span class="sig-paren">(</span><em>self</em>, <em>collection='all'</em>, <em>prefix=''</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/metrics.py#L161-L167"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.metrics.Handler.results_as_str_dict" title="Permalink to this definition">¶</a></dt>
+<code class="descname">results_as_str_dict</code><span class="sig-paren">(</span><em>self</em>, <em>collection='all'</em>, <em>prefix=''</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.1.0/morgana/metrics.py#L162-L168"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.metrics.Handler.results_as_str_dict" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets the result (as a dictionary of strings) for all metrics in the given collection.</p>
 </dd></dl>
 
@@ -205,7 +205,7 @@ possible to have multiple collections as different training modes (train/valid) 
 <h2>Print<a class="headerlink" href="#print" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="morgana.metrics.Print">
-<em class="property">class </em><code class="descclassname">morgana.metrics.</code><code class="descname">Print</code><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/metrics.py#L176-L194"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.metrics.Print" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">morgana.metrics.</code><code class="descname">Print</code><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.1.0/morgana/metrics.py#L177-L195"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.metrics.Print" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#morgana.metrics.StatefulMetric" title="morgana.metrics.StatefulMetric"><code class="xref py py-class docutils literal notranslate"><span class="pre">morgana.metrics.StatefulMetric</span></code></a></p>
 <p>Class for printing the last reported value.</p>
 <dl class="attribute">
@@ -217,11 +217,32 @@ possible to have multiple collections as different training modes (train/valid) 
 </dd></dl>
 
 </div>
+<div class="section" id="history">
+<h2>History<a class="headerlink" href="#history" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="morgana.metrics.History">
+<em class="property">class </em><code class="descclassname">morgana.metrics.</code><code class="descname">History</code><span class="sig-paren">(</span><em>max_len=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.1.0/morgana/metrics.py#L198-L238"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.metrics.History" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#morgana.metrics.StatefulMetric" title="morgana.metrics.StatefulMetric"><code class="xref py py-class docutils literal notranslate"><span class="pre">morgana.metrics.StatefulMetric</span></code></a></p>
+<p>Class for storing the history of any object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>max_len</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Maximum length of the history being stored.</p>
+</dd>
+</dl>
+<dl class="attribute">
+<dt id="morgana.metrics.History.history">
+<code class="descname">history</code><a class="headerlink" href="#morgana.metrics.History.history" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tensor of (up to <code class="code docutils literal notranslate"><span class="pre">max_len</span></code>) previous inputs.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
 <div class="section" id="tensorhistory">
 <h2>TensorHistory<a class="headerlink" href="#tensorhistory" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="morgana.metrics.TensorHistory">
-<em class="property">class </em><code class="descclassname">morgana.metrics.</code><code class="descname">TensorHistory</code><span class="sig-paren">(</span><em>feat_dim</em>, <em>max_len=None</em>, <em>device=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/metrics.py#L197-L277"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.metrics.TensorHistory" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">morgana.metrics.</code><code class="descname">TensorHistory</code><span class="sig-paren">(</span><em>feat_dim</em>, <em>max_len=None</em>, <em>device=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.1.0/morgana/metrics.py#L241-L321"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.metrics.TensorHistory" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#morgana.metrics.StatefulMetric" title="morgana.metrics.StatefulMetric"><code class="xref py py-class docutils literal notranslate"><span class="pre">morgana.metrics.StatefulMetric</span></code></a></p>
 <p>Class for storing the history of a tensor.</p>
 <dl class="field-list simple">
@@ -241,7 +262,7 @@ possible to have multiple collections as different training modes (train/valid) 
 
 <dl class="method">
 <dt id="morgana.metrics.TensorHistory.str_summary">
-<code class="descname">str_summary</code><span class="sig-paren">(</span><em>self</em>, <em>result</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/metrics.py#L247-L261"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.metrics.TensorHistory.str_summary" title="Permalink to this definition">¶</a></dt>
+<code class="descname">str_summary</code><span class="sig-paren">(</span><em>self</em>, <em>result</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.1.0/morgana/metrics.py#L291-L305"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.metrics.TensorHistory.str_summary" title="Permalink to this definition">¶</a></dt>
 <dd><p>Summarises history of tensors using Gaussian parameters and range.</p>
 </dd></dl>
 
@@ -252,7 +273,7 @@ possible to have multiple collections as different training modes (train/valid) 
 <h2>Mean<a class="headerlink" href="#mean" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="morgana.metrics.Mean">
-<em class="property">class </em><code class="descclassname">morgana.metrics.</code><code class="descname">Mean</code><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/metrics.py#L280-L310"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.metrics.Mean" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">morgana.metrics.</code><code class="descname">Mean</code><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.1.0/morgana/metrics.py#L324-L354"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.metrics.Mean" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#morgana.metrics.StatefulMetric" title="morgana.metrics.StatefulMetric"><code class="xref py py-class docutils literal notranslate"><span class="pre">morgana.metrics.StatefulMetric</span></code></a></p>
 <p>Class for computing the mean in an online fashion.</p>
 <dl class="attribute">
@@ -269,7 +290,7 @@ possible to have multiple collections as different training modes (train/valid) 
 
 <dl class="method">
 <dt id="morgana.metrics.Mean.accumulate">
-<code class="descname">accumulate</code><span class="sig-paren">(</span><em>self</em>, <em>tensor</em>, <em>seq_len=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/metrics.py#L298-L307"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.metrics.Mean.accumulate" title="Permalink to this definition">¶</a></dt>
+<code class="descname">accumulate</code><span class="sig-paren">(</span><em>self</em>, <em>tensor</em>, <em>seq_len=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.1.0/morgana/metrics.py#L342-L351"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.metrics.Mean.accumulate" title="Permalink to this definition">¶</a></dt>
 <dd><p>tensor much have shape [batch_size, seq_len, feat_dim].</p>
 </dd></dl>
 
@@ -280,7 +301,7 @@ possible to have multiple collections as different training modes (train/valid) 
 <h2>RMSE<a class="headerlink" href="#rmse" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="morgana.metrics.RMSE">
-<em class="property">class </em><code class="descclassname">morgana.metrics.</code><code class="descname">RMSE</code><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/metrics.py#L313-L333"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.metrics.RMSE" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">morgana.metrics.</code><code class="descname">RMSE</code><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.1.0/morgana/metrics.py#L357-L377"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.metrics.RMSE" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#morgana.metrics.Mean" title="morgana.metrics.Mean"><code class="xref py py-class docutils literal notranslate"><span class="pre">morgana.metrics.Mean</span></code></a></p>
 <p>Class for computing RMSE in an online fashion.</p>
 <dl class="attribute">
@@ -302,7 +323,7 @@ possible to have multiple collections as different training modes (train/valid) 
 <h2>F0Distortion<a class="headerlink" href="#f0distortion" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="morgana.metrics.F0Distortion">
-<em class="property">class </em><code class="descclassname">morgana.metrics.</code><code class="descname">F0Distortion</code><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/metrics.py#L336-L356"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.metrics.F0Distortion" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">morgana.metrics.</code><code class="descname">F0Distortion</code><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.1.0/morgana/metrics.py#L380-L400"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.metrics.F0Distortion" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#morgana.metrics.RMSE" title="morgana.metrics.RMSE"><code class="xref py py-class docutils literal notranslate"><span class="pre">morgana.metrics.RMSE</span></code></a></p>
 <p>Class for computing the F0 RMSE in Hz in an online fashion.</p>
 <dl class="attribute">
@@ -324,7 +345,7 @@ possible to have multiple collections as different training modes (train/valid) 
 <h2>LF0Distortion<a class="headerlink" href="#lf0distortion" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="morgana.metrics.LF0Distortion">
-<em class="property">class </em><code class="descclassname">morgana.metrics.</code><code class="descname">LF0Distortion</code><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/metrics.py#L359-L376"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.metrics.LF0Distortion" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">morgana.metrics.</code><code class="descname">LF0Distortion</code><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.1.0/morgana/metrics.py#L403-L420"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.metrics.LF0Distortion" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#morgana.metrics.F0Distortion" title="morgana.metrics.F0Distortion"><code class="xref py py-class docutils literal notranslate"><span class="pre">morgana.metrics.F0Distortion</span></code></a></p>
 <p>Class for computing the F0 RMSE in Hz in an online fashion.</p>
 <dl class="attribute">
@@ -361,6 +382,7 @@ possible to have multiple collections as different training modes (train/valid) 
 <li class="toctree-l3"><a class="reference internal" href="#statefulmetric">StatefulMetric</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#handler">Handler</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#print">Print</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#history">History</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#tensorhistory">TensorHistory</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#mean">Mean</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#rmse">RMSE</a></li>

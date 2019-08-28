@@ -8,12 +8,11 @@ utils
 * `format_float_tensor`_
 * `map_nested`_
 * `infer_device`_
+* `detach_batched_seqs`_
 * `get_epoch_from_checkpoint_path`_
 * `sequence_mask`_
 * `both_voiced_mask`_
 * `upsample_to_repetitions`_
-* `string_to_ascii`_
-* `ascii_to_string`_
 * `RecurrentCuDNNWrapper`_
 * `SequentialWithRecurrent`_
 * `ExponentialMovingAverage`_
@@ -42,6 +41,11 @@ infer_device
 
 .. autofunction:: infer_device
 
+detach_batched_seqs
+-------------------
+
+.. autofunction:: detach_batched_seqs
+
 
 get_epoch_from_checkpoint_path
 ------------------------------
@@ -65,18 +69,6 @@ upsample_to_repetitions
 -----------------------
 
 .. autofunction:: upsample_to_repetitions
-
-
-string_to_ascii
----------------
-
-.. autofunction:: string_to_ascii
-
-
-ascii_to_string
----------------
-
-.. autofunction:: ascii_to_string
 
 
 RecurrentCuDNNWrapper

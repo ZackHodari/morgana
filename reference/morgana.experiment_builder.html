@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>experiment_builder &#8212; morgana 0.0.1 documentation</title>
+    <title>experiment_builder &#8212; morgana 0.1.0 documentation</title>
     <link rel="stylesheet" href="../_static/readable.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="../_static/css/custom.css" />
@@ -40,7 +40,7 @@
         <li class="right" >
           <a href="morgana.data.html" title="data"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">morgana 0.0.1 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="../index.html">morgana 0.1.0 documentation</a> &#187;</li> 
       </ul>
     </div>  
 
@@ -65,7 +65,7 @@ override the methods you wish to change.</p>
 <h2>ExperimentBuilder<a class="headerlink" href="#experimentbuilder" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="morgana.experiment_builder.ExperimentBuilder">
-<em class="property">class </em><code class="descclassname">morgana.experiment_builder.</code><code class="descname">ExperimentBuilder</code><span class="sig-paren">(</span><em>model_class</em>, <em>experiment_name</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/experiment_builder.py#L38-L670"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.experiment_builder.ExperimentBuilder" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">morgana.experiment_builder.</code><code class="descname">ExperimentBuilder</code><span class="sig-paren">(</span><em>model_class</em>, <em>experiment_name</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.1.0/morgana/experiment_builder.py#L38-L697"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.experiment_builder.ExperimentBuilder" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Interface for running training, validation, and generation. Works as glue for machine learning support code.</p>
 <dl class="field-list simple">
@@ -162,7 +162,7 @@ This is the only command line argument that has no default value and is required
 Produces batches from the training data (on a given device) when used as an iterator.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://pytorch.org/docs/stable/data.html#torch.utils.data.DataLoader" title="(in PyTorch vmaster (1.1.0 ))"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.utils.data.DataLoader</span></code></a> (in a <code class="xref py py-class docutils literal notranslate"><span class="pre">data._DataLoaderWrapper</span></code> container).</p>
+<dd class="field-odd"><p><a class="reference external" href="https://pytorch.org/docs/stable/data.html#torch.utils.data.DataLoader" title="(in PyTorch vmaster (1.2.0a0+8554416 ))"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.utils.data.DataLoader</span></code></a> (in a <code class="xref py py-class docutils literal notranslate"><span class="pre">data._DataLoaderWrapper</span></code> container).</p>
 </dd>
 </dl>
 </dd></dl>
@@ -174,7 +174,7 @@ Produces batches from the training data (on a given device) when used as an iter
 Produces batches from the validation data (on a given device) when used as an iterator.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://pytorch.org/docs/stable/data.html#torch.utils.data.DataLoader" title="(in PyTorch vmaster (1.1.0 ))"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.utils.data.DataLoader</span></code></a> (in a <code class="xref py py-class docutils literal notranslate"><span class="pre">data._DataLoaderWrapper</span></code> container).</p>
+<dd class="field-odd"><p><a class="reference external" href="https://pytorch.org/docs/stable/data.html#torch.utils.data.DataLoader" title="(in PyTorch vmaster (1.2.0a0+8554416 ))"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.utils.data.DataLoader</span></code></a> (in a <code class="xref py py-class docutils literal notranslate"><span class="pre">data._DataLoaderWrapper</span></code> container).</p>
 </dd>
 </dl>
 </dd></dl>
@@ -186,7 +186,7 @@ Produces batches from the validation data (on a given device) when used as an it
 Produces batches from the testing data (on a given device) when used as an iterator.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://pytorch.org/docs/stable/data.html#torch.utils.data.DataLoader" title="(in PyTorch vmaster (1.1.0 ))"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.utils.data.DataLoader</span></code></a> (in a <code class="xref py py-class docutils literal notranslate"><span class="pre">data._DataLoaderWrapper</span></code> container).</p>
+<dd class="field-odd"><p><a class="reference external" href="https://pytorch.org/docs/stable/data.html#torch.utils.data.DataLoader" title="(in PyTorch vmaster (1.2.0a0+8554416 ))"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.utils.data.DataLoader</span></code></a> (in a <code class="xref py py-class docutils literal notranslate"><span class="pre">data._DataLoaderWrapper</span></code> container).</p>
 </dd>
 </dl>
 </dd></dl>
@@ -195,27 +195,27 @@ Produces batches from the testing data (on a given device) when used as an itera
 <p>All arguments provided as command line arguments (including <code class="code docutils literal notranslate"><span class="pre">experiment_name</span></code>) are saved as instance attributes.</p>
 <dl class="classmethod">
 <dt id="morgana.experiment_builder.ExperimentBuilder.get_experiment_args">
-<em class="property">classmethod </em><code class="descname">get_experiment_args</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/experiment_builder.py#L83-L90"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.experiment_builder.ExperimentBuilder.get_experiment_args" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><code class="descname">get_experiment_args</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.1.0/morgana/experiment_builder.py#L83-L90"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.experiment_builder.ExperimentBuilder.get_experiment_args" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a command line argument parser and returns the dictionary of arguments.</p>
 </dd></dl>
 
 <dl class="classmethod">
 <dt id="morgana.experiment_builder.ExperimentBuilder.add_args">
-<em class="property">classmethod </em><code class="descname">add_args</code><span class="sig-paren">(</span><em>parser</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/experiment_builder.py#L92-L194"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.experiment_builder.ExperimentBuilder.add_args" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><code class="descname">add_args</code><span class="sig-paren">(</span><em>parser</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.1.0/morgana/experiment_builder.py#L92-L194"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.experiment_builder.ExperimentBuilder.add_args" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adds command line arguments to a parser, see <a class="reference external" href="command_line_arguments.html">usage</a>.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="morgana.experiment_builder.ExperimentBuilder.log_initial_setup">
-<code class="descname">log_initial_setup</code><span class="sig-paren">(</span><em>self</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/experiment_builder.py#L300-L323"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.experiment_builder.ExperimentBuilder.log_initial_setup" title="Permalink to this definition">¶</a></dt>
+<code class="descname">log_initial_setup</code><span class="sig-paren">(</span><em>self</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.1.0/morgana/experiment_builder.py#L298-L321"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.experiment_builder.ExperimentBuilder.log_initial_setup" title="Permalink to this definition">¶</a></dt>
 <dd><p>Copies model definition if the experiment is new. Logs the model summary and config options.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="morgana.experiment_builder.ExperimentBuilder.resolve_setting_conflicts">
-<code class="descname">resolve_setting_conflicts</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/experiment_builder.py#L325-L372"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.experiment_builder.ExperimentBuilder.resolve_setting_conflicts" title="Permalink to this definition">¶</a></dt>
+<code class="descname">resolve_setting_conflicts</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.1.0/morgana/experiment_builder.py#L323-L370"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.experiment_builder.ExperimentBuilder.resolve_setting_conflicts" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks settings and modify any that are inconsistent. Errors for incorrect setting should be raised here.</p>
-<p>If a checkpoint file is given, and <a class="reference external" href="https://pytorch.org/docs/stable/optim.html#torch.optim.lr_scheduler.ReduceLROnPlateau" title="(in PyTorch vmaster (1.1.0 ))"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.optim.lr_scheduler.ReduceLROnPlateau</span></code></a> (early stopping) learning
+<p>If a checkpoint file is given, and <a class="reference external" href="https://pytorch.org/docs/stable/optim.html#torch.optim.lr_scheduler.ReduceLROnPlateau" title="(in PyTorch vmaster (1.2.0a0+8554416 ))"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.optim.lr_scheduler.ReduceLROnPlateau</span></code></a> (early stopping) learning
 rate schedule is being used validation will be forced to be turned on.</p>
 <p>If training is off, the epoch number will be extracted from the checkpoint file and set as the current epoch.</p>
 <dl class="field-list simple">
@@ -232,21 +232,21 @@ restrictive, but it will catch some off by one errors. Can be avoided by renamin
 
 <dl class="method">
 <dt id="morgana.experiment_builder.ExperimentBuilder.build_model">
-<code class="descname">build_model</code><span class="sig-paren">(</span><em>self</em>, <em>model_class</em>, <em>model_kwargs</em>, <em>checkpoint_path=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/experiment_builder.py#L374-L384"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.experiment_builder.ExperimentBuilder.build_model" title="Permalink to this definition">¶</a></dt>
+<code class="descname">build_model</code><span class="sig-paren">(</span><em>self</em>, <em>model_class</em>, <em>model_kwargs</em>, <em>checkpoint_path=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.1.0/morgana/experiment_builder.py#L372-L382"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.experiment_builder.ExperimentBuilder.build_model" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates model instance. Loads parameters from a checkpoint file, if given. Moves the model to the device.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="morgana.experiment_builder.ExperimentBuilder.load_data">
-<code class="descname">load_data</code><span class="sig-paren">(</span><em>self</em>, <em>data_sources</em>, <em>data_dir</em>, <em>id_list</em>, <em>normalisers=None</em>, <em>name=''</em>, <em>shuffle=True</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/experiment_builder.py#L386-L417"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.experiment_builder.ExperimentBuilder.load_data" title="Permalink to this definition">¶</a></dt>
+<code class="descname">load_data</code><span class="sig-paren">(</span><em>self</em>, <em>data_sources</em>, <em>data_dir</em>, <em>id_list</em>, <em>normalisers=None</em>, <em>name=''</em>, <em>shuffle=True</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.1.0/morgana/experiment_builder.py#L384-L415"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.experiment_builder.ExperimentBuilder.load_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates a dataset using the data sources and bathces this as a data loader.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>data_sources</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference internal" href="morgana.data.html#morgana.data._DataSource" title="morgana.data._DataSource"><em>_DataSource</em></a><em>]</em>) – Specification of the different data to be loaded.</p></li>
+<li><p><strong>data_sources</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference internal" href="morgana.data.html#tts_data_tools.data_sources._DataSource" title="tts_data_tools.data_sources._DataSource"><em>_DataSource</em></a><em>]</em>) – Specification of the different data to be loaded.</p></li>
 <li><p><strong>data_dir</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The directory containing all data for this dataset split.</p></li>
 <li><p><strong>id_list</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name of the file id-list containing base names to load, contained withing <code class="code docutils literal notranslate"><span class="pre">self.data_root</span></code>.</p></li>
-<li><p><strong>normalisers</strong> (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><em>None</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference internal" href="morgana.data.html#morgana.data._FeatureNormaliser" title="morgana.data._FeatureNormaliser"><em>_FeatureNormaliser</em></a><em>]</em>) – Normalisers to be passed to the <a class="reference internal" href="morgana.data.html#morgana.data._DataSource" title="morgana.data._DataSource"><code class="xref py py-class docutils literal notranslate"><span class="pre">morgana.data._DataSource</span></code></a> instances.</p></li>
+<li><p><strong>normalisers</strong> (<a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><em>None</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference internal" href="morgana.data.html#morgana.data._FeatureNormaliser" title="morgana.data._FeatureNormaliser"><em>_FeatureNormaliser</em></a><em>]</em>) – Normalisers to be passed to the <code class="xref py py-class docutils literal notranslate"><span class="pre">morgana.data._DataSource</span></code> instances.</p></li>
 <li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – An identifier used for logging.</p></li>
 <li><p><strong>shuffle</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – Whether to shuffle the data every epoch.</p></li>
 </ul>
@@ -262,7 +262,7 @@ restrictive, but it will catch some off by one errors. Can be avoided by renamin
 
 <dl class="method">
 <dt id="morgana.experiment_builder.ExperimentBuilder.train_epoch">
-<code class="descname">train_epoch</code><span class="sig-paren">(</span><em>self</em>, <em>data_loader</em>, <em>optimizer</em>, <em>lr_schedule=None</em>, <em>gen_output=False</em>, <em>out_dir=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/experiment_builder.py#L419-L487"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.experiment_builder.ExperimentBuilder.train_epoch" title="Permalink to this definition">¶</a></dt>
+<code class="descname">train_epoch</code><span class="sig-paren">(</span><em>self</em>, <em>data_loader</em>, <em>optimizer</em>, <em>lr_schedule=None</em>, <em>gen_output=False</em>, <em>out_dir=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.1.0/morgana/experiment_builder.py#L417-L490"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.experiment_builder.ExperimentBuilder.train_epoch" title="Permalink to this definition">¶</a></dt>
 <dd><p>Trains the model once on all batches in the data loader given.</p>
 <ul class="simple">
 <li><p>Gradient updates, and EMA gradient updates.</p></li>
@@ -273,7 +273,7 @@ restrictive, but it will catch some off by one errors. Can be avoided by renamin
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>data_loader</strong> (torch.utils.data.DataLoader (in a <code class="xref py py-class docutils literal notranslate"><span class="pre">data._DataLoaderWrapper</span></code> container)) – An instance with the <code class="code docutils literal notranslate"><span class="pre">__iter__</span></code> method, allowing for iteration over batches of the dataset.</p></li>
-<li><p><strong>optimizer</strong> (<a class="reference external" href="https://pytorch.org/docs/stable/optim.html#torch.optim.Optimizer" title="(in PyTorch vmaster (1.1.0 ))"><em>torch.optim.Optimizer</em></a>) – </p></li>
+<li><p><strong>optimizer</strong> (<a class="reference external" href="https://pytorch.org/docs/stable/optim.html#torch.optim.Optimizer" title="(in PyTorch vmaster (1.2.0a0+8554416 ))"><em>torch.optim.Optimizer</em></a>) – </p></li>
 <li><p><strong>lr_schedule</strong> (<em>torch.optim.lr_scheduler._LRScheduler</em>) – Learning rate schedule, only used if it is a member of <code class="code docutils literal notranslate"><span class="pre">morgana.lr_schedules.BATCH_LR_SCHEDULES</span></code>.</p></li>
 <li><p><strong>gen_output</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – Whether to generate output for this training epoch. Output is defined by
 <a class="reference internal" href="morgana.base_models.html#morgana.base_models.BaseModel.analysis_for_train_batch" title="morgana.base_models.BaseModel.analysis_for_train_batch"><code class="xref py py-func docutils literal notranslate"><span class="pre">morgana.base_models.BaseModel.analysis_for_train_batch()</span></code></a>.</p></li>
@@ -291,7 +291,7 @@ restrictive, but it will catch some off by one errors. Can be avoided by renamin
 
 <dl class="method">
 <dt id="morgana.experiment_builder.ExperimentBuilder.run_train">
-<code class="descname">run_train</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/experiment_builder.py#L489-L538"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.experiment_builder.ExperimentBuilder.run_train" title="Permalink to this definition">¶</a></dt>
+<code class="descname">run_train</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.1.0/morgana/experiment_builder.py#L492-L545"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.experiment_builder.ExperimentBuilder.run_train" title="Permalink to this definition">¶</a></dt>
 <dd><p>Runs training from <code class="code docutils literal notranslate"><span class="pre">start_epoch</span></code> to <code class="code docutils literal notranslate"><span class="pre">end_epoch</span></code>.</p>
 <ul class="simple">
 <li><p>Parameter checkpointing, and EMA parameter checkpointing</p></li>
@@ -302,7 +302,7 @@ restrictive, but it will catch some off by one errors. Can be avoided by renamin
 
 <dl class="method">
 <dt id="morgana.experiment_builder.ExperimentBuilder.valid_epoch">
-<code class="descname">valid_epoch</code><span class="sig-paren">(</span><em>self</em>, <em>data_loader</em>, <em>model=None</em>, <em>gen_output=False</em>, <em>out_dir=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/experiment_builder.py#L540-L592"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.experiment_builder.ExperimentBuilder.valid_epoch" title="Permalink to this definition">¶</a></dt>
+<code class="descname">valid_epoch</code><span class="sig-paren">(</span><em>self</em>, <em>data_loader</em>, <em>model=None</em>, <em>gen_output=False</em>, <em>out_dir=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.1.0/morgana/experiment_builder.py#L547-L604"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.experiment_builder.ExperimentBuilder.valid_epoch" title="Permalink to this definition">¶</a></dt>
 <dd><p>Evaluates model once on all batches in data loader given. Performs analysis of model output if requested.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -325,18 +325,18 @@ restrictive, but it will catch some off by one errors. Can be avoided by renamin
 
 <dl class="method">
 <dt id="morgana.experiment_builder.ExperimentBuilder.run_valid">
-<code class="descname">run_valid</code><span class="sig-paren">(</span><em>self</em>, <em>gen_output</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/experiment_builder.py#L594-L609"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.experiment_builder.ExperimentBuilder.run_valid" title="Permalink to this definition">¶</a></dt>
+<code class="descname">run_valid</code><span class="sig-paren">(</span><em>self</em>, <em>gen_output</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.1.0/morgana/experiment_builder.py#L606-L621"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.experiment_builder.ExperimentBuilder.run_valid" title="Permalink to this definition">¶</a></dt>
 <dd><p>Runs evaluation for the current epoch.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="morgana.experiment_builder.ExperimentBuilder.test_epoch">
-<code class="descname">test_epoch</code><span class="sig-paren">(</span><em>self</em>, <em>data_loader</em>, <em>model=None</em>, <em>out_dir=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/experiment_builder.py#L611-L637"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.experiment_builder.ExperimentBuilder.test_epoch" title="Permalink to this definition">¶</a></dt>
+<code class="descname">test_epoch</code><span class="sig-paren">(</span><em>self</em>, <em>data_loader</em>, <em>model=None</em>, <em>out_dir=None</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.1.0/morgana/experiment_builder.py#L623-L664"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.experiment_builder.ExperimentBuilder.test_epoch" title="Permalink to this definition">¶</a></dt>
 <dd><p>Evaluates the model once on all batches in the data loader given. Performs analysis of model predictions.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>data_loader</strong> (<a class="reference external" href="https://pytorch.org/docs/stable/data.html#torch.utils.data.DataLoader" title="(in PyTorch vmaster (1.1.0 ))"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.utils.data.DataLoader</span></code></a> (in a <a class="reference internal" href="morgana.data.html#morgana.data._DataLoaderWrapper" title="morgana.data._DataLoaderWrapper"><code class="xref py py-class docutils literal notranslate"><span class="pre">morgana.data._DataLoaderWrapper</span></code></a> container)) – An instance with the <code class="code docutils literal notranslate"><span class="pre">__iter__</span></code> method, allowing for iteration over batches of the dataset.</p></li>
+<li><p><strong>data_loader</strong> (<a class="reference external" href="https://pytorch.org/docs/stable/data.html#torch.utils.data.DataLoader" title="(in PyTorch vmaster (1.2.0a0+8554416 ))"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.utils.data.DataLoader</span></code></a> (in a <a class="reference internal" href="morgana.data.html#morgana.data._DataLoaderWrapper" title="morgana.data._DataLoaderWrapper"><code class="xref py py-class docutils literal notranslate"><span class="pre">morgana.data._DataLoaderWrapper</span></code></a> container)) – An instance with the <code class="code docutils literal notranslate"><span class="pre">__iter__</span></code> method, allowing for iteration over batches of the dataset.</p></li>
 <li><p><strong>model</strong> (<a class="reference internal" href="morgana.base_models.html#morgana.base_models.BaseModel" title="morgana.base_models.BaseModel"><em>morgana.base_models.BaseModel</em></a>) – Model instance. If <code class="code docutils literal notranslate"><span class="pre">self.ema_decay</span></code> is non-zero this will be the ema model.</p></li>
 <li><p><strong>out_dir</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Directory used to save output (changes for each epoch).</p></li>
 </ul>
@@ -346,13 +346,13 @@ restrictive, but it will catch some off by one errors. Can be avoided by renamin
 
 <dl class="method">
 <dt id="morgana.experiment_builder.ExperimentBuilder.run_test">
-<code class="descname">run_test</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/experiment_builder.py#L639-L650"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.experiment_builder.ExperimentBuilder.run_test" title="Permalink to this definition">¶</a></dt>
+<code class="descname">run_test</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.1.0/morgana/experiment_builder.py#L666-L677"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.experiment_builder.ExperimentBuilder.run_test" title="Permalink to this definition">¶</a></dt>
 <dd><p>Runs generation for the current epoch.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="morgana.experiment_builder.ExperimentBuilder.run_experiment">
-<code class="descname">run_experiment</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.0.1/morgana/experiment_builder.py#L652-L670"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.experiment_builder.ExperimentBuilder.run_experiment" title="Permalink to this definition">¶</a></dt>
+<code class="descname">run_experiment</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/ZackHodari/morgana/blob/v0.1.0/morgana/experiment_builder.py#L679-L697"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#morgana.experiment_builder.ExperimentBuilder.run_experiment" title="Permalink to this definition">¶</a></dt>
 <dd><p>Runs all procedures requested for the experiment.</p>
 </dd></dl>
 
