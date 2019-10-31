@@ -424,9 +424,12 @@ class F0Distortion(RMSE):
     def __init__(self, hidden=False):
         super(F0Distortion, self).__init__(hidden=hidden)
 
-    def accumulate(self, f0_target, f0_pred, seq_len, is_voiced):
-        sequence_mask = utils.sequence_mask(seq_len, max_len=f0_target.shape[1], dtype=f0_target.dtype)
-        mask = sequence_mask * is_voiced.type(f0_target.dtype)
+    def accumulate(self, f0_target, f0_pred, is_voiced, seq_len=None):
+        mask = is_voiced.type(f0_target.dtype)
+
+        if seq_len is not None:
+            sequence_mask = utils.sequence_mask(seq_len, max_len=f0_target.shape[1], dtype=f0_target.dtype)
+            mask *= sequence_mask
 
         # Accumulate the squared difference.
         square_diff = (f0_target - f0_pred) ** 2
@@ -452,9 +455,9 @@ class LF0Distortion(F0Distortion):
     def __init__(self, hidden=False):
         super(LF0Distortion, self).__init__(hidden=hidden)
 
-    def accumulate(self, lf0_target, lf0_pred, seq_len, is_voiced):
+    def accumulate(self, lf0_target, lf0_pred, is_voiced, seq_len=None):
         f0_target = torch.exp(lf0_target)
         f0_pred = torch.exp(lf0_pred)
 
-        super(LF0Distortion, self).accumulate(f0_target, f0_pred, seq_len, is_voiced)
+        super(LF0Distortion, self).accumulate(f0_target, f0_pred, is_voiced, seq_len)
 
