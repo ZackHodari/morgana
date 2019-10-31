@@ -1,5 +1,6 @@
 from collections.abc import Iterable
 
+import numpy as np
 import torch
 
 from morgana import utils
@@ -466,4 +467,64 @@ class LF0Distortion(F0Distortion):
         f0_pred = torch.exp(lf0_pred)
 
         super(LF0Distortion, self).accumulate(f0_target, f0_pred, is_voiced, seq_len)
+
+
+class Distortion(Mean):
+    r"""Class for computing the mel-cepstral distortion in an online fashion.
+
+    Parameters
+    ----------
+    hidden : bool
+        Whether to hide the metric when being summarised by :class:`Handler`.
+
+    Attributes
+    ----------
+    sum
+        Sum of squared difference of `target` and `pred` inputs.
+    count
+        Number of valid frames when both `target` and `pred` are voiced.
+    """
+    log_spec_dB_const = 10. / np.log(10.) * np.sqrt(2.)
+
+    def __init__(self, hidden=False):
+        super(Distortion, self).__init__(hidden=hidden)
+
+    def accumulate(self, target, pred, seq_len=None):
+        # Accumulate the squared difference.
+        square_diff = (target - pred) ** 2
+
+        # First sum over the feature dimension then square root before the reduction in `Mean.accumulate`.
+        square_diff = torch.sum(square_diff, keepdim=True, dim=-1)
+        root_square_diff = torch.sqrt(square_diff)
+
+        super(Distortion, self).accumulate(root_square_diff, seq_len)
+
+    def result(self, *args):
+        result = super(Distortion, self).result(*args)
+        return result * self.log_spec_dB_const
+
+
+class MelCepDistortion(RMSE):
+    r"""Class for computing the mel-cepstral distortion in an online fashion, ignoring C0.
+
+    Parameters
+    ----------
+    hidden : bool
+        Whether to hide the metric when being summarised by :class:`Handler`.
+
+    Attributes
+    ----------
+    sum
+        Sum of squared difference of `target` and `pred` inputs.
+    count
+        Number of valid frames when both `target` and `pred` are voiced.
+    """
+    def __init__(self, hidden=False):
+        super(MelCepDistortion, self).__init__(hidden=hidden)
+
+    def accumulate(self, target, pred, seq_len=None):
+        target_without_c0 = target[..., 1:]
+        pred_without_c0 = pred[..., 1:]
+
+        return super(MelCepDistortion, self).accumulate(target_without_c0, pred_without_c0, seq_len=seq_len)
 
