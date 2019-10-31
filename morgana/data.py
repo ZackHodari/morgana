@@ -13,11 +13,11 @@ TO_TORCH_DTYPE = {
     np.dtype('float16'): torch.float16,
     np.dtype('float32'): torch.float32,
     np.dtype('float64'): torch.float64,
-    np.dtype('int8'): torch.uint8,
+    np.dtype('int8'): torch.int8,
     np.dtype('int16'): torch.int16,
     np.dtype('int32'): torch.int32,
     np.dtype('int64'): torch.int64,
-    np.dtype('bool'): torch.uint8,
+    np.dtype('bool'): torch.bool,
     np.dtype('uint8'): torch.uint8,
     int: torch.int64,
     float: torch.float32,
@@ -156,21 +156,12 @@ class FilesDataset(Dataset):
                 batched_feature = torch.zeros((batch_size, max_seq_len, feat_dim), dtype=dtype)
 
                 for i, feature in enumerate(feature_list):
-                    # Check if the array contains unsupported types, these need to be explicitly cast.
-                    if feature.dtype in [np.bool, np.int8]:
-                        feature = feature.astype(np.uint8)
-
                     seq_len = feature.shape[0]
                     batched_feature[i, :seq_len, ...] = torch.tensor(feature, dtype=dtype)
 
             # Static 1 dimensional feature.
             elif isinstance(feature_item, np.ndarray) and feature_item.dtype in TO_TORCH_DTYPE:
                 dtype = TO_TORCH_DTYPE[feature_item.dtype]
-
-                # Check if the array contains unsupported types, these need to be explicitly cast.
-                if feature_item.dtype in [np.bool, np.int8]:
-                    feature_list = [feature.astype(np.uint8) for feature in feature_list]
-
                 batched_feature = torch.tensor(feature_list, dtype=dtype)
 
             # Static 0 dimensional feature.
