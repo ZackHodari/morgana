@@ -222,6 +222,108 @@ def upsample_to_repetitions(sequence_feature, repeats):
     return upsampled_sequence_feature
 
 
+def split_to_segments(sequence_feature, segment_lens):
+    r"""Splits sequence into shorter segments according to some lengths.
+
+    This is useful for splitting sentence level features into lower-level sequences, such as phone or word.
+
+    Parameters
+    ----------
+    sequence_feature : torch.Tensor, shape (batch_size, max_seq_len, feat_dim)
+        Sequence feature at some lower frame-rate, this will be upsampled.
+    segment_lens : torch.Tensor, shape (batch_size, max_num_segments, 1)
+        Lengths of segments for each sequence item.
+
+    Returns
+    -------
+    segmented_sequence_feature : torch.Tensor, shape (batch_size, max_num_segments, max_segment_len, feat_dim)
+        Sequence feature split using segment lengths of individual sequence items.
+    """
+    device = infer_device(sequence_feature)
+
+    batch_size = sequence_feature.shape[0]
+    feat_dim = sequence_feature.shape[-1]
+
+    max_num_segments = segment_lens.shape[1]
+    max_segment_len = segment_lens.max().item()
+
+    # Ensure `segment_lens` has 2 dimensions.
+    segment_lens = segment_lens.reshape((batch_size, -1))
+
+    # Pad the sequence features with an extra frame, then the index array `segment_idxs` can be created using using the
+    # value -1 for positions where we need to insert the padder.
+    padder = torch.zeros((batch_size, 1, feat_dim), dtype=sequence_feature.dtype).to(device)
+    sequence_feature_with_padder = torch.cat((sequence_feature, padder), dim=1)
+
+    # Batch indexes have shape (batch_size, max_num_segments, max_segment_len), first axis contains batch index of item.
+    batch_idx = torch.arange(batch_size)[:, None, None]
+    batch_idxs = batch_idx.repeat(1, max_num_segments, max_segment_len)
+
+    # Create indexes such that positions that are not modified below will index the padding frame.
+    segment_idxs = -1 * np.ones((batch_size, max_num_segments, max_segment_len), dtype=np.int64)
+
+    # Populate the `segment_idxs` tensor with indices corresponding to the length of all segments in each batch item.
+    for b, segment_len in enumerate(segment_lens.cpu()):
+        seq_idx = 0
+        for seg_idx, seg_len in enumerate(segment_len):
+            segment_idxs[b, seg_idx, :seg_len] = np.arange(seq_idx, seq_idx + seg_len, dtype=np.int64)
+            seq_idx += seg_len
+
+    segment_idxs = torch.tensor(segment_idxs).to(device)
+
+    # Now we can easily index our PyTorch tensor using the indexes created in NumPy. This will have no interaction with
+    # actual values, since it is creating a view to the original tensor, so using NumPy has no effect on backprop.
+    segmented_sequence_feature = sequence_feature_with_padder[batch_idxs, segment_idxs]
+
+    return segmented_sequence_feature
+
+
+def get_segment_ends(sequence_feature, segment_lens):
+    r"""Gets the feature at the last position for each segment, degined by the lengths `segment_lens`.
+
+    This is useful for clockwork RNN models, given the lengths of segments, we can get the outputs of the current
+    time-scale (e.g. frame) needed for the next time-scale (e.g. word).
+
+    Parameters
+    ----------
+    sequence_feature : torch.Tensor, shape (batch_size, max_seq_len, feat_dim)
+        Sequence feature at some lower frame-rate, this will be upsampled.
+    segment_lens : torch.Tensor, shape (batch_size, max_num_segments, 1)
+        Lengths of segments for each sequence item.
+
+    Returns
+    -------
+    segment_feature : torch.Tensor, shape (batch_size, max_num_segments, feat_dim)
+        Features from `sequence_feature` for the indices corresponding to the ends of each segment.
+    """
+    device = infer_device(sequence_feature)
+
+    batch_size = sequence_feature.shape[0]
+    feat_dim = sequence_feature.shape[-1]
+
+    max_num_segments = segment_lens.shape[1]
+
+    # Ensure `segment_lens` has 2 dimensions.
+    segment_lens = segment_lens.reshape((batch_size, -1))
+
+    # Pad the sequence features with an extra frame, then the index array `cumulative_lens` can be created using using
+    # the value -1 for positions where we need to insert the padder.
+    padder = torch.zeros((batch_size, 1, feat_dim), dtype=sequence_feature.dtype).to(device)
+    sequence_feature_with_padder = torch.cat((sequence_feature, padder), dim=1)
+
+    # Batch indexes have shape (batch_size, max_num_segments), rows contain batch index of item.
+    batch_idx = torch.arange(batch_size)[:, None]
+    batch_idxs = batch_idx.repeat(1, max_num_segments)
+
+    # From the segment lengths calculate the indices at the end of the segments (cumulative sum), masking the padding.
+    segment_mask = (segment_lens > 0).type(torch.long)
+    segment_idxs = torch.cumsum(segment_lens, dim=1, dtype=torch.long) * segment_mask
+
+    segment_feature = sequence_feature_with_padder[batch_idxs, segment_idxs - 1]
+
+    return segment_feature
+
+
 class RecurrentCuDNNWrapper(nn.Module):
     r"""Wraps a torch layer with sequence packing. This requires the sequence lengths to sort, pack and unpack.
 
