@@ -95,6 +95,9 @@ class ExperimentBuilder(object):
         parser.add_argument("--model_kwargs",
                             dest="model_kwargs", action=DictAction, type=str, default={},
                             help="Settings for the model, a Python dictionary written in quotes.")
+        parser.add_argument("--analysis_kwargs",
+                            dest="analysis_kwargs", action=DictAction, type=str, default={'sample_rate': 16000},
+                            help="Key-word arguments to pass to `_BaseModel.analysis_for_*` methods.")
 
         # Training options
         add_boolean_arg(parser, "train", help="If True, model will be trained for --num_epochs on --train_id_list.")
@@ -188,11 +191,6 @@ class ExperimentBuilder(object):
                             dest="experiment_name", action="store", type=str, required=True,
                             help="Name of the sub-directory in --output_dir used for any output.")
 
-        # Synthesis options
-        parser.add_argument("--sample_rate",
-                            dest="sample_rate", action="store", type=str, default=16000,
-                            help="Sample rate of the waveforms generated.")
-
     def __init__(self, model_class, experiment_name, **kwargs):
         self.model_class = model_class
         self.model_kwargs = kwargs['model_kwargs']
@@ -233,7 +231,7 @@ class ExperimentBuilder(object):
 
         self.experiments_base = kwargs['experiments_base']
 
-        self.sample_rate = kwargs['sample_rate']
+        self.analysis_kwargs = kwargs['analysis_kwargs']
 
         #
         # Add/modify settings and attributes.
@@ -481,7 +479,7 @@ class ExperimentBuilder(object):
                                                     out_dir=out_dir, **self.analysis_kwargs)
 
         if gen_output:
-            self.model.analysis_for_train_epoch(out_dir=out_dir, sample_rate=self.sample_rate)
+            self.model.analysis_for_train_epoch(out_dir=out_dir, **self.analysis_kwargs)
 
         if out_dir:
             file_io.save_json(self.model.metrics.results_as_json_dict('train'),
@@ -595,7 +593,7 @@ class ExperimentBuilder(object):
                                                out_dir=out_dir, **self.analysis_kwargs)
 
         if gen_output:
-            model.analysis_for_valid_epoch(out_dir=out_dir, sample_rate=self.sample_rate)
+            model.analysis_for_valid_epoch(out_dir=out_dir, **self.analysis_kwargs)
 
         if out_dir:
             file_io.save_json(model.metrics.results_as_json_dict('valid'),
@@ -657,7 +655,7 @@ class ExperimentBuilder(object):
             pbar.print('test', self.epoch,
                        **model.metrics.results_as_str_dict('test'))
 
-        model.analysis_for_test_epoch(out_dir=out_dir, sample_rate=self.sample_rate)
+        model.analysis_for_test_epoch(out_dir=out_dir, **self.analysis_kwargs)
 
         if out_dir:
             file_io.save_json(model.metrics.results_as_json_dict('test'),
