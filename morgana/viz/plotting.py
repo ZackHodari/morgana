@@ -68,10 +68,10 @@ def plot_experiment(experiment_name, metric_names='loss', experiments_base='expe
 
     for ax, metric_name in zip(axs, metric_names):
         metric_values_train = results_train[metric_name]
-        ax.plot(metric_values_train.keys(), metric_values_train.values(), label=experiment_name, c=colour)
+        ax.plot(list(metric_values_train.keys()), list(metric_values_train.values()), label=experiment_name, c=colour)
 
         metric_values_valid = results_valid[metric_name]
-        ax.plot(metric_values_valid.keys(), metric_values_valid.values(), '--', c=colour)
+        ax.plot(list(metric_values_valid.keys()), list(metric_values_valid.values()), '--', c=colour)
 
         if add_labels:
             ax.set_xlabel('Epoch number')
