@@ -263,9 +263,10 @@ class ExperimentBuilder(object):
         # Create the model, loading from a checkpoint if specified and providing the normalisers to the model instance.
         self.model = self.build_model(self.model_class, self.model_kwargs, checkpoint_path=self.checkpoint_path)
 
-        # Create normalisers using the feature specification given by the model.
-        train_data_sources = self.model.train_data_sources()
-        normalisers = data.Normalisers(train_data_sources, self.normalisation_dir, self.data_root, self.device)
+        # Create normalisers as specified by the model.
+        normalisers = self.model.normaliser_sources()
+        for name in normalisers.keys():
+            normalisers[name].load_params(self.normalisation_dir, self.data_root, self.device)
         self.model.normalisers = normalisers
 
         # Create a duplicate model for EMA-based generation, load parameters for this if necessary.
@@ -278,6 +279,7 @@ class ExperimentBuilder(object):
 
         # Prepare the data by collating the data sources - pads, batches, and sends their outputs to the chosen device.
         if self.train:
+            train_data_sources = self.model.train_data_sources()
             self.train_loader = self.load_data(
                 train_data_sources, self.train_dir, self.train_id_list, normalisers, name='train')
         if self.valid:
@@ -476,7 +478,7 @@ class ExperimentBuilder(object):
 
             if gen_output:
                 self.model.analysis_for_train_batch(features, output_features,
-                                                    out_dir=out_dir, sample_rate=self.sample_rate)
+                                                    out_dir=out_dir, **self.analysis_kwargs)
 
         if gen_output:
             self.model.analysis_for_train_epoch(out_dir=out_dir, sample_rate=self.sample_rate)
@@ -590,7 +592,7 @@ class ExperimentBuilder(object):
 
             if gen_output:
                 model.analysis_for_valid_batch(features, output_features,
-                                               out_dir=out_dir, sample_rate=self.sample_rate)
+                                               out_dir=out_dir, **self.analysis_kwargs)
 
         if gen_output:
             model.analysis_for_valid_epoch(out_dir=out_dir, sample_rate=self.sample_rate)
@@ -649,7 +651,7 @@ class ExperimentBuilder(object):
             output_features = model.predict(features)
 
             model.analysis_for_test_batch(features, output_features,
-                                          out_dir=out_dir, sample_rate=self.sample_rate)
+                                          out_dir=out_dir, **self.analysis_kwargs)
 
             # Log metrics.
             pbar.print('test', self.epoch,

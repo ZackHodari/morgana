@@ -7,6 +7,7 @@ from torch.utils.data import Dataset, DataLoader
 from morgana import utils
 
 from tts_data_tools import file_io
+from tts_data_tools.utils import get_file_ids
 
 
 TO_TORCH_DTYPE = {
@@ -67,7 +68,7 @@ class FilesDataset(Dataset):
         The directory containing all data for this dataset split.
     id_list : str
         The name of the file id-list containing base names to load, contained withing `data_root`.
-    normalisers : Normalisers or dict[str, _FeatureNormaliser]
+    normalisers : Normalisers or dict[str, _FeatureNormaliser] or dict[str, _SpeakerDependentNormaliser]
         Normaliser instances used to normalise loaded features (and delta features).
     data_root : str
         The directory root for this dataset.
@@ -76,10 +77,22 @@ class FilesDataset(Dataset):
     ----------
     file_ids : list[str]
         List of base names loaded from `id_list`.
-    normalisers : Normalisers or dict[str, _FeatureNormaliser]
+    normalisers : Normalisers or dict[str, _FeatureNormaliser] or dict[str, _SpeakerDependentNormaliser]
         The normaliser instances, set automatically by :class:`morgana.experiment_builder.ExperimentBuilder`.
+
+    Notes
+    -----
+    If any speaker-dependent normalisers are provided, the user must define a data source by the name `speaker_id`.
     """
     def __init__(self, data_sources, data_dir, id_list, normalisers, data_root='.'):
+        # Check speaker ids will be generated if they are needed by any speaker dependent normalisers.
+        for name, normaliser in normalisers.items():
+            if isinstance(normaliser, _SpeakerDependentNormaliser) and 'speaker_id' not in data_sources:
+                raise KeyError(f"{name} is a speaker-dependent normaliser, but no 'speaker_id' data_source was defined")
+
+            if normaliser.use_deltas and not data_sources[name].use_deltas:
+                raise ValueError(f'To normalise deltas of {name}, set `data_source.use_deltas` to True.')
+
         self.data_sources = data_sources
         self.data_root = data_root
         self.data_dir = os.path.join(self.data_root, data_dir)
@@ -103,18 +116,38 @@ class FilesDataset(Dataset):
         features : dict[str, np.array]
             Features loaded by each data source, contained in a non-nested dictionary.
         """
+        def _normalise_feature(feature, is_deltas=False):
+            if isinstance(self.normalisers[name], _SpeakerDependentNormaliser):
+                normalised_feature = \
+                    self.normalisers[name].normalise(feature, features['speaker_id'], deltas=is_deltas)
+            else:
+                normalised_feature = \
+                    self.normalisers[name].normalise(feature, deltas=is_deltas)
+
+            return normalised_feature.astype(np.float32)
+
         base_name = self.file_ids[index]
 
         features = {'name': base_name}
+
+        # If speaker ids are provided, extract them before the `for` loop so they can be used by `_normalise_feature`.
+        if 'speaker_id' in self.data_sources:
+            speaker_id = self.data_sources['speaker_id'](base_name, self.data_dir)
+            features.update(speaker_id)
+
         for name, data_source in self.data_sources.items():
+            if name == 'speaker_id':
+                continue
+
             data_source_features = data_source(base_name, self.data_dir)
 
             if name in self.normalisers:
-                for feature_name, feature in list(data_source_features.items()):
-                    is_deltas = feature_name.endswith('_deltas')
-                    normalised_feature = self.normalisers[name].normalise(feature, deltas=is_deltas)
+                data_source_features['normalised_{}'.format(name)] = \
+                    _normalise_feature(data_source_features[name])
 
-                    data_source_features['normalised_{}'.format(feature_name)] = normalised_feature.astype(np.float32)
+                if self.normalisers[name].use_deltas:
+                    data_source_features['normalised_{}_deltas'.format(name)] = \
+                        _normalise_feature(data_source_features['{}_deltas'.format(name)], is_deltas=True)
 
             features.update(data_source_features)
 
@@ -192,10 +225,12 @@ class FilesDataset(Dataset):
 
 
 class Normalisers(dict):
-    r"""A dictionary-like container for normalisers, provides an interface for creating the normalisers.
+    r"""A dictionary-like container for normalisers, loads parameters for all the normalisers.
 
     Parameters
     ----------
+    normaliser_sources : dict[str, _FeatureNormaliser]
+        Specification of the normalisers.
     normalisation_dir : str
         The directory containing the normalisation parameters (in a JSON file).
     data_root : str
@@ -203,42 +238,15 @@ class Normalisers(dict):
     device : str or `torch.device`
         The name of the device to place the parameters on.
     """
-    def __init__(self, data_sources, normalisation_dir, data_root='.', device='cpu'):
+    def __init__(self, normaliser_sources, normalisation_dir, data_root='.', device='cpu'):
         super(Normalisers, self).__init__()
 
-        self.normalisation_dir = normalisation_dir
-        self.data_root = data_root
+        self.normalisation_dir = os.path.join(data_root, normalisation_dir)
         self.device = device
 
-        for name, data_source in data_sources.items():
-            if data_source.normalisation is not None:
-                self[name] = self.create_normaliser(name, data_source)
-
-    def create_normaliser(self, name, data_source):
-        r"""Creates the normaliser if one was specified for this data source.
-
-        Parameters
-        ----------
-        name : str
-            Name used to index this data source in the model.
-        data_source : _DataSource
-            Specification of how to load this feature.
-
-        Returns
-        -------
-        _FeatureNormaliser
-        """
-        if data_source.normalisation == 'mvn':
-            normaliser = MeanVaraianceNormaliser(
-                name, self.normalisation_dir, data_source.use_deltas, self.device, self.data_root)
-        elif data_source.normalisation == 'minmax':
-            normaliser = MinMaxNormaliser(
-                name, self.normalisation_dir, data_source.use_deltas, self.device, self.data_root)
-        else:
-            raise ValueError("Unknown or unsupported feature normaliser specified, {}"
-                             .format(data_source.normalisation))
-
-        return normaliser
+        for name, normaliser_source in normaliser_sources.items():
+            self[name] = normaliser_source
+            self[name].load_params(self.normalisation_dir, self.device)
 
 
 class _FeatureNormaliser(object):
@@ -249,32 +257,31 @@ class _FeatureNormaliser(object):
 
     Parameters
     ----------
-    feature_name : str
+    name : str
         Name of the feature.
-    data_dir : str
-        Directory containing all data for this dataset split.
     use_deltas : bool
         Whether to load normalisation parameters for delta features.
-    device : str or `torch.device`
-        Name of the device to place the parameters on.
-    data_root : str
-        Directory root for this dataset.
     file_pattern : str
         Format of the JSON file containing the normalisation parameters.
+
+    Attributes
+    ----------
+    params : dict[str, np.ndarray]
+    params_torch : dict[str, torch.Tensor]
+    delta_params : dict[str, np.ndarray]
+    delta_params_torch : dict[str, torch.Tensor]
     """
-    def __init__(self, feature_name, data_dir, use_deltas=False, device='cpu', data_root='.', file_pattern='{}.json'):
-        self.feature_name = feature_name
-        self.data_dir = os.path.join(data_root, data_dir)
+    def __init__(self, name, use_deltas=False, file_pattern='{name}.json'):
+        self.name = name
         self.use_deltas = use_deltas
-        self.device = device
         self.file_pattern = file_pattern
 
-        self.params, self.params_torch = self.load_params(self.feature_name,
-                                                          self.data_dir, self.device, self.file_pattern)
+        self.params = None
+        self.params_torch = None
 
         if self.use_deltas:
-            self.delta_params, self.delta_params_torch = self.load_params('{}_deltas'.format(self.feature_name),
-                                                                          self.data_dir, self.device, self.file_pattern)
+            self.delta_params = None
+            self.delta_params_torch = None
 
     def _normalise(self, feature, **params):
         raise NotImplementedError("Underlying calculation of normalisation should be implemented in a subclass.")
@@ -319,7 +326,7 @@ class _FeatureNormaliser(object):
         return self._denormalise(feature, **params)
 
     def fetch_params(self, data_type=np.ndarray, deltas=False):
-        """Gets the normalisation parameters, taking into account the delta flag and type of data."""
+        r"""Gets the normalisation parameters, taking into account the delta flag and type of data."""
         if deltas:
             if data_type == torch.Tensor:
                 return self.delta_params_torch
@@ -333,22 +340,205 @@ class _FeatureNormaliser(object):
                 return self.params
 
     @staticmethod
-    def load_params(feature_name, data_dir, device='cpu', file_pattern='{}.json'):
-        r"""Loads the parameters from file and converts them to NumPy arrays and PyTorch tensors."""
-        feat_params = file_io.load_json(os.path.join(data_dir, file_pattern.format(feature_name)))
+    def _from_json(file_path):
+        r"""Loads parameters from JSON file and converts to `np.ndarray`s."""
+        feat_params = file_io.load_json(file_path)
 
         params = {}
-        params_torch = {}
         for param_name, param in feat_params.items():
-            param = np.array(param, dtype=np.float32)
+            params[param_name] = np.array(param, dtype=np.float32)
 
-            params[param_name] = param
+        return params
+
+    @staticmethod
+    def _to_torch(params, device='cpu'):
+        r"""Converts dictionary of parameters to `torch.Tensor`s on the specified device."""
+        params_torch = {}
+        for param_name, param in params.items():
             params_torch[param_name] = torch.tensor(param).to(device)
 
-        return params, params_torch
+        return params_torch
+
+    def load_params(self, data_dir, data_root='.', device='cpu'):
+        r"""Loads the parameters from file and converts them to NumPy arrays and PyTorch tensors.
+
+        Parameters
+        ----------
+        data_dir : str
+            Directory containing all data for this dataset split.
+        data_root : str
+            Directory root for this dataset.
+        device : str or torch.device
+            Name of the device to place the parameters on.
+        """
+        params_file = os.path.join(
+            data_root, data_dir, self.file_pattern.format(name=self.name))
+
+        self.params = self._from_json(params_file)
+        self.params_torch = self._to_torch(self.params, device=device)
+
+        if self.use_deltas:
+            delta_params_file = os.path.join(
+                data_root, data_dir, self.file_pattern.format(name=self.name + '_deltas'))
+
+            self.delta_params = self._from_json(delta_params_file)
+            self.delta_params_torch = self._to_torch(self.delta_params, device=device)
 
 
-class MeanVaraianceNormaliser(_FeatureNormaliser):
+class _SpeakerDependentNormaliser(_FeatureNormaliser):
+    r"""Speaker-dependent feature normaliser class, wraps individual normalisers exposing speaker identity argument.
+
+    Parameters
+    ----------
+    name : str
+        Name of the feature.
+    speaker_id_list : str
+        File name of the id list containing speaker names, used to load parameters for all speakers.
+    use_deltas : bool
+        Whether to load normalisation parameters for delta features.
+    file_pattern : str
+        Format of the JSON file containing the normalisation parameters.
+
+    Attributes
+    ----------
+    speaker_ids : list[str]
+        Names of speakers for each batch item in `feature`.
+    """
+    def __init__(self, name, speaker_id_list, use_deltas=False, file_pattern='{speaker_id}/{name}.json'):
+        super(_SpeakerDependentNormaliser, self).__init__(name, use_deltas=use_deltas, file_pattern=file_pattern)
+
+        self.speaker_id_list = speaker_id_list
+        self.speaker_ids = None
+
+        self.params = {}
+        self.params_torch = {}
+
+        if self.use_deltas:
+            self.delta_params = {}
+            self.delta_params_torch = {}
+
+    def normalise(self, feature, speaker_ids, deltas=False):
+        r"""Normalises the sequence feature based on speaker-dependent normalisation parameters.
+
+        Parameters
+        ----------
+        feature : np.ndarray or torch.Tensor, shape (batch_size, seq_len, feat_dim) or (seq_len, feat_dim)
+            Sequence feature to be normalised, can be a NumPy array or a PyTorch tensor, can be batched.
+        speaker_ids : list[str] or str
+            Names of speakers for each batch item in `feature`
+        deltas : bool
+            Whether `feature` is a delta feature, and should be normalised using the delta parameters.
+
+        Returns
+        -------
+        np.ndarray or torch.Tensor, shape (batch_size, seq_len, feat_dim) or (seq_len, feat_dim)
+            Normalised sequence feature.
+        """
+        params = self.fetch_params(speaker_ids, type(feature), deltas=deltas)
+        return self._normalise(feature, **params)
+
+    def denormalise(self, feature, speaker_ids, deltas=False):
+        r"""De-normalises the sequence feature based on speaker-dependent normalisation parameters.
+
+        Parameters
+        ----------
+        feature : np.ndarray or torch.Tensor, shape (batch_size, seq_len, feat_dim) or (seq_len, feat_dim)
+            Sequence feature to be normalised, can be a NumPy array or a PyTorch tensor, can be batched.
+        speaker_ids : list[str] or str
+            Names of speakers for each batch item in `feature`
+        deltas : bool
+            Whether `feature` is a delta feature, and should be normalised using the delta parameters.
+
+        Returns
+        -------
+        np.ndarray or torch.Tensor, shape (batch_size, seq_len, feat_dim) or (seq_len, feat_dim)
+            Normalised sequence feature.
+        """
+        params = self.fetch_params(speaker_ids, type(feature), deltas=deltas)
+        return self._denormalise(feature, **params)
+
+    def fetch_params(self, speaker_ids, data_type=np.ndarray, deltas=False):
+        r"""Gets the speaker-dependent normalisation parameters, taking into account the delta flag and type of data.
+
+        Parameters
+        ----------
+        speaker_ids : list[str]
+            Names of speakers for each batch item.
+        data_type : type
+            Typically `torch.Tensor` for batched features, or `np.ndarray` for single sentences or visualisation code.
+        deltas : bool
+            Whether `feature` is a delta feature, and should be normalised using the delta parameters.
+
+        Returns
+        -------
+        sd_params : dict[str, torch.Tensor] or dict[str, np.ndarray], shape (batch_size, feat_dim) or (feat_dim)
+            The speaker dependent parameters
+        """
+        speaker_ids = utils.listify(speaker_ids)
+        speaker_params = super(_SpeakerDependentNormaliser, self).fetch_params(data_type=data_type, deltas=deltas)
+
+        sd_params = {}
+        for speaker_id in speaker_ids:
+
+            params = speaker_params[speaker_id]
+
+            for name, param in params.items():
+                # For current speaker_id (item in batch) and current parameter (e.g. mean), concatenate along dim=0
+                param = param[None, ...]
+
+                if name not in sd_params:
+                    sd_params[name] = param
+
+                else:
+                    if data_type == torch.Tensor:
+                        sd_params[name] = torch.cat((sd_params[name], param))
+                    else:
+                        sd_params[name] = np.concatenate((sd_params[name], param))
+
+        for name, sd_param in sd_params.items():
+            sd_params[name] = sd_param.squeeze(0)
+
+        return sd_params
+
+    def load_params(self, data_dir, data_root='.', device='cpu'):
+        r"""Loads the parameters for all speakers from file and stacks them in NumPy arrays and PyTorch tensors.
+
+        Parameters
+        ----------
+        data_dir : str
+            Directory containing all data for this dataset split.
+        data_root : str
+            Directory root for this dataset.
+        device : str or torch.device
+            Name of the device to place the parameters on.
+        """
+        if self.speaker_ids is None:
+            self.speaker_ids = get_file_ids(id_list=os.path.join(data_root, self.speaker_id_list))
+
+        for speaker_id in self.speaker_ids:
+            params_file = os.path.join(
+                data_root, data_dir, self.file_pattern.format(name=self.name, speaker_id=speaker_id))
+
+            self.params[speaker_id] = self._from_json(params_file)
+            self.params_torch[speaker_id] = self._to_torch(self.params[speaker_id], device=device)
+
+            if self.use_deltas:
+                delta_params_file = os.path.join(
+                    data_root, data_dir, self.file_pattern.format(speaker_id=speaker_id, name=self.name + '_deltas'))
+
+                self.delta_params[speaker_id] = self._from_json(delta_params_file)
+                self.delta_params_torch[speaker_id] = self._to_torch(self.delta_params[speaker_id], device=device)
+
+
+def normalise_mvn(feature, mean, std_dev):
+    return (feature - mean[..., None, :]) / (std_dev[..., None, :] + 1e-8)
+
+
+def denormalise_mvn(feature, mean, std_dev):
+    return (feature * std_dev[..., None, :]) + mean[..., None, :]
+
+
+class MeanVarianceNormaliser(_FeatureNormaliser):
     r"""Normalises features such that they have zero mean and unit variance.
 
     Normalisation:
@@ -358,26 +548,46 @@ class MeanVaraianceNormaliser(_FeatureNormaliser):
 
     Parameters
     ----------
-    feature_name : str
+    name : str
         Name of the feature.
-    data_dir : str
-        Directory containing all data for this dataset split.
     use_deltas : bool
         Whether to load normalisation parameters for delta features.
-    device : str or `torch.device`
-        Name of the device to place the parameters on.
-    data_root : str
-        Directory root for this dataset.
     """
-    def __init__(self, feature_name, data_dir, use_deltas=False, device='cpu', data_root='.'):
-        super(MeanVaraianceNormaliser, self).__init__(
-            feature_name, data_dir, use_deltas, device, data_root, '{}_mvn.json')
+    def __init__(self, name, use_deltas=False):
+        super(MeanVarianceNormaliser, self).__init__(
+            name, use_deltas, '{name}_mvn.json')
 
-    def _normalise(self, feature, mean, std_dev):
-        return (feature - mean) / (std_dev + 1e-8)
+    def _normalise(self, feature, **params):
+        return normalise_mvn(feature, params['mean'], params['std_dev'])
 
-    def _denormalise(self, feature, mean, std_dev):
-        return (feature * std_dev) + mean
+    def _denormalise(self, feature, **params):
+        return denormalise_mvn(feature, params['mean'], params['std_dev'])
+
+
+class SpeakerDependentMeanVarianceNormaliser(_SpeakerDependentNormaliser):
+    def __init__(self, name, speaker_id_list, use_deltas=False):
+        super(SpeakerDependentMeanVarianceNormaliser, self).__init__(
+            name, speaker_id_list, use_deltas, '{speaker_id}/{name}_mvn.json')
+
+    def _normalise(self, feature, **params):
+        return normalise_mvn(feature, params['mean'], params['std_dev'])
+
+    def _denormalise(self, feature, **params):
+        return denormalise_mvn(feature, params['mean'], params['std_dev'])
+
+
+def normalise_minmax(feature, mmin, mmax):
+    scale = mmax - mmin
+    scale[abs(scale) <= 1e-8] = 1.
+
+    return (feature - mmin[..., None, :]) / scale[..., None, :]
+
+
+def denormalise_minmax(feature, mmin, mmax):
+    scale = mmax - mmin
+    scale[abs(scale) <= 1e-8] = 1.
+
+    return (feature * scale[..., None, :]) + mmin[..., None, :]
 
 
 class MinMaxNormaliser(_FeatureNormaliser):
@@ -390,32 +600,32 @@ class MinMaxNormaliser(_FeatureNormaliser):
 
     Parameters
     ----------
-    feature_name : str
+    name : str
         Name of the feature.
-    data_dir : str
-        Directory containing all data for this dataset split.
     use_deltas : bool
         Whether to load normalisation parameters for delta features.
-    device : str or `torch.device`
-        Name of the device to place the parameters on.
-    data_root : str
-        Directory root for this dataset.
     """
-    def __init__(self, feature_name, data_dir, use_deltas=False, device='cpu', data_root='.'):
+    def __init__(self, name, use_deltas=False):
         super(MinMaxNormaliser, self).__init__(
-            feature_name, data_dir, use_deltas, device, data_root, '{}_minmax.json')
+            name, use_deltas, '{name}_minmax.json')
 
-    def _normalise(self, feature, mmin, mmax):
-        scale = mmax - mmin
-        scale[abs(scale) <= 1e-8] = 1.
+    def _normalise(self, feature, **params):
+        return normalise_minmax(feature, params['mmin'], params['mmax'])
 
-        return (feature - mmin) / scale
+    def _denormalise(self, feature, **params):
+        return denormalise_minmax(feature, params['mmin'], params['mmax'])
 
-    def _denormalise(self, feature, mmin, mmax):
-        scale = mmax - mmin
-        scale[abs(scale) <= 1e-8] = 1.
 
-        return (feature * scale) + mmin
+class SpeakerDependentMinMaxNormaliser(_SpeakerDependentNormaliser):
+    def __init__(self, name, speaker_id_list, use_deltas=False):
+        super(SpeakerDependentMinMaxNormaliser, self).__init__(
+            name, speaker_id_list, use_deltas, '{speaker_id}/{name}_minmax.json')
+
+    def _normalise(self, feature, **params):
+        return normalise_minmax(feature, params['mmin'], params['mmax'])
+
+    def _denormalise(self, feature, **params):
+        return denormalise_minmax(feature, params['mmin'], params['mmax'])
 
 
 class _DataLoaderWrapper(object):
