@@ -115,7 +115,7 @@ def sequence_mask(seq_len, max_len=None, dtype=torch.ByteTensor, device=None):
         Sequence lengths.
     max_len : int, optional
         Maximum sequence length. If None, `max(seq_len)` will be used to infer the `max_len`.
-    dtype : type
+    dtype : type or dtype
         Type for the mask that will be returned.
     device : str or `torch.device`
         Name of the device to place the mask on.
@@ -136,6 +136,28 @@ def sequence_mask(seq_len, max_len=None, dtype=torch.ByteTensor, device=None):
     mask = range[None, :] < seq_len[:, None]
 
     return mask[:, :, None].type(dtype)
+
+
+def batched_masked_select(sequence_feature, seq_len):
+    r"""Gets the feature vectors for all items in the batch that are within the sequence, according to `seq_len`.
+
+    Performs the same operation as `torch.masked_select`, but on a batch (i.e. returning a 2-d tensor).
+
+    Parameres
+    ---------
+    sequence_feature : torch.Tensor, shape (batch_size, max_seq_len, feat_dim)
+        Sequence feature at some lower frame-rate, this will be upsampled.
+    seq_len : np.ndarray or torch.Tensor, shape (batch_size,)
+        Sequence lengths used to crop each batch item.
+
+    Returns : torch.Tensor, shape (sum(seq_len), feat_dim)
+        Features from `sequence_feature` that are within each batch items sequence length.
+    """
+    mask = sequence_mask(seq_len, sequence_feature.shape[1], dtype=torch.long)
+    mask = mask.squeeze(dim=2)
+
+    idxs = mask.nonzero(as_tuple=True)
+    return sequence_feature[idxs]
 
 
 def both_voiced_mask(*sequence_features, dtype=torch.ByteTensor):
