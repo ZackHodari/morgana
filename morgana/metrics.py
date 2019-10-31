@@ -291,12 +291,18 @@ class TensorHistory(StatefulMetric):
         if self.device is not None:
             self.history = self.history.to(self.device)
 
-    def accumulate(self, tensor):
+    def accumulate(self, tensor, seq_len=None):
         if self.device is None:
             self.device = utils.infer_device(tensor)
             self.history = self.history.to(self.device)
 
-        tensor = tensor.reshape(-1, self.feat_dim).to(self.device)
+        tensor = tensor.to(self.device)
+
+        if seq_len is None:
+            tensor = tensor.reshape(-1, self.feat_dim)
+        else:
+            # Select only the items with the sequence length for each batch item.
+            tensor = utils.batched_masked_select(tensor, seq_len)
 
         self.history = torch.cat([self.history, tensor])
 
