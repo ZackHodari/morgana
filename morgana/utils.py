@@ -189,8 +189,8 @@ def upsample_to_repetitions(sequence_feature, repeats):
     max_seq_len = sequence_feature.shape[1]
     feat_dim = sequence_feature.shape[2]
 
-    reapeated_lens = torch.sum(repeats, dim=1)
-    max_repeated_len = torch.max(reapeated_lens).item()
+    repeated_lens = torch.sum(repeats, dim=1)
+    max_repeated_len = torch.max(repeated_lens).item()
 
     # Remove the trailing single dimension axis if it exists.
     repeats = repeats.reshape((batch_size, -1))
@@ -210,13 +210,13 @@ def upsample_to_repetitions(sequence_feature, repeats):
     # For each item in the batch we use `np.repeat` to create our indices, this will vary in length for each item, so
     # we need to ensure proper indexing of `repeated_idxs` is done using `repeated_len`.
     seq_feats_idx = np.arange(max_seq_len)
-    for b, (repeat, repeated_len) in enumerate(zip(repeats.cpu(), reapeated_lens.cpu())):
+    for b, (repeat, repeated_len) in enumerate(zip(repeats.cpu(), repeated_lens.cpu())):
         repeated_idxs[b, :repeated_len] = np.repeat(seq_feats_idx, repeat)
 
     repeated_idxs = torch.tensor(repeated_idxs).to(device)
 
     # Now we can easily index our PyTorch tensor using the indexes created in NumPy. This will have no interaction with
-    # actual values, since it is creating a view to the original tensor, so using number has no effect on backprop.
+    # actual values, since it is creating a view to the original tensor, so using NumPy has no effect on backprop.
     upsampled_sequence_feature = sequence_feature_with_padder[batch_idxs, repeated_idxs]
 
     return upsampled_sequence_feature
