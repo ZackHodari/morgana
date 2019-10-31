@@ -12,9 +12,16 @@ class StatefulMetric(object):
         * :func:`reset_state`
         * :func:`accumulate`
         * :func:`result`
+
+    Parameters
+    ----------
+    hidden : bool
+        Whether to hide the metric when being summarised by :class:`Handler`.
     """
-    def __init__(self):
+    def __init__(self, hidden=False):
         super(StatefulMetric, self).__init__()
+
+        self.hidden = hidden
 
     def reset_state(self, *args):
         r"""Creates any stateful variables and sets their initial values."""
@@ -55,7 +62,7 @@ class Handler(StatefulMetric):
         possible to have multiple collections as different training modes (train/valid) may involve different metrics.
     """
     def __init__(self, **metrics):
-        super(Handler, self).__init__()
+        super(Handler, self).__init__(hidden=False)
 
         self.collections = {
             'all': metrics,
@@ -155,7 +162,8 @@ class Handler(StatefulMetric):
         r"""Gets the result (in a JSON friendly format) for all metrics in the given collection."""
         d = {}
         for name, metric in self[collection].items():
-            d[prefix + name] = metric.result_as_json()
+            if not metric.hidden:
+                d[prefix + name] = metric.result_as_json()
 
         return d
 
@@ -163,27 +171,33 @@ class Handler(StatefulMetric):
         r"""Gets the result (as a dictionary of strings) for all metrics in the given collection."""
         d = {}
         for name, metric in self[collection].items():
-            d[prefix + name] = str(metric)
+            if not metric.hidden:
+                d[prefix + name] = str(metric)
 
         return d
 
     def __str__(self):
         r"""Gets the result for all metrics in the given collection, formats this as a single string."""
         d = self.results_as_str_dict('all')
-        s = ['{} = {}'.format(name, d[name]) for name in self['all'].keys()]
+        s = ['{} = {}'.format(name, value) for name, value in d.items()]
         return ' | '.join(s)
 
 
 class Print(StatefulMetric):
     r"""Class for printing the last reported value.
 
+    Parameters
+    ----------
+    hidden : bool
+        Whether to hide the metric when being summarised by :class:`Handler`.
+
     Attributes
     ----------
     value
         Most recent accumulated input.
     """
-    def __init__(self):
-        super(Print, self).__init__()
+    def __init__(self, hidden=False):
+        super(Print, self).__init__(hidden=hidden)
 
     def reset_state(self, *args):
         self.value = None
@@ -202,14 +216,16 @@ class History(StatefulMetric):
     ----------
     max_len : int
         Maximum length of the history being stored.
+    hidden : bool
+        Whether to hide the metric when being summarised by :class:`Handler`.
 
     Attributes
     ----------
     history
         Tensor of (up to `max_len`) previous inputs.
     """
-    def __init__(self, max_len=None):
-        super(History, self).__init__()
+    def __init__(self, max_len=None, hidden=False):
+        super(History, self).__init__(hidden=hidden)
         self.max_len = max_len
 
         self.reset_state()
@@ -249,25 +265,28 @@ class TensorHistory(StatefulMetric):
         Maximum length of the history being stored.
     device : str
         Device (cpu/cuda) to use. If None, this will be inferred from the tensor.
+    hidden : bool
+        Whether to hide the metric when being summarised by :class:`Handler`.
 
     Attributes
     ----------
     history
         Tensor of (up to `max_len`) previous inputs.
     """
-    def __init__(self, feat_dim, max_len=None, device=None):
-        super(TensorHistory, self).__init__()
+    def __init__(self, feat_dim, max_len=None, dtype=torch.float32, device=None, hidden=False):
+        super(TensorHistory, self).__init__(hidden=hidden)
         self.feat_dim = feat_dim
         self.max_len = max_len
 
+        self.dtype = dtype
         self.device = device
         self.reset_state()
 
     def reset_state(self):
         if self.feat_dim == 0:
-            self.history = torch.empty(0)
+            self.history = torch.empty(0, dtype=self.dtype)
         else:
-            self.history = torch.empty((0, self.feat_dim))
+            self.history = torch.empty((0, self.feat_dim), dtype=self.dtype)
 
         if self.device is not None:
             self.history = self.history.to(self.device)
@@ -324,6 +343,11 @@ class TensorHistory(StatefulMetric):
 class Mean(StatefulMetric):
     r"""Class for computing the mean in an online fashion.
 
+    Parameters
+    ----------
+    hidden : bool
+        Whether to hide the metric when being summarised by :class:`Handler`.
+
     Attributes
     ----------
     sum
@@ -331,8 +355,8 @@ class Mean(StatefulMetric):
     count
         Number of valid frames for all inputs.
     """
-    def __init__(self):
-        super(Mean, self).__init__()
+    def __init__(self, hidden=False):
+        super(Mean, self).__init__(hidden=hidden)
         self.reset_state()
 
     def reset_state(self):
@@ -357,6 +381,11 @@ class Mean(StatefulMetric):
 class RMSE(Mean):
     r"""Class for computing RMSE in an online fashion.
 
+    Parameters
+    ----------
+    hidden : bool
+        Whether to hide the metric when being summarised by :class:`Handler`.
+
     Attributes
     ----------
     sum
@@ -364,8 +393,8 @@ class RMSE(Mean):
     count
         Number of valid frames for all inputs.
     """
-    def __init__(self):
-        super(Mean, self).__init__()
+    def __init__(self, hidden=False):
+        super(Mean, self).__init__(hidden=hidden)
 
     def accumulate(self, target, pred, seq_len=None):
         # Accumulate the squared difference.
@@ -380,6 +409,11 @@ class RMSE(Mean):
 class F0Distortion(RMSE):
     r"""Class for computing the F0 RMSE in Hz in an online fashion.
 
+    Parameters
+    ----------
+    hidden : bool
+        Whether to hide the metric when being summarised by :class:`Handler`.
+
     Attributes
     ----------
     sum
@@ -387,8 +421,8 @@ class F0Distortion(RMSE):
     count
         Number of valid frames when both `target` and `pred` are voiced.
     """
-    def __init__(self):
-        super(F0Distortion, self).__init__()
+    def __init__(self, hidden=False):
+        super(F0Distortion, self).__init__(hidden=hidden)
 
     def accumulate(self, f0_target, f0_pred, seq_len, is_voiced):
         sequence_mask = utils.sequence_mask(seq_len, max_len=f0_target.shape[1], dtype=f0_target.dtype)
@@ -403,6 +437,11 @@ class F0Distortion(RMSE):
 class LF0Distortion(F0Distortion):
     r"""Class for computing the F0 RMSE in Hz in an online fashion.
 
+    Parameters
+    ----------
+    hidden : bool
+        Whether to hide the metric when being summarised by :class:`Handler`.
+
     Attributes
     ----------
     sum
@@ -410,8 +449,8 @@ class LF0Distortion(F0Distortion):
     count
         Number of valid frames when both `target` and `pred` are voiced.
     """
-    def __init__(self):
-        super(LF0Distortion, self).__init__()
+    def __init__(self, hidden=False):
+        super(LF0Distortion, self).__init__(hidden=hidden)
 
     def accumulate(self, lf0_target, lf0_pred, seq_len, is_voiced):
         f0_target = torch.exp(lf0_target)
