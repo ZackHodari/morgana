@@ -111,9 +111,9 @@ class BaseModel(nn.Module):
         raise NotImplementedError("Prediction must be implemented in a subclass.")
 
     def loss(self, features, output_features):
-        r"""Defines which predictions should be scored against which ground truth features.
+        r"""Defines the loss used to train the model.
 
-        Typically this method should use :func:`~_loss` to calculate the sequence loss for the target-prediction pairs.
+        If you are calculating losses on padded sequences, wrap your loss function with `losses.sequence_loss`.
 
         Parameters
         ----------
@@ -125,105 +125,9 @@ class BaseModel(nn.Module):
         Returns
         -------
         float
-            Overall loss between (user-defined) pairs of values in `features` and `output_features`.
+            Overall loss between `features` and `output_features`.
         """
         raise NotImplementedError("Loss must be implemented in a subclass.")
-
-    def _loss(self, targets, predictions, seq_lens=None, loss_weights=None):
-        r"""Defines the sequence loss for multiple target-prediction pairs.
-
-        If `targets` and `predictions` are iterables they must be in the same order, i.e. when zipped corresponding
-        elements will be used as a target-prediction pair for calculating the loss.
-
-        The loss value between two frames of the target and prediction is given by :func:`~loss_fn`. Currently
-        this must be the same for all target-prediction pairs.
-
-        .. todo::
-            Add support for multiple `self.loss_fn`.
-
-        Parameters
-        ----------
-        targets : list[torch.Tensor] or torch.Tensor, shape (batch_size, seq_len, feat_dim)
-            Ground truth tensor(s).
-        predictions : list[torch.Tensor] or torch.Tensor, shape (batch_size, seq_len, feat_dim)
-            Prediction tensor(s).
-        seq_lens : None or list[torch.Tensor] or torch.Tensor, shape (batch_size,)
-            Sequence length features. If one tensor is given it will be used for all target-prediction pairs, otherwise
-            the length of the list given must match the length of `targets` and `predictions`.
-        loss_weights : None or list[float], shape (num_pairs)
-            The weight for each target-prediction pair's loss. If `None` then returns the average of all pair's losses.
-
-        Returns
-        -------
-        float
-            Overall (average or weight) loss.
-
-        Raises
-        ------
-        ValueError
-            If `targets`, `predictions`, `seq_len`, or `loss_weights` are lists with non-matching lengths.
-        """
-        targets = utils.listify(targets)
-        predictions = utils.listify(predictions)
-
-        n_feature_streams = len(targets)
-
-        # Ensure there is a sequence length tensor associated with every target/prediction.
-        if seq_lens is None:
-            seq_lens = [None for _ in range(n_feature_streams)]
-        elif not isinstance(seq_lens, (list, tuple)):
-            seq_lens = [seq_lens for _ in range(n_feature_streams)]
-
-        # If no cost weights are provided, set all to 1.
-        if loss_weights is None:
-            loss_weights = [1. for _ in range(n_feature_streams)]
-
-        # Check the number of targets and predictions provided to calculate the loss for.
-        if len(predictions) != len(targets) or len(seq_lens) != len(targets) or len(loss_weights) != len(targets):
-            raise ValueError("targets, predictions, seq_len, and loss_weights in `_loss` must be the same length.")
-
-        # Calculate the average of the loss for reconstructions.
-        loss = 0.
-        for i, (feature, prediction, seq_len, weight) in enumerate(zip(targets, predictions, seq_lens, loss_weights)):
-
-            feature_loss = self.loss_fn(feature, prediction)
-
-            if seq_len is None:
-                max_num_frames = feature_loss.shape[1]
-                feature_loss = torch.sum(feature_loss, dim=1) / max_num_frames
-            else:
-                mask = utils.sequence_mask(seq_len, max_len=feature_loss.shape[1], dtype=feature_loss.dtype)
-                num_valid_frames = torch.sum(mask, dim=1)
-                feature_loss = torch.sum(feature_loss * mask, dim=1) / num_valid_frames
-
-            # Average across all batch items and all feature dimensions.
-            feature_loss = torch.mean(feature_loss)
-
-            loss += feature_loss * weight
-        loss /= n_feature_streams
-
-        self.metrics.accumulate(
-            self.mode,
-            loss=loss)
-
-        return loss
-
-    def loss_fn(self, target, prediction):
-        r"""Defines the frame-wise loss calculation between ground truth and predictions.
-
-        Parameters
-        ----------
-        target : torch.Tensor, shape (batch_size, seq_len, feat_dim)
-            Ground truth feature.
-        prediction : torch.Tensor, shape (batch_size, seq_len, feat_dim)
-            Predicted feature.
-
-        Returns
-        -------
-        torch.Tensor, shape (batch_size, seq_len, feat_dim)
-            Loss between `feature` and `prediction`.
-        """
-        raise NotImplementedError("Loss function must be implemented in a subclass.")
 
     def save_parameters(self, experiment_dir, epoch):
         r"""Saves the model's `state_dict` to a `.pt` file.
@@ -377,10 +281,6 @@ class BaseSPSS(BaseModel):
     r"""Creates an abstract SPSS acoustic model."""
     def __init__(self):
         super(BaseSPSS, self).__init__()
-
-    def loss_fn(self, target, prediction):
-        r"""Mean squared error loss."""
-        return F.mse_loss(target, prediction, reduction='none')
 
     def forward(self, features):
         r"""Prediction and calculation of loss."""

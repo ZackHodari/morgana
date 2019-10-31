@@ -470,6 +470,7 @@ class ExperimentBuilder(object):
                 self.ema.update_params(self.model)
 
             # Log metrics.
+            self.model.metrics.accumulate(self.model.mode, loss=batch_loss)
             pbar.print('train', self.epoch,
                        batch_loss=tqdm.format_num(batch_loss),
                        **self.model.metrics.results_as_str_dict('train'))
@@ -584,6 +585,7 @@ class ExperimentBuilder(object):
             loss += batch_loss.item()
 
             # Log metrics.
+            self.model.metrics.accumulate(self.model.mode, loss=batch_loss)
             pbar.print('valid', self.epoch,
                        batch_loss=tqdm.format_num(batch_loss),
                        **model.metrics.results_as_str_dict('valid'))
