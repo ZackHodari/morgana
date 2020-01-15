@@ -3,11 +3,8 @@ import os
 import numpy as np
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
 
-from morgana import losses
 from morgana import metrics
-from morgana import utils
 
 import tts_data_tools as tdt
 
@@ -38,6 +35,22 @@ class BaseModel(nn.Module):
         self.metrics = metrics.Handler(loss=metrics.Mean())
         self.step = 0
         self.tensorboard = None
+
+    def finalise_init(self):
+        r"""Called at the end of ExperiemntBuilder.__init__"""
+        pass
+
+    def normaliser_sources(self):
+        r"""Specifies the normalisers that will be initialised and used by `FilesDataset`.
+
+        Only specifies what data will be loaded, but not where from.
+
+        Returns
+        -------
+        normalisers : data.Normalisers or dict[str, data._FeatureNormaliser or data._SpeakerDependentNormaliser]
+            The normalisers used by :class:`morgana.data.FilesDataset`.
+        """
+        return {}
 
     def train_data_sources(self):
         r"""Specifies the data that will be loaded and used in training.
@@ -180,23 +193,7 @@ class BaseModel(nn.Module):
         kwargs : dict
             Additional keyword arguments used for generating output.
         """
-        pred_dir = os.path.join(out_dir, 'feats')
-        os.makedirs(pred_dir, exist_ok=True)
-
-        n_frames = features['n_frames'].cpu().detach().numpy()
-        for feat_name, values in output_features.items():
-
-            if isinstance(values, torch.Tensor):
-                values = values.cpu().detach().numpy()
-
-            if isinstance(values, np.ndarray):
-                if values.ndim == 3:
-                    values = [value[:n_frame] for value, n_frame in zip(values, n_frames)]
-
-                tdt.file_io.save_dir(tdt.file_io.save_bin,
-                                     path=os.path.join(pred_dir, feat_name),
-                                     data=values,
-                                     file_ids=features['name'])
+        pass
 
     def analysis_for_valid_batch(self, features, output_features, out_dir, **kwargs):
         r"""Hook used by :class:`morgana.experiment_builder.ExperimentBuilder` after validation batches for some epochs.
@@ -384,28 +381,4 @@ class BaseVAE(BaseSPSS):
             latent = torch.zeros((batch_size, self.z_dim)).to(device)
 
         return self.decode(latent, features)
-
-    def KL_divergence(self, latent, mean, log_variance):
-        r"""Calculates the KL-divergence using the prior `p(z) = N(0, 1)`."""
-        return losses.KLD_standard_normal(mean, log_variance)
-
-    def _loss(self, targets, predictions, latent, mean, log_variance, seq_lens=None, loss_weights=None):
-        r"""Defines the loss helper to calculate the Kullback–Leibler divergence as well as the sequence loss."""
-        if loss_weights is None:
-            mse_weight = len(utils.listify(targets))
-        else:
-            mse_weight = sum(loss_weights)
-
-        mse = super(BaseVAE, self)._loss(targets, predictions, seq_lens, loss_weights)
-        mse *= mse_weight
-
-        kld = self.KL_divergence(latent, mean, log_variance)
-
-        self.metrics.accumulate(
-            self.mode,
-            kld=kld)
-
-        loss = (mse + kld * self.kld_weight) / (mse_weight + 1)
-
-        return loss
 

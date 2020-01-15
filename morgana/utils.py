@@ -63,7 +63,7 @@ def infer_device(tensor):
     return torch.device(device)
 
 
-def detach_batched_seqs(*sequence_features, seq_len):
+def detach_batched_seqs(*sequence_features, seq_len=None, squeeze=True):
     r"""Converts :class:`torch.Tensor` to `np.ndarray`. Moves data to CPU, detaches gradients, and removes padding.
 
     Parameters
@@ -72,6 +72,8 @@ def detach_batched_seqs(*sequence_features, seq_len):
         List of batched sequence features to be detached.
     seq_len : np.ndarray or torch.Tensor, shape (batch_size,)
         Sequence length used to remove padding from each batch item.
+    squeeze : bool
+        If True, try to squeeze 1-dimensional features
 
     Returns
     -------
@@ -85,13 +87,15 @@ def detach_batched_seqs(*sequence_features, seq_len):
     for sequence_feature_batch in sequence_features:
 
         # Convert to numpy.
-        sequence_feature_batch = sequence_feature_batch.cpu().detach().numpy()
+        if isinstance(sequence_feature_batch, torch.Tensor):
+            sequence_feature_batch = sequence_feature_batch.cpu().detach().numpy()
 
         # Remove padding.
-        sequence_feature_list = [sequence_feature[:len_].squeeze()
-                                 for sequence_feature, len_ in zip(sequence_feature_batch, seq_len)]
+        if seq_len is not None and sequence_feature_batch[0].ndim > 1:
+            sequence_feature_batch = [sequence_feature[:len_].squeeze() if squeeze else sequence_feature[:len_]
+                                      for sequence_feature, len_ in zip(sequence_feature_batch, seq_len)]
 
-        detached.append(sequence_feature_list)
+        detached.append(sequence_feature_batch)
 
     if len(detached) == 1:
         return detached[0]
@@ -102,8 +106,10 @@ def get_epoch_from_checkpoint_path(checkpoint_path):
     r"""Extracts the epoch number from a checkpoint path of the form `.*checkpoints/epoch_(NUM)_.*.pt`"""
     epoch_regex = re.compile(r'.*checkpoints/epoch_(?P<epoch>\d+)(_\w+)?\.\w+')
     match = epoch_regex.match(checkpoint_path)
-    checkpoint_epoch = int(match['epoch'])
-    return checkpoint_epoch
+    if match is None:
+        return 0
+    else:
+        return int(match['epoch'])
 
 
 def sequence_mask(seq_len, max_len=None, dtype=torch.ByteTensor, device=None):
@@ -336,7 +342,26 @@ class RecurrentCuDNNWrapper(nn.Module):
         super(RecurrentCuDNNWrapper, self).__init__()
         self.layer = layer
 
-    def forward(self, inputs, hx=None, seq_len=None):
+    def forward(self, inputs, hidden=None, seq_len=None):
+        # If no sequence length is given, then run the layer without any wrapper.
+        if seq_len is None:
+            if isinstance(inputs, nn.utils.rnn.PackedSequence):
+                outputs, hidden = self.layer(inputs, hx=hidden)
+                return outputs, hidden
+
+            elif inputs.ndim == 2:
+                seq_dim = 1 if self.layer.batch_first else 0
+                inputs = inputs.unsqueeze(seq_dim)
+
+                outputs, hidden = self.layer(inputs, hx=hidden)
+
+                outputs = outputs.squeeze(seq_dim)
+                return outputs, hidden
+
+            else:
+                raise ValueError('If no seq_len is provided to RecurrentCuDNNWrapper the data must be already packed'
+                                 f'or must be for one time slice only. For non-packed input got shape, {inputs.shape}')
+
         # Sort the batch items by sequence length and pack the sequence.
         sorted_idxs = torch.argsort(seq_len, descending=True)
         sorted_inputs = inputs[sorted_idxs, ...]
@@ -344,15 +369,15 @@ class RecurrentCuDNNWrapper(nn.Module):
         packed_inputs = nn.utils.rnn.pack_padded_sequence(sorted_inputs, sorted_seq_len, batch_first=True)
 
         # Sort the initial hidden state of each batch item by sequence length.
-        if hx is not None:
+        if hidden is not None:
             # Hidden shape is (num_layers * num_directions, batch_size, hidden_size).
             if self.layer.mode == 'LSTM':
-                hx = (hx[0][:, sorted_idxs, :], hx[1][:, sorted_idxs, :])
+                hidden = (hidden[0][:, sorted_idxs, :], hidden[1][:, sorted_idxs, :])
             else:
-                hx = hx[:, sorted_idxs, :]
+                hidden = hidden[:, sorted_idxs, :]
 
         # Run the recurrent layer.
-        packed_outputs, hidden = self.layer(packed_inputs, hx)
+        packed_outputs, hidden = self.layer(packed_inputs, hx=hidden)
 
         # Unpack and unsort the outputs.
         sorted_outputs, _ = nn.utils.rnn.pad_packed_sequence(packed_outputs, batch_first=True)
@@ -373,23 +398,24 @@ class SequentialWithRecurrent(nn.Sequential):
     def __init__(self, *args):
         super(SequentialWithRecurrent, self).__init__(*args)
 
-    def forward(self, input, hx=None, seq_len=None):
-        hidden = None
-        for module in self._modules.values():
+    def forward(self, input, hiddens=None, seq_len=None):
+        # This will contain an entry for all modules, even if they are not recurrent. This might be a bad design, but it
+        # is the simplest way to ensure we do not use the incorrect hidden state for a certain recurrent layer.
+        if hiddens is None:
+            hiddens = [None] * len(self._modules)
+
+        for i, module in enumerate(self._modules.values()):
 
             if isinstance(module, RecurrentCuDNNWrapper):
-                input, hidden = module(input, hx, seq_len)
+                input, hiddens[i] = module(input, hiddens[i], seq_len)
 
             elif isinstance(module, nn.RNNBase):
-                input, hidden = module(input, hx)
+                input, hiddens[i] = module(input, hiddens[i])
 
             else:
                 input = module(input)
 
-        if isinstance(module, (RecurrentCuDNNWrapper, nn.RNNBase)):
-            return input, hidden
-        else:
-            return input
+        return input, hiddens
 
 
 class ExponentialMovingAverage(object):

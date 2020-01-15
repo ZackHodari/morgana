@@ -90,7 +90,7 @@ class FilesDataset(Dataset):
             if isinstance(normaliser, _SpeakerDependentNormaliser) and 'speaker_id' not in data_sources:
                 raise KeyError(f"{name} is a speaker-dependent normaliser, but no 'speaker_id' data_source was defined")
 
-            if normaliser.use_deltas and not data_sources[name].use_deltas:
+            if name in data_sources and normaliser.use_deltas and not data_sources[name].use_deltas:
                 raise ValueError(f'To normalise deltas of {name}, set `data_source.use_deltas` to True.')
 
         self.data_sources = data_sources

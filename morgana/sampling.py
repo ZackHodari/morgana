@@ -13,6 +13,8 @@ class UniformSphereSurfaceSampler(Distribution):
     `von Mises-Fisher distribution <https://en.wikipedia.org/wiki/Von_Mises–Fisher_distribution>`_
     """
     def __init__(self, centre, radius):
+        self.device = centre.device
+
         self.centre = centre
         self.dim = len(self.centre)
         self.radius = radius
@@ -22,9 +24,35 @@ class UniformSphereSurfaceSampler(Distribution):
 
     def rsample(self, sample_shape=torch.Size()):
         r"""Samples points on the surface of the hypersphere."""
-        direction = self.normal.rsample(self.dim)
-        point_on_unit_sphere = direction / torch.norm(direction, p=None)
+        direction = self.normal.rsample(list(sample_shape) + [self.dim]).to(self.device)
+        point_on_unit_sphere = direction / torch.norm(direction, dim=-1, p=None, keepdim=True)
         return self.centre + self.radius * point_on_unit_sphere
+
+
+def evenly_spaced_points_on_hypersphere(centre, radius, N):
+    r"""We want the surface of an n-ball, which is equivalent to an (n-1)-sphere.
+
+    S_n(R) = ( 2 * pi ^ ((n + 1) / 2) ) / Gamma((n/1) + 1) * R^n
+    """
+    dim = len(centre)
+
+    points = []
+    offset = 2. / N
+    increment = math.pi * (3. - math.sqrt(5.))
+
+    for i in range(N):
+        y = ((i * offset) - 1) + (offset / 2)
+        r = math.sqrt(1 - pow(y, 2))
+
+        phi = ((i + 1.) % N) * increment
+
+        x = math.cos(phi) * r
+        z = math.sin(phi) * r
+
+        points.append([x, y, z])
+
+    return points
+
 
 
 class UniformEllipsoidSurfaceApproximateSampler(Distribution):
@@ -45,16 +73,16 @@ class UniformEllipsoidSurfaceApproximateSampler(Distribution):
 
         self.ndims = centre.shape[-1]
 
-    def sample_angles(self, shape):
+    def sample_angles(self, sample_shape):
         r"""Samples angles from n-1 uniform distributions.
 
         One of these angles is in the range [0, 2*pi] and it determines tha angle in the first two dimensions.
         The remaining n-2 angles are in the range [0, pi] and determine the angle in the remaining dimensions.
         """
-        phi = self.phi.rsample(shape + [1])
-        thetas = self.theta.rsample(shape + [max(0, self.ndims - 2)])
+        phi = self.phi.rsample(sample_shape + [1])
+        thetas = self.theta.rsample(sample_shape + [max(0, self.ndims - 2)])
 
-        return torch.cat((phi, thetas), dim=1)
+        return torch.cat((phi, thetas), dim=-1)
 
     def rsample(self, sample_shape=torch.Size()):
         r"""Computes the transformation for each cartesian dimension `n`.
@@ -100,13 +128,13 @@ class UniformEllipsoidSurfaceApproximateSampler(Distribution):
         """
         angles = self.sample_angles(sample_shape)
 
-        cumprod_sin = torch.cumprod(torch.sin(angles), dim=1)
+        cumprod_sin = torch.cumprod(torch.sin(angles), dim=-1)
         cos = torch.cos(angles)
 
-        pad = torch.ones_like(cumprod_sin[:, [0]])
+        pad = torch.ones_like(cumprod_sin[..., [0]])
 
-        cumprod_sin = torch.cat((pad, cumprod_sin), dim=1)
-        cos_padded = torch.cat((cos, pad), dim=1)
+        cumprod_sin = torch.cat((pad, cumprod_sin), dim=-1)
+        cos_padded = torch.cat((cos, pad), dim=-1)
 
-        return self.radii[None, :] * cumprod_sin * cos_padded
+        return self.radii * cumprod_sin * cos_padded
 

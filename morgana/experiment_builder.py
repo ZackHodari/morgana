@@ -138,8 +138,11 @@ class ExperimentBuilder(object):
                             dest="ema_decay", action="store", type=float, default=0.,
                             help="If not 0, track exponential moving average of model parameters, used for generation.")
 
+        parser.add_argument("--device",
+                            dest="device", action="store", type=str, default=None,
+                            help="If specified, the device that will be used. Default will use GPU if possible.")
         parser.add_argument("--num_data_threads",
-                            dest="num_data_threads", action="store", type=int, default=1,
+                            dest="num_data_threads", action="store", type=int, default=0,
                             help="Number of threads used to load the data with.")
 
         parser.add_argument("--model_checkpoint_interval",
@@ -212,6 +215,7 @@ class ExperimentBuilder(object):
         self.weight_decay = kwargs['weight_decay']
         self.ema_decay = kwargs['ema_decay']
 
+        self.device = kwargs['device']
         self.num_data_threads = kwargs['num_data_threads']
 
         self.model_checkpoint_interval = kwargs['model_checkpoint_interval']
@@ -255,7 +259,8 @@ class ExperimentBuilder(object):
         # Finish setup of model and data, ready for procedures to be run.
         #
 
-        self.device = 'cuda:0' if torch.cuda.is_available() else 'cpu'
+        if self.device is None:
+            self.device = 'cuda:0' if torch.cuda.is_available() else 'cpu'
         self.logger.info('Using device {}'.format(self.device))
 
         # Create the model, loading from a checkpoint if specified and providing the normalisers to the model instance.
@@ -294,6 +299,15 @@ class ExperimentBuilder(object):
 
         # Create a TensorboardX SummaryWriter.
         self.model.tensorboard = SummaryWriter(self.experiment_dir)
+
+        self.finalise_init()
+
+    def finalise_init(self):
+        r"""Initialisation that requires variables such as normalisers can be performed here."""
+        # Perform any initialisation that requires the normalisers.
+        self.model.finalise_init()
+        if self.ema_decay:
+            self.ema.model.finalise_init()
 
     def log_initial_setup(self, **kwargs):
         r"""Copies model definition if the experiment is new. Logs the model summary and config options."""
@@ -357,8 +371,8 @@ class ExperimentBuilder(object):
                         .format(path=self.checkpoint_path, s_epoch=self.start_epoch, c_epoch=checkpoint_epoch))
 
             # If our LR schedule is based on validation performance, then ensure validation is run.
-            if self.lr_schedule_name == 'plateau':
-                self.valid = True
+            if self.lr_schedule_name == 'plateau' and not self.valid:
+                raise ValueError("To use the 'plateau' learning rate schedule you must turn on the validation process.")
 
         # If we are not training, then a checkpoint must be specified.
         if (not self.train) and (self.valid or self.test):
@@ -685,11 +699,13 @@ class ExperimentBuilder(object):
                 self.run_train()
 
                 if self.valid:
-                    viz.plotting.plot_experiment(self.experiment_name, 'loss', self.experiments_base, save=True)
+                    metrics = [name for name, metric in self.model.metrics['all'].items() if not metric.hidden]
+                    viz.plotting.plot_experiment(self.experiment_name, metrics, self.experiments_base, save=True)
 
             except KeyboardInterrupt:
                 if self.valid:
-                    viz.plotting.plot_experiment(self.experiment_name, 'loss', self.experiments_base, save=True)
+                    metrics = [name for name, metric in self.model.metrics['all'].items() if not metric.hidden]
+                    viz.plotting.plot_experiment(self.experiment_name, metrics, self.experiments_base, save=True)
                 raise
 
         if (not self.train) and self.valid:

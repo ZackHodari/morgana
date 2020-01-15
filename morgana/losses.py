@@ -27,8 +27,8 @@ def sequence_loss(loss_fn):
     """
 
     @functools.wraps(loss_fn)
-    def wrapped_loss(target, prediction, seq_len=None):
-        feature_loss = loss_fn(target, prediction)
+    def wrapped_loss(predictions, targets, seq_len=None):
+        feature_loss = loss_fn(predictions, targets)
 
         if seq_len is None:
             max_num_frames = feature_loss.shape[1]
@@ -54,6 +54,11 @@ def mse(predictions, targets):
 @sequence_loss
 def bce(predictions, targets):
     return F.binary_cross_entropy(predictions, targets, reduction='none')
+
+
+@sequence_loss
+def ce(predictions, targets):
+    return F.cross_entropy(predictions.transpose(1, 2), targets, reduction='none').unsqueeze(dim=-1)
 
 
 def KLD_standard_normal(mean, log_variance):

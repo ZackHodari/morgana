@@ -22,15 +22,16 @@ class StatefulMetric(object):
     def __init__(self, hidden=False):
         super(StatefulMetric, self).__init__()
 
-        self.hidden = hidden
+        self._hidden = hidden
+        self.hidden = True
 
     def reset_state(self, *args):
         r"""Creates any stateful variables and sets their initial values."""
-        raise NotImplementedError
+        self.hidden = True
 
     def accumulate(self, *args, **kwargs):
         r"""Accumulates a batch of values into the stateful variables."""
-        raise NotImplementedError
+        self.hidden = self._hidden
 
     def result(self, *args):
         r"""Calculates the current result using the stateful variables."""
@@ -201,9 +202,11 @@ class Print(StatefulMetric):
         super(Print, self).__init__(hidden=hidden)
 
     def reset_state(self, *args):
+        StatefulMetric.reset_state(self)
         self.value = None
 
     def accumulate(self, tensor):
+        StatefulMetric.accumulate(self)
         self.value = tensor
 
     def result(self, *args):
@@ -232,9 +235,11 @@ class History(StatefulMetric):
         self.reset_state()
 
     def reset_state(self):
+        StatefulMetric.reset_state(self)
         self.history = []
 
     def accumulate(self, obj):
+        StatefulMetric.accumulate(self)
         self.history.extend(obj)
 
         # Only save the most recent `self.max_len` tensors.
@@ -284,6 +289,8 @@ class TensorHistory(StatefulMetric):
         self.reset_state()
 
     def reset_state(self):
+        StatefulMetric.reset_state(self)
+
         if self.feat_dim == 0:
             self.history = torch.empty(0, dtype=self.dtype)
         else:
@@ -293,6 +300,8 @@ class TensorHistory(StatefulMetric):
             self.history = self.history.to(self.device)
 
     def accumulate(self, tensor, seq_len=None):
+        StatefulMetric.accumulate(self)
+
         if self.device is None:
             self.device = utils.infer_device(tensor)
             self.history = self.history.to(self.device)
@@ -367,11 +376,14 @@ class Mean(StatefulMetric):
         self.reset_state()
 
     def reset_state(self):
+        StatefulMetric.reset_state(self)
         self.sum = 0.
         self.count = 0.
 
     def accumulate(self, tensor, seq_len=None):
         r"""tensor much have shape [batch_size, seq_len, feat_dim]."""
+        StatefulMetric.accumulate(self)
+
         if seq_len is None:
             self.sum += torch.sum(tensor)
             self.count += tensor.numel()
@@ -385,8 +397,79 @@ class Mean(StatefulMetric):
         return self.sum / (self.count + 1e-8)
 
 
+class Variance(StatefulMetric):
+    r"""Class for computing variance in an online fashion.
+
+    Parameters
+    ----------
+    hidden : bool
+        Whether to hide the metric when being summarised by :class:`Handler`.
+
+    Attributes
+    ----------
+    sum
+        Sum of inputs.
+    count
+        Number of valid frames for all inputs.
+    """
+    def __init__(self, hidden=False):
+        super(Variance, self).__init__(hidden=hidden)
+        self.reset_state()
+
+    def reset_state(self):
+        StatefulMetric.reset_state(self)
+        self.sum = 0.
+        self.sum_square = 0.
+        self.count = 0.
+
+    def accumulate(self, tensor, seq_len=None):
+        r"""tensor much have shape [batch_size, seq_len, feat_dim]."""
+        StatefulMetric.accumulate(self)
+
+        if seq_len is None:
+            self.sum += torch.sum(tensor)
+            self.sum_square += torch.sum(tensor ** 2)
+            self.count += tensor.numel()
+
+        else:
+            sequence_mask = utils.sequence_mask(seq_len, max_len=tensor.shape[1], dtype=tensor.dtype)
+            tensor *= sequence_mask
+
+            self.sum += torch.sum(tensor)
+            self.sum_square += torch.sum(tensor ** 2)
+            self.count += torch.sum(sequence_mask).item()
+
+    def result(self, *args):
+        count = self.count + 1e-8
+        return (self.sum_square - (self.sum ** 2) / count) / count
+
+
+class StandardDeviation(Variance):
+    r"""Class for computing standard deviation in an online fashion.
+
+    Parameters
+    ----------
+    hidden : bool
+        Whether to hide the metric when being summarised by :class:`Handler`.
+
+    Attributes
+    ----------
+    sum
+        Sum of inputs.
+    count
+        Number of valid frames for all inputs.
+    """
+    def __init__(self, hidden=False):
+        super(StandardDeviation, self).__init__(hidden=hidden)
+        self.reset_state()
+
+    def result(self, *args):
+        variance = super(StandardDeviation, self).result(*args)
+        return variance ** 0.5
+
+
 class RMSE(Mean):
-    r"""Class for computing RMSE in an online fashion.
+    r"""Class for computing root-mean-squared-error in an online fashion.
 
     Parameters
     ----------
@@ -413,6 +496,86 @@ class RMSE(Mean):
         return (self.sum / (self.count + 1e-8)) ** 0.5
 
 
+class Accuracy(Mean):
+    r"""Class for computing accuracy in an online fashion.
+
+    Parameters
+    ----------
+    hidden : bool
+        Whether to hide the metric when being summarised by :class:`Handler`.
+
+    Attributes
+    ----------
+    sum
+        Sum of number of correct frames of `target` and `pred` inputs.
+    count
+        Number of valid frames for all inputs.
+    """
+    def __init__(self, hidden=False):
+        super(Mean, self).__init__(hidden=hidden)
+
+    def accumulate(self, target, pred, seq_len=None):
+        # Accumulate the squared difference.
+        acc = target & pred
+        super(Accuracy, self).accumulate(acc, seq_len)
+
+    def result(self, *args):
+        mean = super(Accuracy, self).result(*args)
+        return mean * 100.
+
+
+class Error(Mean):
+    r"""Class for computing error in an online fashion.
+
+    Parameters
+    ----------
+    hidden : bool
+        Whether to hide the metric when being summarised by :class:`Handler`.
+
+    Attributes
+    ----------
+    sum
+        Sum of number of incorrect frames of `target` and `pred` inputs.
+    count
+        Number of valid frames for all inputs.
+    """
+    def __init__(self, hidden=False):
+        super(Mean, self).__init__(hidden=hidden)
+
+    def accumulate(self, target, pred, seq_len=None):
+        # Accumulate the squared difference.
+        acc = target ^ pred
+        super(Error, self).accumulate(acc, seq_len)
+
+    def result(self, *args):
+        mean = super(Error, self).result(*args)
+        return mean * 100.
+
+
+class MAE(Mean):
+    r"""Class for computing mean-absolute-error in an online fashion.
+
+    Parameters
+    ----------
+    hidden : bool
+        Whether to hide the metric when being summarised by :class:`Handler`.
+
+    Attributes
+    ----------
+    sum
+        Sum of absolute difference of `target` and `pred` inputs.
+    count
+        Number of valid frames for all inputs.
+    """
+    def __init__(self, hidden=False):
+        super(Mean, self).__init__(hidden=hidden)
+
+    def accumulate(self, target, pred, seq_len=None):
+        # Accumulate the squared difference.
+        abs_diff = torch.abs(target - pred)
+        super(MAE, self).accumulate(abs_diff, seq_len)
+
+
 class F0Distortion(RMSE):
     r"""Class for computing the F0 RMSE in Hz in an online fashion.
 
@@ -432,6 +595,8 @@ class F0Distortion(RMSE):
         super(F0Distortion, self).__init__(hidden=hidden)
 
     def accumulate(self, f0_target, f0_pred, is_voiced, seq_len=None):
+        StatefulMetric.accumulate(self)
+
         mask = is_voiced.type(f0_target.dtype)
 
         if seq_len is not None:
