@@ -139,7 +139,7 @@ class ExperimentBuilder(object):
                             help="If not 0, track exponential moving average of model parameters, used for generation.")
 
         parser.add_argument("--num_data_threads",
-                            dest="num_data_threads", action="store", type=int, default=1,
+                            dest="num_data_threads", action="store", type=int, default=0,
                             help="Number of threads used to load the data with.")
 
         parser.add_argument("--model_checkpoint_interval",
