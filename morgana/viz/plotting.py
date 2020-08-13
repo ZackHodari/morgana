@@ -62,7 +62,8 @@ def plot_experiment(experiment_name, metric_names='loss', experiments_base='expe
     results_valid = load_experiment_results(experiment_name, metric_names, 'valid', experiments_base)
 
     if axs is None:
-        fig, axs = plt.subplots(1, len(metric_names))
+        n_axes = len(metric_names)
+        fig, axs = plt.subplots(1, n_axes, figsize=(1 + n_axes * (4 + 1), 4))
         if len(metric_names) == 1:
             axs = [axs]
 
@@ -90,7 +91,8 @@ def plot_experiment_set(experiment_names, metric_names='loss', experiments_base=
     experiment_names = utils.listify(experiment_names)
     metric_names = utils.listify(metric_names)
 
-    fig, axs = plt.subplots(1, len(metric_names))
+    n_axes = len(metric_names)
+    fig, axs = plt.subplots(1, n_axes, figsize=(1 + n_axes * (4 + 1), 4))
     if len(metric_names) == 1:
         axs = [axs]
     cmap = plt.get_cmap('Set1')
@@ -102,9 +104,9 @@ def plot_experiment_set(experiment_names, metric_names='loss', experiments_base=
 
     handles, labels = axs[0].get_legend_handles_labels()
     extra = Rectangle((0, 0), 1, 1, fc='w', fill=False, edgecolor='none', linewidth=0)
-    lgd_pos = ((0.5 + 0.1) * len(metric_names) - 0.1, -0.1)  # 0.5 per subplot plus 0.1 between each subplot.
+    lgd_pos = ((0.5 + 0.1) * n_axes - 0.1, -0.1)  # 0.5 per subplot plus 0.1 between each subplot.
     lgd = axs[0].legend([extra] + handles, ['solid = train, dotted = valid'] + labels, loc='upper center',
-                        bbox_to_anchor=lgd_pos, fancybox=True, shadow=True, ncol=len(experiment_names)+1)
+                        bbox_to_anchor=lgd_pos, fancybox=True, shadow=True, ncol=min(3, len(experiment_names)+1))
 
     plt.setp(lgd.get_lines(), linewidth=4.)
 
