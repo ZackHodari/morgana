@@ -106,8 +106,10 @@ def get_epoch_from_checkpoint_path(checkpoint_path):
     r"""Extracts the epoch number from a checkpoint path of the form `.*checkpoints/epoch_(NUM)_.*.pt`"""
     epoch_regex = re.compile(r'.*checkpoints/epoch_(?P<epoch>\d+)(_\w+)?\.\w+')
     match = epoch_regex.match(checkpoint_path)
-    checkpoint_epoch = int(match['epoch'])
-    return checkpoint_epoch
+    if match is None:
+        return 0
+    else:
+        return int(match['epoch'])
 
 
 def sequence_mask(seq_len, max_len=None, dtype=torch.ByteTensor, device=None):
