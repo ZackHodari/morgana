@@ -22,15 +22,16 @@ class StatefulMetric(object):
     def __init__(self, hidden=False):
         super(StatefulMetric, self).__init__()
 
-        self.hidden = hidden
+        self._hidden = hidden
+        self.hidden = True
 
     def reset_state(self, *args):
         r"""Creates any stateful variables and sets their initial values."""
-        raise NotImplementedError
+        self.hidden = True
 
     def accumulate(self, *args, **kwargs):
         r"""Accumulates a batch of values into the stateful variables."""
-        raise NotImplementedError
+        self.hidden = self._hidden
 
     def result(self, *args):
         r"""Calculates the current result using the stateful variables."""
@@ -201,9 +202,11 @@ class Print(StatefulMetric):
         super(Print, self).__init__(hidden=hidden)
 
     def reset_state(self, *args):
+        StatefulMetric.reset_state(self)
         self.value = None
 
     def accumulate(self, tensor):
+        StatefulMetric.accumulate(self)
         self.value = tensor
 
     def result(self, *args):
@@ -232,9 +235,11 @@ class History(StatefulMetric):
         self.reset_state()
 
     def reset_state(self):
+        StatefulMetric.reset_state(self)
         self.history = []
 
     def accumulate(self, obj):
+        StatefulMetric.accumulate(self)
         self.history.extend(obj)
 
         # Only save the most recent `self.max_len` tensors.
@@ -284,6 +289,8 @@ class TensorHistory(StatefulMetric):
         self.reset_state()
 
     def reset_state(self):
+        StatefulMetric.reset_state(self)
+
         if self.feat_dim == 0:
             self.history = torch.empty(0, dtype=self.dtype)
         else:
@@ -293,6 +300,8 @@ class TensorHistory(StatefulMetric):
             self.history = self.history.to(self.device)
 
     def accumulate(self, tensor, seq_len=None):
+        StatefulMetric.accumulate(self)
+
         if self.device is None:
             self.device = utils.infer_device(tensor)
             self.history = self.history.to(self.device)
@@ -367,11 +376,14 @@ class Mean(StatefulMetric):
         self.reset_state()
 
     def reset_state(self):
+        StatefulMetric.reset_state(self)
         self.sum = 0.
         self.count = 0.
 
     def accumulate(self, tensor, seq_len=None):
         r"""tensor much have shape [batch_size, seq_len, feat_dim]."""
+        StatefulMetric.accumulate(self)
+
         if seq_len is None:
             self.sum += torch.sum(tensor)
             self.count += tensor.numel()
@@ -432,6 +444,8 @@ class F0Distortion(RMSE):
         super(F0Distortion, self).__init__(hidden=hidden)
 
     def accumulate(self, f0_target, f0_pred, is_voiced, seq_len=None):
+        StatefulMetric.accumulate(self)
+
         mask = is_voiced.type(f0_target.dtype)
 
         if seq_len is not None:
