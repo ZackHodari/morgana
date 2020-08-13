@@ -27,8 +27,8 @@ def sequence_loss(loss_fn):
     """
 
     @functools.wraps(loss_fn)
-    def wrapped_loss(target, prediction, seq_len=None):
-        feature_loss = loss_fn(target, prediction)
+    def wrapped_loss(predictions, targets, seq_len=None):
+        feature_loss = loss_fn(predictions, targets)
 
         if seq_len is None:
             max_num_frames = feature_loss.shape[1]
