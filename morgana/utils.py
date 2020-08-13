@@ -379,23 +379,24 @@ class SequentialWithRecurrent(nn.Sequential):
     def __init__(self, *args):
         super(SequentialWithRecurrent, self).__init__(*args)
 
-    def forward(self, input, hx=None, seq_len=None):
-        hidden = None
-        for module in self._modules.values():
+    def forward(self, input, hiddens=None, seq_len=None):
+        # This will contain an entry for all modules, even if they are not recurrent. This might be a bad design, but it
+        # is the simplest way to ensure we do not use the incorrect hidden state for a certain recurrent layer.
+        if hiddens is None:
+            hiddens = [None] * len(self._modules)
+
+        for i, module in enumerate(self._modules.values()):
 
             if isinstance(module, RecurrentCuDNNWrapper):
-                input, hidden = module(input, hx, seq_len)
+                input, hiddens[i] = module(input, hiddens[i], seq_len)
 
             elif isinstance(module, nn.RNNBase):
-                input, hidden = module(input, hx)
+                input, hiddens[i] = module(input, hiddens[i])
 
             else:
                 input = module(input)
 
-        if isinstance(module, (RecurrentCuDNNWrapper, nn.RNNBase)):
-            return input, hidden
-        else:
-            return input
+        return input, hiddens
 
 
 class ExponentialMovingAverage(object):
