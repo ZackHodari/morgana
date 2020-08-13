@@ -88,7 +88,7 @@ def MLPG(means, variances, windows=None, padding_size=0, seq_len=None):
     windows : list[tuple[int, int, np.ndarray]]
         Windows describing the static/delta features included in the feature dimension of `means` and `variances`.
     padding_size : int
-        Padding on either side of signal, used to handle the boundaries.
+        Padding on either side of signal, used to handle smoothing at the boundaries.
     seq_len : array_like, shape (batch_size)
         Sequence lengths, necessary when a batch of sequences is given, as out-of-sequence frames will be all zeros.
 
@@ -106,6 +106,10 @@ def MLPG(means, variances, windows=None, padding_size=0, seq_len=None):
         if device is None:
             device = variances.device
         variances = variances.detach().cpu().numpy()
+    if isinstance(seq_len, torch.Tensor):
+        if device is None:
+            device = seq_len.device
+        seq_len = seq_len.detach().cpu().numpy()
 
     def _pad(sequence_feature, n=3):
         return np.concatenate(
