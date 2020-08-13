@@ -350,15 +350,15 @@ class RecurrentCuDNNWrapper(nn.Module):
         packed_inputs = nn.utils.rnn.pack_padded_sequence(sorted_inputs, sorted_seq_len, batch_first=True)
 
         # Sort the initial hidden state of each batch item by sequence length.
-        if hx is not None:
+        if hidden is not None:
             # Hidden shape is (num_layers * num_directions, batch_size, hidden_size).
             if self.layer.mode == 'LSTM':
-                hx = (hx[0][:, sorted_idxs, :], hx[1][:, sorted_idxs, :])
+                hidden = (hidden[0][:, sorted_idxs, :], hidden[1][:, sorted_idxs, :])
             else:
-                hx = hx[:, sorted_idxs, :]
+                hidden = hidden[:, sorted_idxs, :]
 
         # Run the recurrent layer.
-        packed_outputs, hidden = self.layer(packed_inputs, hx)
+        packed_outputs, hidden = self.layer(packed_inputs, hx=hidden)
 
         # Unpack and unsort the outputs.
         sorted_outputs, _ = nn.utils.rnn.pad_packed_sequence(packed_outputs, batch_first=True)
