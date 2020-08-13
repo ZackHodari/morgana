@@ -109,9 +109,9 @@ def plot_experiment_set(experiment_names, metric_names='loss', experiments_base=
     plt.setp(lgd.get_lines(), linewidth=4.)
 
     if file_name:
-        os.makedirs('plots', exist_ok=True)
+        os.makedirs(os.path.join('plots', os.path.dirname(file_name)), exist_ok=True)
         save_path = os.path.join('plots', file_name)
 
         logger.info('Saving plot of metrics for multiple experiments to {}'.format(save_path))
         plt.savefig(save_path, bbox_extra_artists=(lgd,), bbox_inches='tight')
-
+        plt.close(fig)
