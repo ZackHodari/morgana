@@ -357,8 +357,8 @@ class ExperimentBuilder(object):
                         .format(path=self.checkpoint_path, s_epoch=self.start_epoch, c_epoch=checkpoint_epoch))
 
             # If our LR schedule is based on validation performance, then ensure validation is run.
-            if self.lr_schedule_name == 'plateau':
-                self.valid = True
+            if self.lr_schedule_name == 'plateau' and not self.valid:
+                raise ValueError("To use the 'plateau' learning rate schedule you must turn on the validation process.")
 
         # If we are not training, then a checkpoint must be specified.
         if (not self.train) and (self.valid or self.test):
