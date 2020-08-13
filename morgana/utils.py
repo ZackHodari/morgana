@@ -63,7 +63,7 @@ def infer_device(tensor):
     return torch.device(device)
 
 
-def detach_batched_seqs(*sequence_features, seq_len):
+def detach_batched_seqs(*sequence_features, seq_len=None):
     r"""Converts :class:`torch.Tensor` to `np.ndarray`. Moves data to CPU, detaches gradients, and removes padding.
 
     Parameters
@@ -85,13 +85,15 @@ def detach_batched_seqs(*sequence_features, seq_len):
     for sequence_feature_batch in sequence_features:
 
         # Convert to numpy.
-        sequence_feature_batch = sequence_feature_batch.cpu().detach().numpy()
+        if isinstance(sequence_feature_batch, torch.Tensor):
+            sequence_feature_batch = sequence_feature_batch.cpu().detach().numpy()
 
         # Remove padding.
-        sequence_feature_list = [sequence_feature[:len_].squeeze()
-                                 for sequence_feature, len_ in zip(sequence_feature_batch, seq_len)]
+        if seq_len is not None and sequence_feature_batch[0].ndim > 1:
+            sequence_feature_batch = [sequence_feature[:len_].squeeze()
+                                      for sequence_feature, len_ in zip(sequence_feature_batch, seq_len)]
 
-        detached.append(sequence_feature_list)
+        detached.append(sequence_feature_batch)
 
     if len(detached) == 1:
         return detached[0]
