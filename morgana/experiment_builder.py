@@ -685,11 +685,13 @@ class ExperimentBuilder(object):
                 self.run_train()
 
                 if self.valid:
-                    viz.plotting.plot_experiment(self.experiment_name, 'loss', self.experiments_base, save=True)
+                    metrics = [name for name, metric in self.model.metrics['all'].items() if not metric.hidden]
+                    viz.plotting.plot_experiment(self.experiment_name, metrics, self.experiments_base, save=True)
 
             except KeyboardInterrupt:
                 if self.valid:
-                    viz.plotting.plot_experiment(self.experiment_name, 'loss', self.experiments_base, save=True)
+                    metrics = [name for name, metric in self.model.metrics['all'].items() if not metric.hidden]
+                    viz.plotting.plot_experiment(self.experiment_name, metrics, self.experiments_base, save=True)
                 raise
 
         if (not self.train) and self.valid:
