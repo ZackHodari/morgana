@@ -43,8 +43,8 @@ def load_experiment_results(experiment_name, metric_names='loss', mode='train', 
 
             epoch = int(epoch_str.split('_')[-1])
             for metric_name in metric_names:
-                metric_value = metrics[metric_name]
-                results[metric_name][epoch] = metric_value
+                if metric_name in metrics:
+                    results[metric_name][epoch] = metrics[metric_name]
 
     # Sort the keys of each metric by the epochs, as `os.listdir` will not use the correct numerical order.
     results = {
