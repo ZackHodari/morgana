@@ -63,7 +63,7 @@ def infer_device(tensor):
     return torch.device(device)
 
 
-def detach_batched_seqs(*sequence_features, seq_len=None):
+def detach_batched_seqs(*sequence_features, seq_len=None, squeeze=True):
     r"""Converts :class:`torch.Tensor` to `np.ndarray`. Moves data to CPU, detaches gradients, and removes padding.
 
     Parameters
@@ -72,6 +72,8 @@ def detach_batched_seqs(*sequence_features, seq_len=None):
         List of batched sequence features to be detached.
     seq_len : np.ndarray or torch.Tensor, shape (batch_size,)
         Sequence length used to remove padding from each batch item.
+    squeeze : bool
+        If True, try to squeeze 1-dimensional features
 
     Returns
     -------
@@ -90,7 +92,7 @@ def detach_batched_seqs(*sequence_features, seq_len=None):
 
         # Remove padding.
         if seq_len is not None and sequence_feature_batch[0].ndim > 1:
-            sequence_feature_batch = [sequence_feature[:len_].squeeze()
+            sequence_feature_batch = [sequence_feature[:len_].squeeze() if squeeze else sequence_feature[:len_]
                                       for sequence_feature, len_ in zip(sequence_feature_batch, seq_len)]
 
         detached.append(sequence_feature_batch)
