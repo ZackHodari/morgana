@@ -33,6 +33,18 @@ class BaseModel(nn.Module):
         self.step = 0
         self.tensorboard = None
 
+    def normaliser_sources(self):
+        r"""Specifies the normalisers that will be initialised and used by `FilesDataset`.
+
+        Only specifies what data will be loaded, but not where from.
+
+        Returns
+        -------
+        normalisers : data.Normalisers or dict[str, data._FeatureNormaliser or data._SpeakerDependentNormaliser]
+            The normalisers used by :class:`morgana.data.FilesDataset`.
+        """
+        return {}
+
     def train_data_sources(self):
         r"""Specifies the data that will be loaded and used in training.
 
