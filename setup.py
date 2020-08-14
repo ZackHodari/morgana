@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='morgana',
-    version='0.2.0',
+    version='0.3.0',
     description='Toolkit for defining and training Text-to-Speech voices in PyTorch.',
     url='https://github.com/ZackHodari/morgana',
     author='Zack Hodari',
