@@ -397,8 +397,82 @@ class Mean(StatefulMetric):
         return self.sum / (self.count + 1e-8)
 
 
+class Variance(StatefulMetric):
+    r"""Class for computing variance in an online fashion.
+
+    Parameters
+    ----------
+    hidden : bool
+        Whether to hide the metric when being summarised by :class:`Handler`.
+
+    Attributes
+    ----------
+    sum
+        Sum of inputs.
+    sum_square
+        Sum of squared inputs.
+    count
+        Number of valid frames for all inputs.
+    """
+    def __init__(self, hidden=False):
+        super(Variance, self).__init__(hidden=hidden)
+        self.reset_state()
+
+    def reset_state(self):
+        StatefulMetric.reset_state(self)
+        self.sum = 0.
+        self.sum_square = 0.
+        self.count = 0.
+
+    def accumulate(self, tensor, seq_len=None):
+        r"""tensor much have shape [batch_size, seq_len, feat_dim]."""
+        StatefulMetric.accumulate(self)
+
+        if seq_len is None:
+            self.sum += torch.sum(tensor)
+            self.sum_square += torch.sum(tensor ** 2)
+            self.count += tensor.numel()
+
+        else:
+            sequence_mask = utils.sequence_mask(seq_len, max_len=tensor.shape[1], dtype=tensor.dtype)
+            tensor *= sequence_mask
+
+            self.sum += torch.sum(tensor)
+            self.sum_square += torch.sum(tensor ** 2)
+            self.count += torch.sum(sequence_mask).item()
+
+    def result(self, *args):
+        count = self.count + 1e-8
+        return (self.sum_square - (self.sum ** 2) / count) / count
+
+
+class StandardDeviation(Variance):
+    r"""Class for computing standard deviation in an online fashion.
+
+    Parameters
+    ----------
+    hidden : bool
+        Whether to hide the metric when being summarised by :class:`Handler`.
+
+    Attributes
+    ----------
+    sum
+        Sum of inputs.
+    sum_square
+        Sum of squared inputs.
+    count
+        Number of valid frames for all inputs.
+    """
+    def __init__(self, hidden=False):
+        super(StandardDeviation, self).__init__(hidden=hidden)
+
+    def result(self, *args):
+        variance = super(StandardDeviation, self).result(*args)
+        return variance ** 0.5
+
+
 class RMSE(Mean):
-    r"""Class for computing RMSE in an online fashion.
+    r"""Class for computing root-mean-squared-error in an online fashion.
 
     Parameters
     ----------
@@ -423,6 +497,83 @@ class RMSE(Mean):
     def result(self, *args):
         # Calculate the root mean of the accumulated squared diff.
         return (self.sum / (self.count + 1e-8)) ** 0.5
+
+
+class Accuracy(Mean):
+    r"""Class for computing accuracy in an online fashion.
+
+    Parameters
+    ----------
+    hidden : bool
+        Whether to hide the metric when being summarised by :class:`Handler`.
+
+    Attributes
+    ----------
+    sum
+        Sum of number of correct frames of `target` and `pred` inputs.
+    count
+        Number of valid frames for all inputs.
+    """
+    def __init__(self, hidden=False):
+        super(Mean, self).__init__(hidden=hidden)
+
+    def accumulate(self, target, pred, seq_len=None):
+        acc = target & pred
+        super(Accuracy, self).accumulate(acc, seq_len)
+
+    def result(self, *args):
+        mean = super(Accuracy, self).result(*args)
+        return mean * 100.
+
+
+class Error(Mean):
+    r"""Class for computing error in an online fashion.
+
+    Parameters
+    ----------
+    hidden : bool
+        Whether to hide the metric when being summarised by :class:`Handler`.
+
+    Attributes
+    ----------
+    sum
+        Sum of number of incorrect frames of `target` and `pred` inputs.
+    count
+        Number of valid frames for all inputs.
+    """
+    def __init__(self, hidden=False):
+        super(Mean, self).__init__(hidden=hidden)
+
+    def accumulate(self, target, pred, seq_len=None):
+        acc = target ^ pred
+        super(Error, self).accumulate(acc, seq_len)
+
+    def result(self, *args):
+        mean = super(Error, self).result(*args)
+        return mean * 100.
+
+
+class MAE(Mean):
+    r"""Class for computing mean-absolute-error in an online fashion.
+
+    Parameters
+    ----------
+    hidden : bool
+        Whether to hide the metric when being summarised by :class:`Handler`.
+
+    Attributes
+    ----------
+    sum
+        Sum of absolute difference of `target` and `pred` inputs.
+    count
+        Number of valid frames for all inputs.
+    """
+    def __init__(self, hidden=False):
+        super(Mean, self).__init__(hidden=hidden)
+
+    def accumulate(self, target, pred, seq_len=None):
+        abs_diff = torch.abs(target - pred)
+        super(MAE, self).accumulate(abs_diff, seq_len)
 
 
 class F0Distortion(RMSE):
