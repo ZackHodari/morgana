@@ -342,7 +342,26 @@ class RecurrentCuDNNWrapper(nn.Module):
         super(RecurrentCuDNNWrapper, self).__init__()
         self.layer = layer
 
-    def forward(self, inputs, hx=None, seq_len=None):
+    def forward(self, inputs, hidden=None, seq_len=None):
+        # If no sequence length is given, then run the layer without any wrapper.
+        if seq_len is None:
+            if isinstance(inputs, nn.utils.rnn.PackedSequence):
+                outputs, hidden = self.layer(inputs, hx=hidden)
+                return outputs, hidden
+
+            elif inputs.ndim == 2:
+                seq_dim = 1 if self.layer.batch_first else 0
+                inputs = inputs.unsqueeze(seq_dim)
+
+                outputs, hidden = self.layer(inputs, hx=hidden)
+
+                outputs = outputs.squeeze(seq_dim)
+                return outputs, hidden
+
+            else:
+                raise ValueError('If no seq_len is provided to RecurrentCuDNNWrapper the data must be already packed'
+                                 f'or must be for one time slice only. For non-packed input got shape, {inputs.shape}')
+
         # Sort the batch items by sequence length and pack the sequence.
         sorted_idxs = torch.argsort(seq_len, descending=True)
         sorted_inputs = inputs[sorted_idxs, ...]
