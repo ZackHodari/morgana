@@ -56,6 +56,11 @@ def bce(predictions, targets):
     return F.binary_cross_entropy(predictions, targets, reduction='none')
 
 
+@sequence_loss
+def ce(predictions, targets):
+    return F.cross_entropy(predictions.transpose(1, 2), targets, reduction='none').unsqueeze(dim=-1)
+
+
 def KLD_standard_normal(mean, log_variance):
     r"""Calculates KL-divergence of :math:`\mathbb{N}` (`mean`, `log_variance`) with :math:`\mathbb{N}(0, 1)`."""
     kld = -0.5 * torch.sum(1 + log_variance - mean ** 2 - torch.exp(log_variance), dim=-1)
