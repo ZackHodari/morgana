@@ -33,6 +33,10 @@ class BaseModel(nn.Module):
         self.step = 0
         self.tensorboard = None
 
+    def finalise_init(self):
+        r"""Called at the end of ExperiemntBuilder.__init__"""
+        pass
+
     def normaliser_sources(self):
         r"""Specifies the normalisers that will be initialised and used by `FilesDataset`.
 

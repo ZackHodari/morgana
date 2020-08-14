@@ -300,6 +300,15 @@ class ExperimentBuilder(object):
         # Create a TensorboardX SummaryWriter.
         self.model.tensorboard = SummaryWriter(self.experiment_dir)
 
+        self.finalise_init()
+
+    def finalise_init(self):
+        r"""Initialisation that requires variables such as normalisers can be performed here."""
+        # Perform any initialisation that requires the normalisers.
+        self.model.finalise_init()
+        if self.ema_decay:
+            self.ema.model.finalise_init()
+
     def log_initial_setup(self, **kwargs):
         r"""Copies model definition if the experiment is new. Logs the model summary and config options."""
         # If this experiment has not been run before, then copy the model's file into experiment_dir.
