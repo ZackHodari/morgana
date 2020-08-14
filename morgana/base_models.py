@@ -3,9 +3,7 @@ import os
 import torch
 import torch.nn as nn
 
-from morgana import losses
 from morgana import metrics
-from morgana import utils
 
 
 class BaseModel(nn.Module):
@@ -364,28 +362,4 @@ class BaseVAE(BaseSPSS):
             latent = torch.zeros((batch_size, self.z_dim)).to(device)
 
         return self.decode(latent, features)
-
-    def KL_divergence(self, latent, mean, log_variance):
-        r"""Calculates the KL-divergence using the prior `p(z) = N(0, 1)`."""
-        return losses.KLD_standard_normal(mean, log_variance)
-
-    def _loss(self, targets, predictions, latent, mean, log_variance, seq_lens=None, loss_weights=None):
-        r"""Defines the loss helper to calculate the Kullback–Leibler divergence as well as the sequence loss."""
-        if loss_weights is None:
-            mse_weight = len(utils.listify(targets))
-        else:
-            mse_weight = sum(loss_weights)
-
-        mse = super(BaseVAE, self)._loss(targets, predictions, seq_lens, loss_weights)
-        mse *= mse_weight
-
-        kld = self.KL_divergence(latent, mean, log_variance)
-
-        self.metrics.accumulate(
-            self.mode,
-            kld=kld)
-
-        loss = (mse + kld * self.kld_weight) / (mse_weight + 1)
-
-        return loss
 
