@@ -1,15 +1,11 @@
 import os
 
-import numpy as np
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
 
 from morgana import losses
 from morgana import metrics
 from morgana import utils
-
-import tts_data_tools as tdt
 
 
 class BaseModel(nn.Module):
@@ -180,23 +176,7 @@ class BaseModel(nn.Module):
         kwargs : dict
             Additional keyword arguments used for generating output.
         """
-        pred_dir = os.path.join(out_dir, 'feats')
-        os.makedirs(pred_dir, exist_ok=True)
-
-        n_frames = features['n_frames'].cpu().detach().numpy()
-        for feat_name, values in output_features.items():
-
-            if isinstance(values, torch.Tensor):
-                values = values.cpu().detach().numpy()
-
-            if isinstance(values, np.ndarray):
-                if values.ndim == 3:
-                    values = [value[:n_frame] for value, n_frame in zip(values, n_frames)]
-
-                tdt.file_io.save_dir(tdt.file_io.save_bin,
-                                     path=os.path.join(pred_dir, feat_name),
-                                     data=values,
-                                     file_ids=features['name'])
+        pass
 
     def analysis_for_valid_batch(self, features, output_features, out_dir, **kwargs):
         r"""Hook used by :class:`morgana.experiment_builder.ExperimentBuilder` after validation batches for some epochs.
