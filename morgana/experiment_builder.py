@@ -138,6 +138,9 @@ class ExperimentBuilder(object):
                             dest="ema_decay", action="store", type=float, default=0.,
                             help="If not 0, track exponential moving average of model parameters, used for generation.")
 
+        parser.add_argument("--device",
+                            dest="device", action="store", type=str, default=None,
+                            help="If specified, the device that will be used. Default will use GPU if possible.")
         parser.add_argument("--num_data_threads",
                             dest="num_data_threads", action="store", type=int, default=0,
                             help="Number of threads used to load the data with.")
@@ -212,6 +215,7 @@ class ExperimentBuilder(object):
         self.weight_decay = kwargs['weight_decay']
         self.ema_decay = kwargs['ema_decay']
 
+        self.device = kwargs['device']
         self.num_data_threads = kwargs['num_data_threads']
 
         self.model_checkpoint_interval = kwargs['model_checkpoint_interval']
@@ -255,7 +259,8 @@ class ExperimentBuilder(object):
         # Finish setup of model and data, ready for procedures to be run.
         #
 
-        self.device = 'cuda:0' if torch.cuda.is_available() else 'cpu'
+        if self.device is None:
+            self.device = 'cuda:0' if torch.cuda.is_available() else 'cpu'
         self.logger.info('Using device {}'.format(self.device))
 
         # Create the model, loading from a checkpoint if specified and providing the normalisers to the model instance.
